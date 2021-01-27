@@ -46,8 +46,14 @@
           }
         }
 
+      //Pre-Setup
+        const community = {
+          templates:input.array("setup_community_templates")
+        }
+        info("Setup - community templates", community.templates)
+
       //Load configuration
-        const {conf, Plugins, Templates} = await setup({log:false, nosettings:true})
+        const {conf, Plugins, Templates} = await setup({log:false, nosettings:true, community})
         info("Setup", "complete")
         info("Version", conf.package.version)
 
@@ -145,6 +151,7 @@
           stargazers:{enabled:input.bool("plugin_stargazers")},
           activity:{enabled:input.bool("plugin_activity")},
           people:{enabled:input.bool("plugin_people")},
+          anilist:{enabled:input.bool("plugin_anilist")},
         }
         let q = Object.fromEntries(Object.entries(plugins).filter(([key, plugin]) => plugin.enabled).map(([key]) => [key, true]))
         info("Plugins enabled", Object.entries(plugins).filter(([key, plugin]) => plugin.enabled).map(([key]) => key))
@@ -160,7 +167,7 @@
           }
         //Languages
           if (plugins.languages.enabled) {
-            for (const option of ["ignored", "skipped"])
+            for (const option of ["ignored", "skipped", "colors"])
               info(`Languages ${option}`, q[`languages.${option}`] = input.array(`plugin_languages_${option}`))
           }
         //Habits
@@ -174,7 +181,7 @@
           if (plugins.music.enabled) {
             plugins.music.token = input.string("plugin_music_token")
             info("Music token", plugins.music.token, {token:true})
-            for (const option of ["provider", "mode", "playlist"])
+            for (const option of ["provider", "mode", "playlist", "user"])
               info(`Music ${option}`, q[`music.${option}`] = input.string(`plugin_music_${option}`))
             for (const option of ["limit"])
               info(`Music ${option}`, q[`music.${option}`] = input.number(`plugin_music_${option}`))
@@ -204,6 +211,8 @@
               info(`Projects ${option}`, q[`projects.${option}`] = input.string(`plugin_projects_${option}`))
             for (const option of ["limit"])
               info(`Projects ${option}`, q[`projects.${option}`] = input.number(`plugin_projects_${option}`))
+            for (const option of ["descriptions"])
+              info(`Projects ${option}`, q[`projects.${option}`] = input.bool(`plugin_projects_${option}`))
           }
         //Tweets
           if (plugins.tweets.enabled) {
@@ -230,10 +239,21 @@
           if (plugins.people.enabled) {
             for (const option of ["limit", "size"])
               info(`People ${option}`, q[`people.${option}`] = input.number(`plugin_people_${option}`))
-            for (const option of ["types"])
+            for (const option of ["types", "thanks"])
               info(`People ${option}`, q[`people.${option}`] = input.array(`plugin_people_${option}`))
             for (const option of ["identicons"])
               info(`People ${option}`, q[`people.${option}`] = input.bool(`plugin_people_${option}`))
+          }
+        //Anilist
+          if (plugins.anilist.enabled) {
+            for (const option of ["limit"])
+              info(`Anilist ${option}`, q[`anilist.${option}`] = input.number(`plugin_anilist_${option}`))
+            for (const option of ["medias", "sections"])
+              info(`Anilist ${option}`, q[`anilist.${option}`] = input.array(`plugin_anilist_${option}`))
+            for (const option of ["shuffle"])
+              info(`Anilist ${option}`, q[`anilist.${option}`] = input.bool(`plugin_anilist_${option}`))
+            for (const option of ["user"])
+              info(`Anilist ${option}`, q[`anilist.${option}`] = input.string(`plugin_anilist_${option}`))
           }
 
       //Repositories to use

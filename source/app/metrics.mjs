@@ -44,49 +44,24 @@
             console.debug(`metrics/compute/${login} > content order : ${[...data.partials]}`)
           }
 
-        //Placeholder
-          if (login === "placeholder")
-            placeholder({data, conf, q})
-        //Compute
-          else {
-            //Query data from GitHub API
-              console.debug(`metrics/compute/${login} > graphql query`)
-              const forks = q["repositories.forks"] || false
-              Object.assign(data, await graphql(queries.common({login, "calendar.from":new Date(Date.now()-14*24*60*60*1000).toISOString(), "calendar.to":(new Date()).toISOString(), forks:forks ? "" : ", isFork: false"})))
-            //Query repositories from GitHub API
-              {
-                //Iterate through repositories
-                  let cursor = null
-                  let pushed = 0
-                  do {
-                    console.debug(`metrics/compute/${login} > retrieving repositories after ${cursor}`)
-                    const {user:{repositories:{edges, nodes}}} = await graphql(queries.repositories({login, after:cursor ? `after: "${cursor}"` : "", repositories:Math.min(repositories, 100), forks:forks ? "" : ", isFork: false"}))
-                    cursor = edges?.[edges?.length-1]?.cursor
-                    data.user.repositories.nodes.push(...nodes)
-                    pushed = nodes.length
-                  } while ((pushed)&&(cursor)&&(data.user.repositories.nodes.length < repositories))
-                //Limit repositories
-                  console.debug(`metrics/compute/${login} > keeping only ${repositories} repositories`)
-                  data.user.repositories.nodes.splice(repositories)
-                  console.debug(`metrics/compute/${login} > loaded ${data.user.repositories.nodes.length} repositories`)
-              }
-            //Compute metrics
-              console.debug(`metrics/compute/${login} > compute`)
-              const computer = Templates[template].default || Templates[template]
-              await computer({login, q, dflags}, {conf, data, rest, graphql, plugins, queries}, {s, pending, imports:{plugins:Plugins, url, imgb64, axios, puppeteer, run, fs, os, paths, util, format, bytes, shuffle, htmlescape, urlexpand}})
-              const promised = await Promise.all(pending)
+        //Query data from GitHub API
+          await common({login, q, data, queries, repositories, graphql})
+        //Compute metrics
+          console.debug(`metrics/compute/${login} > compute`)
+          const computer = Templates[template].default || Templates[template]
+          await computer({login, q, dflags}, {conf, data, rest, graphql, plugins, queries, account:data.account}, {s, pending, imports:{plugins:Plugins, url, imgb64, axios, puppeteer, run, fs, os, paths, util, format, bytes, shuffle, htmlescape, urlexpand, __module}})
+          const promised = await Promise.all(pending)
 
-            //Check plugins errors
-              {
-                const errors = [...promised.filter(({result = null}) => result?.error), ...data.errors]
-                if (errors.length) {
-                  console.warn(`metrics/compute/${login} > ${errors.length} errors !`)
-                  if (die)
-                    throw new Error(`An error occured during rendering, dying`)
-                  else
-                    console.warn(util.inspect(errors, {depth:Infinity, maxStringLength:256}))
-                }
-              }
+        //Check plugins errors
+          {
+            const errors = [...promised.filter(({result = null}) => result?.error), ...data.errors]
+            if (errors.length) {
+              console.warn(`metrics/compute/${login} > ${errors.length} errors !`)
+              if (die)
+                throw new Error(`An error occured during rendering, dying`)
+              else
+                console.warn(util.inspect(errors, {depth:Infinity, maxStringLength:256}))
+            }
           }
 
         //Template rendering
@@ -127,6 +102,88 @@
         //Generic error
           throw error
       }
+  }
+
+/** Common query */
+  async function common({login, q, data, queries, repositories, graphql}) {
+    //Iterate through account types
+      for (const account of ["user", "organization"]) {
+        try {
+          //Query data from GitHub API
+            console.debug(`metrics/compute/${login}/common > account ${account}`)
+            const forks = q["repositories.forks"] || false
+            const queried = await graphql(queries[{user:"common", organization:"common.organization"}[account]]({login, "calendar.from":new Date(Date.now()-14*24*60*60*1000).toISOString(), "calendar.to":(new Date()).toISOString(), forks:forks ? "" : ", isFork: false"}))
+            Object.assign(data, {user:queried[account]})
+            common.post?.[account]({login, data})
+          //Query repositories from GitHub API
+            {
+              //Iterate through repositories
+                let cursor = null
+                let pushed = 0
+                do {
+                  console.debug(`metrics/compute/${login}/common > retrieving repositories after ${cursor}`)
+                  const {[account]:{repositories:{edges, nodes}}} = await graphql(queries.repositories({login, account, after:cursor ? `after: "${cursor}"` : "", repositories:Math.min(repositories, {user:100, organization:25}[account]), forks:forks ? "" : ", isFork: false"}))
+                  cursor = edges?.[edges?.length-1]?.cursor
+                  data.user.repositories.nodes.push(...nodes)
+                  pushed = nodes.length
+                } while ((pushed)&&(cursor)&&(data.user.repositories.nodes.length < repositories))
+              //Limit repositories
+                console.debug(`metrics/compute/${login}/common > keeping only ${repositories} repositories`)
+                data.user.repositories.nodes.splice(repositories)
+                console.debug(`metrics/compute/${login}/common > loaded ${data.user.repositories.nodes.length} repositories`)
+            }
+          //Success
+            console.debug(`metrics/compute/${login}/common > graphql query > account ${account} > success`)
+            return
+        } catch (error) {
+          console.debug(`metrics/compute/${login}/common > account ${account} > failed : ${error}`)
+          console.debug(`metrics/compute/${login}/common > checking next account`)
+        }
+      }
+    //Not found
+      console.debug(`metrics/compute/${login}/common > no more account type`)
+      throw new Error("user not found")
+  }
+
+/** Common query post-processing */
+  common.post = {
+    //User
+      user({login, data}) {
+        console.debug(`metrics/compute/${login}/common > applying common post`)
+        data.account = "user"
+        Object.assign(data.user, {
+          isVerified:false,
+        })
+      },
+    //Organization
+      organization({login, data}) {
+        console.debug(`metrics/compute/${login}/common > applying common post`)
+        data.account = "organization",
+        Object.assign(data.user, {
+          isHireable:false,
+          starredRepositories:{totalCount:0},
+          watching:{totalCount:0},
+          contributionsCollection:{
+            totalRepositoriesWithContributedCommits:0,
+            totalCommitContributions:0,
+            restrictedContributionsCount:0,
+            totalIssueContributions:0,
+            totalPullRequestContributions:0,
+            totalPullRequestReviewContributions:0,
+          },
+          calendar:{contributionCalendar:{weeks:[]}},
+          repositoriesContributedTo:{totalCount:0},
+          followers:{totalCount:0},
+          following:{totalCount:0},
+          issueComments:{totalCount:0},
+          organizations:{totalCount:0},
+        })
+      }
+  }
+
+/** Returns module __dirname */
+  function __module(module) {
+    return paths.join(paths.dirname(url.fileURLToPath(module)))
   }
 
 /** Formatter */
@@ -229,58 +286,4 @@
     //Result
       await page.close()
       return {resized, mime}
-  }
-
-/** Placeholder generator */
-  function placeholder({data, conf, q}) {
-    //Proxifier
-      const proxify = (target) => (typeof target === "object")&&(target) ? new Proxy(target, {
-        get(target, property) {
-          //Primitive conversion
-            if (property === Symbol.toPrimitive)
-              return () => "##"
-          //Iterables
-            if (property === Symbol.iterator)
-              return Reflect.get(target, property)
-          //Plugins should not be proxified by default as they can be toggled by user
-            if (/^plugins$/.test(property))
-              return Reflect.get(target, property)
-          //Consider no errors on plugins
-            if (/^error/.test(property))
-              return undefined
-          //Proxify recursively
-          return proxify(property in target ? Reflect.get(target, property) : {})
-        }
-      }) : target
-    //Enabled plugins
-      const enabled = Object.entries(conf.settings.plugins).filter(([key, plugin]) => plugin.enabled).map(([key]) => key).filter(key => (key in q)&&(q[key]))
-    //Placeholder data
-      Object.assign(data, {
-        s(_, letter) { return letter === "y" ? "ies" : "s" },
-        meta:{version:conf.package.version, author:conf.package.author, placeholder:true},
-        user:proxify({name:`############`, websiteUrl:`########################`, isHireable:false}),
-        computed:proxify({
-          avatar:"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcOnfpfwAGfgLYttYINwAAAABJRU5ErkJggg==",
-          registration:"## years ago",
-          cakeday:false,
-          calendar:new Array(14).fill({color:"#ebedf0"}),
-          licenses:{favorite:`########`},
-          token:{scopes:[]},
-        }),
-        plugins:Object.fromEntries(enabled.map(key =>
-          [key, proxify({
-            posts:{source:"########", list:new Array(2).fill({title:"###### ###### ####### ######", date:"####"})},
-            music:{provider:"########", tracks:new Array(3).fill({name:"##########", artist:"######", artwork:"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcOnfpfwAGfgLYttYINwAAAABJRU5ErkJggg=="})},
-            pagespeed:{detailed:!!q["pagespeed.detailed"], screenshot:!!q["pagespeed.screenshot"] ? "data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcOnfpfwAGfgLYttYINwAAAABJRU5ErkJggg==" : null,  scores:["Performance", "Accessibility", "Best Practices", "SEO"].map(title => ({title, score:NaN}))},
-            followup:{issues:{count:0}, pr:{count:0}},
-            habits:{facts:!!(q["habits.facts"] ?? 1), charts:!!q["habits.charts"], indents:{style:`########`}, commits:{day:"####"}, linguist:{ordered:[]}},
-            languages:{favorites:new Array(7).fill(null).map((_, x) => ({x, name:"######", color:"#ebedf0", value:1/(x+1)}))},
-            topics:{mode:"topics.mode" in q ? q["topics.mode"] : "starred", list:[...new Array(12).fill(null).map(() => ({name:"######", description:"", icon:"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcOnfpfwAGfgLYttYINwAAAABJRU5ErkJggg=="})), {name:`And ## more...`, description:"", icon:null}]},
-            projects:{list:[...new Array(2).fill(null).map(() => ({name:"########", updated:"########", progress:{enabled:true, todo:"##", doing:"##", done:"##", total:"##"}}))]},
-            tweets:{profile:{username:"########", verified:false}, list:[...new Array(2).fill(null).map(() => ({text:"###### ###### ####### ######".repeat(4), created_at:Date.now()}))]},
-            stars:{repositories:[...new Array(2).fill({node:{nameWithOwner:"########/########", description:"###### ###### ####### ######".repeat(4)}})]},
-            activity:{events:[{type:"comment", on:"pr"}, {type:"public"}, {type:"release"}, {type:"issue"}]}
-          }[key]??{})]
-        )),
-      })
   }

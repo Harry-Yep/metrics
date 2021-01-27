@@ -2,9 +2,22 @@
 
 ![Build](https://github.com/lowlighter/metrics/workflows/Build/badge.svg)
 
-Generate your metrics that you can embed everywhere, including your GitHub profile readme!
+Generate your metrics that you can embed everywhere, including your GitHub profile readme! It works for both user and organization accounts!
 
-[![Metrics](https://github.com/lowlighter/lowlighter/blob/master/metrics.classic.svg)](https://metrics.lecoq.io)
+<table>
+  <tr>
+    <th>For user accounts</th>
+    <th>For organization accounts</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.classic.svg" alt="Metrics (user account)" width="400">
+    </td>
+    <td>
+      <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.organization.svg" alt="Metrics (organization account)" width="400">
+    </td>
+  </tr>
+</table>
 
 But there's more with [plugins](https://github.com/lowlighter/metrics/tree/master/source/plugins) and [templates](https://github.com/lowlighter/metrics/tree/master/source/templates)!
 
@@ -127,7 +140,7 @@ But there's more with [plugins](https://github.com/lowlighter/metrics/tree/maste
   </tr>
   <tr>
     <th><a href="#-habits">💡 Coding Habits plugin</a></th>
-    <th><a href="#-activity">📰 Activity plugin <sup><code>🚧 @master</code></sup></a></th>
+    <th><a href="#-activity">📰 Activity plugin</a></th>
   </tr>
   <tr>
     <td>
@@ -164,7 +177,7 @@ But there's more with [plugins](https://github.com/lowlighter/metrics/tree/maste
   </tr>
   <tr>
     <th><a href="#-gists">🎫 Gists plugin</a></th>
-    <th><a href="#-people">🧑‍🤝‍🧑 People plugin <sup><code>🚧 @master</code></sup></a></th>
+    <th><a href="#-people">🧑‍🤝‍🧑 People plugin</a></th>
   </tr>
   <tr>
     <td>
@@ -177,23 +190,47 @@ But there's more with [plugins](https://github.com/lowlighter/metrics/tree/maste
         <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.followers.svg" alt="" width="400">
       </a>
       <details><summary>Followed people version</summary>
-        <a href="#-habits">
+        <a href="#-people">
           <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.following.svg" alt="" width="400">
+        </a>
+      </details>
+      <details><summary>Special thanks version</summary>
+        <a href="#-people">
+          <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.thanks.svg" alt="" width="400">
+        </a>
+      </details>
+      <details><summary>Repository template version</summary>
+        <a href="#-people">
+          <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.repository.svg" alt="" width="400">
         </a>
       </details>
     </td>
   </tr>
   <tr>
+    <th><a href="#-anilist">🌸 Anilist plugin</a></th>
     <th><a href="#%EF%B8%8F-base-content">🗃️ Header special features</a></th>
-    <th></th>
   </tr>
   <tr>
+    <td>
+      <a href="#-anilist">
+        <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.svg" alt="" width="400">
+      </a>
+      <details><summary>Manga version</summary>
+        <a href="#-anilist">
+          <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.manga.svg" alt="" width="400">
+        </a>
+      </details>
+      <details open><summary>Favorites characters version</summary>
+        <a href="#-anilist">
+          <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.characters.svg" alt="" width="400">
+        </a>
+      </details>
+    </td>
     <td>
       <a href="#%EF%B8%8F-base-content">
         <img src="https://github.com/lowlighter/lowlighter/blob/master/metrics.header.svg" alt="" width="400">
       </a>
     </td>
-    <td></td>
   </tr>
   <tr>
     <td colspan="2" align="center">
@@ -255,6 +292,12 @@ Assuming your username is `my-github-user`, you can then embed your metrics in y
 
 ```markdown
 ![Metrics](https://github.com/my-github-user/my-github-user/blob/master/github-metrics.svg)
+```
+
+(or, for a new repository with a default branch of `main`):
+
+```markdown
+![Metrics](https://github.com/my-github-user/my-github-user/blob/main/github-metrics.svg)
 ```
 
 <details>
@@ -533,88 +576,92 @@ The default template is `classic`.
 
 <table>
   <tr>
-    <th>Template\Plugin</th>
-    <th><span title="Base content">🗃️</span></th>
-    <th><span title="PageSpeed">⏱️</span></th>
-    <th><span title="Isometric calendar">📅</span></th>
-    <th><span title="Music">🎼</span></th>
-    <th><span title="Languages">🈷️</span></th>
-    <th><span title="Follow-up">🎟️</span></th>
-    <th><span title="Topics">📌</span></th>
-    <th><span title="Projects">🗂️</span></th>
-    <th><span title="Lines">👨‍💻</span></th>
-    <th><span title="Traffic">🧮</span></th>
-    <th><span title="Tweets">🐤</span></th>
-    <th><span title="Posts">✒️</span></th>
-    <th><span title="Habits">💡</span></th>
-    <th><span title="Activity">📰</span></th>
-    <th><span title="Stars">🌟</span></th>
-    <th><span title="Stargazers">✨</span></th>
-    <th><span title="Gists">🎫</span></th>
-    <th><span title="People">🧑‍🤝‍🧑</span></th>
+    <th nowrap="nowrap">Template\Plugin</th>
+    <th nowrap="nowrap"><span title="Base content">🗃️<sup>Ø<sup>P</sup></sup></span></th>
+    <th nowrap="nowrap"><span title="PageSpeed">⏱️</span></th>
+    <th nowrap="nowrap"><span title="Isometric calendar">📅<sup>Ø</sup></span></th>
+    <th nowrap="nowrap"><span title="Music">🎼</span></th>
+    <th nowrap="nowrap"><span title="Languages">🈷️</span></th>
+    <th nowrap="nowrap"><span title="Follow-up">🎟️</span></th>
+    <th nowrap="nowrap"><span title="Topics">📌<sup>Ø</sup></span></th>
+    <th nowrap="nowrap"><span title="Projects">🗂️</span></th>
+    <th nowrap="nowrap"><span title="Lines">👨‍💻</span></th>
+    <th nowrap="nowrap"><span title="Traffic">🧮</span></th>
+    <th nowrap="nowrap"><span title="Tweets">🐤</span></th>
+    <th nowrap="nowrap"><span title="Posts">✒️</span></th>
+    <th nowrap="nowrap"><span title="Habits">💡</span></th>
+    <th nowrap="nowrap"><span title="Activity">📰</span></th>
+    <th nowrap="nowrap"><span title="Stars">🌟<sup>Ø</sup></span></th>
+    <th nowrap="nowrap"><span title="Stargazers">✨</span></th>
+    <th nowrap="nowrap"><span title="Gists">🎫<sup>Ø</sup></span></th>
+    <th nowrap="nowrap"><span title="People">🧑‍🤝‍🧑</span></th>
+    <th nowrap="nowrap"><span title="Anilist">🌸</span></th>
   </tr>
   <tr>
-    <th>Classic</th>
-    <td data-for="base">✔️</td>
-    <td data-for="pagespeed">✔️</td>
-    <td data-for="isocalendar">✔️</td>
-    <td data-for="music">✔️</td>
-    <td data-for="languages">✔️</td>
-    <td data-for="followup">✔️</td>
-    <td data-for="topics">✔️</td>
-    <td data-for="projects">✔️</td>
-    <td data-for="lines">✔️</td>
-    <td data-for="traffic">✔️</td>
-    <td data-for="tweets">✔️</td>
-    <td data-for="posts">✔️</td>
-    <td data-for="habits">✔️</td>
-    <td data-for="activity"><span title="Available on @master">✔️<sup>M</sup></span></td>
-    <td data-for="stars">✔️</td>
-    <td data-for="stargazers">✔️</td>
-    <td data-for="gists">✔️</td>
-    <td data-for="people"><span title="Available on @master">✔️<sup>M</sup></span></td>
+    <th nowrap="nowrap">Classic</th>
+    <td nowrap="nowrap" data-for="base">✔️</td>
+    <td nowrap="nowrap" data-for="pagespeed">✔️</td>
+    <td nowrap="nowrap" data-for="isocalendar">✔️</td>
+    <td nowrap="nowrap" data-for="music"><span title="Last.fm provider on @master">✔️<sup>N</sup></span></td>
+    <td nowrap="nowrap" data-for="languages"><span title="Use customs colors on @master">✔️<sup>N</sup></span></td>
+    <td nowrap="nowrap" data-for="followup">✔️</td>
+    <td nowrap="nowrap" data-for="topics">✔️</td>
+    <td nowrap="nowrap" data-for="projects">✔️</td>
+    <td nowrap="nowrap" data-for="lines">✔️</td>
+    <td nowrap="nowrap" data-for="traffic">✔️</td>
+    <td nowrap="nowrap" data-for="tweets">✔️</td>
+    <td nowrap="nowrap" data-for="posts">✔️</td>
+    <td nowrap="nowrap" data-for="habits">✔️</td>
+    <td nowrap="nowrap" data-for="activity">✔️</td>
+    <td nowrap="nowrap" data-for="stars">✔️</td>
+    <td nowrap="nowrap" data-for="stargazers">✔️</td>
+    <td nowrap="nowrap" data-for="gists"><span title="100+ gists support on @master">✔️<sup>N</sup></span></td>
+    <td nowrap="nowrap" data-for="people"><span title="'thanks', 'sponsors' and 'sponsoring' available on @master">✔️<sup>N</sup></span></td>
+    <td nowrap="nowrap" data-for="anilist"><span title="Available on @master">✔️<sup>M</sup></span></td>
   </tr>
   <tr>
-    <th>Terminal</th>
-    <td data-for="base"><span title="'Available for hire' and 'Cake day' are not displayed">✔️<sup>P</sup></span></td>
-    <td data-for="pagespeed">✔️</td>
-    <td data-for="isocalendar">❌</td>
-    <td data-for="music">❌</td>
-    <td data-for="languages">✔️</td>
-    <td data-for="followup">✔️</td>
-    <td data-for="topics">❌</td>
-    <td data-for="projects">❌</td>
-    <td data-for="lines">✔️</td>
-    <td data-for="traffic">✔️</td>
-    <td data-for="tweets">❌</td>
-    <td data-for="posts">❌</td>
-    <td data-for="habits">❌</td>
-    <td data-for="activity">❌</td>
-    <td data-for="stars">❌</td>
-    <td data-for="stargazers">❌</td>
-    <td data-for="gists">✔️</td>
-    <td data-for="people">❌</td>
+    <th nowrap="nowrap">Terminal</th>
+    <td nowrap="nowrap" data-for="base"><span title="'Available for hire' and 'Cake day' are not displayed">✔️<sup>P</sup></span></td>
+    <td nowrap="nowrap" data-for="pagespeed">✔️</td>
+    <td nowrap="nowrap" data-for="isocalendar">❌</td>
+    <td nowrap="nowrap" data-for="music">❌</td>
+    <td nowrap="nowrap" data-for="languages">✔️</td>
+    <td nowrap="nowrap" data-for="followup">✔️</td>
+    <td nowrap="nowrap" data-for="topics">❌</td>
+    <td nowrap="nowrap" data-for="projects">❌</td>
+    <td nowrap="nowrap" data-for="lines">✔️</td>
+    <td nowrap="nowrap" data-for="traffic">✔️</td>
+    <td nowrap="nowrap" data-for="tweets">❌</td>
+    <td nowrap="nowrap" data-for="posts">❌</td>
+    <td nowrap="nowrap" data-for="habits">❌</td>
+    <td nowrap="nowrap" data-for="activity">❌</td>
+    <td nowrap="nowrap" data-for="stars">❌</td>
+    <td nowrap="nowrap" data-for="stargazers">❌</td>
+    <td nowrap="nowrap" data-for="gists"><span title="100+ gists support on @master">✔️<sup>N</sup></span></td>
+    <td nowrap="nowrap" data-for="people">❌</td>
+    <td nowrap="nowrap" data-for="anilist">❌</td>
   </tr>
   <tr>
-    <th>Repository<sup>R</sup></th>
-    <td data-for="base">✔️</td>
-    <td data-for="pagespeed"><span title="Available on @master">✔️<sup>M</sup></span></td>
-    <td data-for="isocalendar">❌</td>
-    <td data-for="music">❌</td>
-    <td data-for="languages"><span title="Available on @master">✔️<sup>M</sup></span></td>
-    <td data-for="followup">✔️</td>
-    <td data-for="topics">❌</td>
-    <td data-for="projects">✔️</td>
-    <td data-for="lines">✔️</td>
-    <td data-for="traffic">✔️</td>
-    <td data-for="tweets">❌</td>
-    <td data-for="posts">❌</td>
-    <td data-for="habits">❌</td>
-    <td data-for="activity">❌</td>
-    <td data-for="stars">❌</td>
-    <td data-for="stargazers">✔️</td>
-    <td data-for="gists">❌</td>
-    <td data-for="people">❌</td>
+    <th nowrap="nowrap">Repository<sup>R</sup></th>
+    <td nowrap="nowrap" data-for="base">✔️</td>
+    <td nowrap="nowrap" data-for="pagespeed">✔️</td>
+    <td nowrap="nowrap" data-for="isocalendar">❌</td>
+    <td nowrap="nowrap" data-for="music">❌</td>
+    <td nowrap="nowrap" data-for="languages">✔️</td>
+    <td nowrap="nowrap" data-for="followup">✔️</td>
+    <td nowrap="nowrap" data-for="topics">❌</td>
+    <td nowrap="nowrap" data-for="projects">✔️</td>
+    <td nowrap="nowrap" data-for="lines">✔️</td>
+    <td nowrap="nowrap" data-for="traffic">✔️</td>
+    <td nowrap="nowrap" data-for="tweets">❌</td>
+    <td nowrap="nowrap" data-for="posts">❌</td>
+    <td nowrap="nowrap" data-for="habits">❌</td>
+    <td nowrap="nowrap" data-for="activity">❌</td>
+    <td nowrap="nowrap" data-for="stars">❌</td>
+    <td nowrap="nowrap" data-for="stargazers">✔️</td>
+    <td nowrap="nowrap" data-for="gists">❌</td>
+    <td nowrap="nowrap" data-for="people"><span title="Available on @master">✔️<sup>M</sup></span></td>
+    <td nowrap="nowrap" data-for="anilist">❌</td>
   </tr>
 </table>
 
@@ -622,7 +669,44 @@ The default template is `classic`.
 * **P**: Partial support *(Hover cell for more informations)*
 * **M**: Feature is not released yet but is available on `@master`
 * **N**: Feature is already released, but new ones are available on `@master`
-* **R**: Repository template (all plugins content will be restricted to related repository)
+* **R**: Repository template (all plugins content will be scoped to related repository)
+* **Ø**: Feature is not supported for organization accounts
+* **Ø<sup>P</sup>**: Feature is supported partially for organization accounts
+
+<details>
+<summary>💬 Using community templates</summary>
+
+    🚧 This feature is available as pre-release on @master branch (unstable)
+
+It is possible to use official releases along with custom templates from forked repositories (not necessarily your own).
+This can be used to use different layouts, styles colors, etc.
+
+Use `setup_community_templates` option to specify additional external sources in the following format: `user/repo@branch:template`. Templates added this way will be downloaded through git and will be available with the same template name but prefixed with `@`.
+
+For example, to use the `super-metrics` template from `github-user`'s fork, add the following:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    template: "@super-metrics"
+    setup_community_templates: github-user/metrics@master:super-metrics
+```
+
+By default, community templates have their `template.mjs` removed and fallback to the one used by `classic` template.
+It means that they're restricted to common and plugins data, to prevent malicious code injection and token leaks.
+
+If you really trust a template, it is possible to bypass this behaviour by appending `+trust` at the end of their source like below:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    setup_community_templates: github-user/metrics@master:super-metrics+trust
+```
+
+To create a new community template, just fork this repository and create a folder in `/source/templates` with the same structure as current templates.
+Then, it's just as simple as HTML and CSS with a bit of JavaScript!
+
+</details>
 
 <details>
 <summary>💬 Using repository template</summary>
@@ -640,6 +724,39 @@ Add the following to your workflow:
     user: "repository-owner"
     query: '{"repo":"repository-name"}'
 ```
+
+</details>
+
+<details>
+<summary>💬 Generating metrics for organizations</summary>
+
+    🚧 This feature is available as pre-release on @master branch (unstable)
+
+It is also possible to generate metrics for organization accounts.
+
+![Metrics (organization account)](https://github.com/lowlighter/lowlighter/blob/master/metrics.organization.svg)
+
+Setup is the same as for user accounts (i.e. a personal token from an user account and use of `GITHUB_TOKEN` for commits) but you'll need to change `user` option to your organization name.
+
+Additionally, you'll need to add the `read:org` scope to your personal token, *whether you're member of target organization or not*.
+
+![Add read:org scope to personal token](.github/readme/imgs/setup_token_org_read_scope.png)
+
+Resulting workflow should look like below:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    token: ${{ secrets.METRICS_TOKEN }} # A personal token from an user account with read:org scope
+    committer_token: ${{ secrets.GITHUB_TOKEN }}
+    user: "organization-name"
+```
+
+You may also need to [authorize your personal token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on) if you're using single sign-on and are encounting errors.
+
+Note that `repositories` option will be capped to 25 repositories to ensure that GraphQL queries does not timeout, so you may end up using more requests than for user accounts.
+
+Although some plugins may be noted as compatible with an organization account, it may not be actually possible to run them successfully depending of your organization size. As some of plugins use a lot of requests, you'll eventually reach the rate-limiter before all of your metrics are generated for large organizations.
 
 </details>
 
@@ -860,6 +977,13 @@ Finish the plugin setup by adding the following to your workflow:
 
 </details>
 
+<details>
+<summary>Last.fm</summary>
+
+This mode is not supported for now.
+
+</details>
+
 </details>
 
 #### Recently played mode
@@ -953,6 +1077,39 @@ With your `client_id`, `client_secret` and `refresh_token` you can finish the pl
 
 </details>
 
+<details>
+<summary>Last.fm</summary>
+
+    🚧 This feature is available as pre-release on @master branch (unstable)
+
+Obtain a Last.fm API key.
+
+To do so, you can simply [create an API account](https://www.last.fm/api/account/create) or [use an existing one](https://www.last.fm/api/accounts).
+
+Finish the plugin setup by adding the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@latest
+  with:
+    # ... other options
+    plugin_music: yes
+    plugin_music_provider: lastfm
+    plugin_music_token: ${{ secrets.LASTFM_API_KEY }}
+    plugin_music_mode: recent
+    plugin_music_limit: 4
+```
+
+It is possible to use a different Last.fm username from your GitHub account by using `plugin_music_user` option.
+
+Add the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@latest
+  with:
+    # ... other options
+    plugin_music_user: ********
+```
+
+</details>
+
 </details>
 
 ### 🈷️ Languages
@@ -973,6 +1130,22 @@ Add the following to your workflow:
     plugin_languages_ignored: "" # List of comma separated languages to ignore
     plugin_languages_skipped: "" # List of comma separated repositories to skip
 ```
+
+    🚧 Feature below is available as pre-release on @master branch (unstable)
+
+It is possible to use custom colors for languages if those provided by GitHub do not suit you by adding the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@latest
+  with:
+    # ... other options
+    plugin_languages: yes
+    plugin_languages_colors: "0:orange, javascript:#ff0000, ..." # Make most used languages orange and JavaScript red
+```
+
+You can specify either an index with a color, or a language name (case insensitive) with a color.
+Colors can be either in hexadecimal format or a [named color](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value).
+
+Use the special value `rainbow` to use rainbow colors. Use `complementary` to use [complementary colors](https://en.wikipedia.org/wiki/Complementary_colors).
 
 </details>
 
@@ -1092,6 +1265,17 @@ Add the following to your workflow:
     # ... other options
     plugin_projects: yes
     plugin_projects_repositories: :user/:repository1/projects/:project_id, :user/:repository2/projects/:project_id, ...
+```
+
+    🚧 This feature is available as pre-release on @master branch (unstable)
+
+It is also possible to display projects descriptions by adding the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    plugin_projects: yes
+    plugin_projects_descriptions: yes
 ```
 
 </details>
@@ -1285,8 +1469,6 @@ By default, dates are based on the Greenwich meridian (GMT/UTC). In order to the
 
 ### 📰 Activity
 
-    🚧 This plugin is available as pre-release on @master branch (unstable)
-
 The *activity* plugin displays your recent activity on GitHub.
 
 ![Activity plugin](https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.activity.svg)
@@ -1298,7 +1480,7 @@ It will consume an additional GitHub request.
 
 Add the following to your workflow:
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     plugin_activity: yes
@@ -1329,7 +1511,7 @@ Use the special value `"all"` (default value) to track all events.
 
 Add the following to your workflow:
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     plugin_activity: yes
@@ -1404,9 +1586,8 @@ Add the following to your workflow:
 
 ### 🧑‍🤝‍🧑 People
 
-    🚧 This plugin is available as pre-release on @master branch (unstable)
-
-The *people* plugin displays your followers and followed users' avatars.
+The *people* plugin can display people you're following or sponsoring, and also users who're following or sponsoring you.
+In repository mode, it's possible to display sponsors, stargazers, watchers.
 
 ![People plugin](https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.svg)
 
@@ -1415,9 +1596,27 @@ The *people* plugin displays your followers and followed users' avatars.
 
 It will consume an additional GitHub request per group of 100 users fetched.
 
+The following types are supported:
+
+| Type            | Alias                                | User metrics       | Repository metrics |
+| --------------- | ------------------------------------ | :----------------: | :----------------: |
+| `followers`     |                                      | ✔️                 | ❌                |
+| `following`     | `followed`                           | ✔️                 | ❌                |
+| `sponsoring`*   | `sponsored`, `sponsorshipsAsSponsor` | ✔️                 | ❌                |
+| `sponsors`*     | `sponsorshipsAsMaintainer`           | ✔️                 | ✔️                |
+| `contributors`* |                                      | ❌                 | ✔️                |
+| `stargazers`*   |                                      | ❌                 | ✔️                |
+| `watchers`*     |                                      | ❌                 | ✔️                |
+| `thanks`*       |                                      | ✔️                 | ✔️                |
+
+    🚧 Types marked with * are available as pre-release on @master branch (unstable)
+
+Sections will be ordered the same as specified in `plugin_people_types`.
+`sponsors` for repositories will output the same as the owner's sponsors.
+
 Add the following to your workflow:
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     plugin_people: yes
@@ -1429,10 +1628,66 @@ Add the following to your workflow:
 It is possible to use [identicons](https://github.blog/2013-08-14-identicons/) instead of their avatar for privacy purposes.
 
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     plugin_people_identicons: yes
+```
+
+It is possible to thanks personally users by adding the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    plugin_people_types: thanks
+    plugin_people_thanks: github-user-1, github-user-2, ...
+```
+
+</details>
+
+### 🌸 Anilist
+
+    🚧 This feature is available as pre-release on @master branch (unstable)
+
+The *anilist* plugin lets you display your favorites animes, mangas and characters from [AniList](https://anilist.co) data.
+
+![Anilist plugin](https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.svg)
+
+    ℹ️ This plugin significantly increase file size, it is advised to run it as standalone
+
+<details>
+<summary>💬 About</summary>
+
+![Anilist plugin](https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.full.svg)
+
+This plugin is composed of the following sections, which can be displayed or hidden through `plugin_anilist_sections` option:
+- `favorites` will display your favorites mangas and animes
+- `watching` will display animes currently in your watching list
+- `reading` will display manga currently in your reading list
+- `characters` will display characters you liked
+
+These sections can also be filtered by media type, which can be either `anime`, `manga` or both.
+
+Add the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    plugin_anilist: yes
+    plugin_anilist_medias: anime, manga
+    plugin_anilist_sections: favorites, watching, reading, characters
+    plugin_anilist_limit: 2
+    plugin_anilist_shuffle: yes # Shuffle data from AniList for varied outputs
+```
+
+It is possible to use a different username from your GitHub account by using `plugin_anilist_user` option.
+
+Add the following to your workflow:
+```yaml
+- uses: lowlighter/metrics@master
+  with:
+    # ... other options
+    plugin_anilist_user: ********
 ```
 
 </details>
@@ -1460,11 +1715,9 @@ It is possible to set set your timezone (see [here](https://en.wikipedia.org/wik
 
 #### 📦 Ordering content
 
-    🚧 This feature is available as pre-release on @master branch (unstable)
-
 It is possible to order metrics content by adding the following to your workflow:
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     base: header
@@ -1498,11 +1751,9 @@ When two values are specified separated by a comma, the first one will be used f
 
 #### 🎋 Using a specific branch instead of default
 
-    🚧 This feature is available as pre-release on @master branch (unstable)
-
 Is is possible to commit generated metrics in a specific branch rather than default branch by adding the following to your workflow:
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     committer_branch: my-branch
@@ -1510,11 +1761,9 @@ Is is possible to commit generated metrics in a specific branch rather than defa
 
 #### 🍴 Including forked repositories
 
-    🚧 This feature is available as pre-release on @master branch (unstable)
-
 Is is possible to include forked repositories into generated metrics by adding the following to your workflow:
 ```yaml
-- uses: lowlighter/metrics@master
+- uses: lowlighter/metrics@latest
   with:
     # ... other options
     repositories_forks: yes
@@ -1534,6 +1783,17 @@ Note that `png` does not support animations while `jpeg` does not support both a
 
 </details>
 
+## 🗓️ Release schedule
+
+New features and fixes are always available first on `@master` branch which acts as development branch.
+You can use this branch if you don't mind having your metrics workflow failing from time to time.
+Fork this repository if you want to manage head commit yourself and ensure you're always on a working version of metrics.
+
+When both [Planned for next release](https://github.com/lowlighter/metrics/projects/1#column-12378679) and [In progress](https://github.com/lowlighter/metrics/projects/1#column-12158618) project columns are empty, a new version of metrics will be released soon after.
+
+`@latest` tag wil be updated to latest release of metrics, which means it doesn't required any action from your side if you're using this tag.
+New releases (even majors versions) never introduce breaking changes from an user point of view, so you can flawlessy follow release cycles without worrying.
+Hot fixes may be applied after releases without changing version number.
 
 ## 💪 Contributing and customizing
 

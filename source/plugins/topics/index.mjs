@@ -1,10 +1,12 @@
 //Setup
-  export default async function ({login, imports, q}, {enabled = false} = {}) {
+  export default async function ({login, imports, q, account}, {enabled = false} = {}) {
     //Plugin execution
       try {
         //Check if plugin is enabled and requirements are met
           if ((!enabled)||(!q.topics))
             return null
+          if (account === "organization")
+            throw {error:{message:"Not available for organizations"}}
         //Parameters override
           let {"topics.sort":sort = "stars", "topics.mode":mode = "starred", "topics.limit":limit} = q
           //Shuffle
@@ -57,7 +59,8 @@
           if ((mode === "starred")&&(limit > 0)) {
             console.debug(`metrics/compute/${login}/plugins > topics > keeping only ${limit} topics`)
             const removed = topics.splice(limit)
-            topics.push({name:`And ${removed.length} more...`, description:removed.map(({name}) => name).join(", "), icon:null})
+            if (removed.length)
+              topics.push({name:`And ${removed.length} more...`, description:removed.map(({name}) => name).join(", "), icon:null})
           }
         //Convert icons to base64
           console.debug(`metrics/compute/${login}/plugins > topics > loading artworks`)
@@ -84,6 +87,8 @@
       }
     //Handle errors
       catch (error) {
+        if (error.error?.message)
+          throw error
         throw {error:{message:"An error occured", instance:error}}
       }
   }

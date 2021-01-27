@@ -1,6 +1,7 @@
 //Imports
   import axios from "axios"
   import urls from "url"
+  import faker from "faker"
 
 //Mocked state
   let mocked = false
@@ -22,78 +23,80 @@
           apply(target, that, args) {
             //Arguments
               const [query] = args
+              const login = query.match(/login: "(?<login>.*?)"/)?.groups?.login ?? faker.internet.userName()
+
             //Common query
               if (/^query Metrics /.test(query)) {
                 console.debug(`metrics/compute/mocks > mocking graphql api result > Metrics`)
                 return ({
                   user: {
-                    databaseId:22963968,
-                    name:"Simon Lecoq",
-                    login:"lowlighter",
-                    createdAt:"2016-10-20T16:49:29Z",
-                    avatarUrl:"https://avatars0.githubusercontent.com/u/22963968?u=f5097de6f06ed2e31906f784163fc1e9fc84ed57&v=4",
-                    websiteUrl:"https://simon.lecoq.io",
-                    isHireable:false,
-                    twitterUsername:"lecoqsimon",
-                    repositories:{totalCount:Math.floor(Math.random()*100), totalDiskUsage:Math.floor(Math.random()*100000), nodes:[]},
-                    packages:{totalCount:Math.floor(Math.random()*10)},
-                    starredRepositories:{totalCount:Math.floor(Math.random()*1000)},
-                    watching:{totalCount:Math.floor(Math.random()*100)},
-                    sponsorshipsAsSponsor:{totalCount:Math.floor(Math.random()*5)},
-                    sponsorshipsAsMaintainer:{totalCount:Math.floor(Math.random()*5)},
+                    databaseId:faker.random.number(10000000),
+                    name:faker.name.findName(),
+                    login,
+                    createdAt:`${faker.date.past(10)}`,
+                    avatarUrl:faker.image.people(),
+                    websiteUrl:faker.internet.url(),
+                    isHireable:faker.random.boolean(),
+                    twitterUsername:login,
+                    repositories:{totalCount:faker.random.number(100), totalDiskUsage:faker.random.number(100000), nodes:[]},
+                    packages:{totalCount:faker.random.number(10)},
+                    starredRepositories:{totalCount:faker.random.number(1000)},
+                    watching:{totalCount:faker.random.number(100)},
+                    sponsorshipsAsSponsor:{totalCount:faker.random.number(10)},
+                    sponsorshipsAsMaintainer:{totalCount:faker.random.number(10)},
                     contributionsCollection:{
-                      totalRepositoriesWithContributedCommits:Math.floor(Math.random()*30),
-                      totalCommitContributions:Math.floor(Math.random()*1000),
-                      restrictedContributionsCount:Math.floor(Math.random()*500),
-                      totalIssueContributions:Math.floor(Math.random()*100),
-                      totalPullRequestContributions:Math.floor(Math.random()*100),
-                      totalPullRequestReviewContributions:Math.floor(Math.random()*100)
+                      totalRepositoriesWithContributedCommits:faker.random.number(100),
+                      totalCommitContributions:faker.random.number(10000),
+                      restrictedContributionsCount:faker.random.number(10000),
+                      totalIssueContributions:faker.random.number(100),
+                      totalPullRequestContributions:faker.random.number(1000),
+                      totalPullRequestReviewContributions:faker.random.number(1000),
                     },
                     calendar:{
                       contributionCalendar:{
                         weeks:[
                           {
                             contributionDays:[
-                              {color:"#40c463"},
-                              {color:"#ebedf0"},
-                              {color:"#9be9a8"},
-                              {color:"#ebedf0"},
-                              {color:"#ebedf0"}
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
                             ]
                           },
                           {
                             contributionDays:[
-                              {color:"#30a14e"},
-                              {color:"#9be9a8"},
-                              {color:"#40c463"},
-                              {color:"#9be9a8"},
-                              {color:"#ebedf0"},
-                              {color:"#ebedf0"},
-                              {color:"#ebedf0"}
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
                             ]
                           },
                           {
                             contributionDays:[
-                              {color:"#40c463"},
-                              {color:"#216e39"},
-                              {color:"#9be9a8"}
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
+                              {color:faker.random.arrayElement(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"])},
                             ]
                           }
                         ]
                       }
                     },
-                    repositoriesContributedTo:{totalCount:Math.floor(Math.random()*10)},
-                    followers:{totalCount:Math.floor(Math.random()*100)},
-                    following:{totalCount:Math.floor(Math.random()*100)},
-                    issueComments:{totalCount:Math.floor(Math.random()*100)},
-                    organizations:{totalCount:Math.floor(Math.random()*5)}
+                    repositoriesContributedTo:{totalCount:faker.random.number(100)},
+                    followers:{totalCount:faker.random.number(1000)},
+                    following:{totalCount:faker.random.number(1000)},
+                    issueComments:{totalCount:faker.random.number(1000)},
+                    organizations:{totalCount:faker.random.number(10)}
                   }
                 })
               }
             //Repositories query
               if (/^query Repositories /.test(query)) {
                 console.debug(`metrics/compute/mocks > mocking graphql api result > Repositories`)
-                return /after: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/m.test(query) ? ({
+                return /after: "MOCKED_CURSOR"/m.test(query) ? ({
                   user:{
                     repositories:{
                       edges:[],
@@ -105,29 +108,32 @@
                     repositories:{
                       edges:[
                         {
-                          cursor:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                          cursor:"MOCKED_CURSOR"
                         },
                       ],
                       nodes:[
                         {
-                          name:"metrics",
-                          watchers:{totalCount:Math.floor(Math.random()*100)},
-                          stargazers:{totalCount:Math.floor(Math.random()*1000)},
-                          owner:{login:"lowlighter"},
+                          name:faker.random.words(),
+                          watchers:{totalCount:faker.random.number(1000)},
+                          stargazers:{totalCount:faker.random.number(10000)},
+                          owner:{login},
                           languages:{
                             edges:[
-                              {size:111733, node:{color:"#f1e05a", name:"JavaScript"}
-                              },
-                              {size:14398, node:{color:"#563d7c", name:"CSS"}},
-                              {size:13223, node:{color:"#e34c26", name:"HTML"}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                              {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
                             ]
                           },
-                          issues_open:{totalCount:Math.floor(Math.random()*100)},
-                          issues_closed:{totalCount:Math.floor(Math.random()*100)},
-                          pr_open:{totalCount:Math.floor(Math.random()*100)},
-                          pr_merged:{totalCount:Math.floor(Math.random()*100)},
-                          releases:{totalCount:Math.floor(Math.random()*100)},
-                          forkCount:Math.floor(Math.random()*100),
+                          issues_open:{totalCount:faker.random.number(100)},
+                          issues_closed:{totalCount:faker.random.number(100)},
+                          pr_open:{totalCount:faker.random.number(100)},
+                          pr_merged:{totalCount:faker.random.number(100)},
+                          releases:{totalCount:faker.random.number(100)},
+                          forkCount:faker.random.number(100),
                           licenseInfo:{spdxId:"MIT"}
                         },
                       ]
@@ -142,25 +148,29 @@
                   user:{
                     repository:{
                       name:"metrics",
-                      owner:{login:"lowlighter"},
+                      owner:{login},
                       createdAt:new Date().toISOString(),
                       diskUsage:Math.floor(Math.random()*10000),
-                      watchers:{totalCount:Math.floor(Math.random()*100)},
-                      stargazers:{totalCount:Math.floor(Math.random()*1000)},
+                      homepageUrl:faker.internet.url(),
+                      watchers:{totalCount:faker.random.number(1000)},
+                      stargazers:{totalCount:faker.random.number(10000)},
                       languages:{
                         edges:[
-                          {size:111733, node:{color:"#f1e05a", name:"JavaScript"}
-                          },
-                          {size:14398, node:{color:"#563d7c", name:"CSS"}},
-                          {size:13223, node:{color:"#e34c26", name:"HTML"}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
+                          {size:faker.random.number(100000), node:{color:faker.internet.color(), name:faker.lorem.word()}},
                         ]
                       },
-                      issues_open:{totalCount:Math.floor(Math.random()*100)},
-                      issues_closed:{totalCount:Math.floor(Math.random()*100)},
-                      pr_open:{totalCount:Math.floor(Math.random()*100)},
-                      pr_merged:{totalCount:Math.floor(Math.random()*100)},
-                      releases:{totalCount:Math.floor(Math.random()*100)},
-                      forkCount:Math.floor(Math.random()*100),
+                      issues_open:{totalCount:faker.random.number(100)},
+                      issues_closed:{totalCount:faker.random.number(100)},
+                      pr_open:{totalCount:faker.random.number(100)},
+                      pr_merged:{totalCount:faker.random.number(100)},
+                      releases:{totalCount:faker.random.number(100)},
+                      forkCount:faker.random.number(100),
                       licenseInfo:{spdxId:"MIT"}
                     },
                   }
@@ -181,7 +191,7 @@
                         contributionDays = []
                       }
                     //Random contributions
-                      const contributionCount = Math.min(10, Math.max(0, Math.floor(Math.random()*14-4)))
+                      const contributionCount = Math.min(10, Math.max(0, faker.random.number(14)-4))
                       contributionDays.push({
                         contributionCount,
                         color:["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"][Math.ceil(contributionCount/10/0.25)],
@@ -200,18 +210,37 @@
               }
             //Gists query
               if (/^query Gists /.test(query)) {
-                console.debug(`metrics/compute/mocks > mocking graphql api result > Projects`)
-                return ({
+                console.debug(`metrics/compute/mocks > mocking graphql api result > Gists`)
+                return /after: "MOCKED_CURSOR"/m.test(query) ? ({
                   user:{
                     gists:{
-                      totalCount:1,
+                      edges:[],
+                      nodes:[],
+                    }
+                  }
+                }) : ({
+                  user:{
+                    gists:{
+                      edges:[
+                        {
+                          cursor:"MOCKED_CURSOR"
+                        },
+                      ],
+                      totalCount:faker.random.number(100),
                       nodes:[
                         {
-                          stargazerCount:Math.floor(Math.random()*10),
+                          stargazerCount:faker.random.number(10),
                           isFork:false,
-                          forks:{totalCount:Math.floor(Math.random()*10)},
-                          files:[{name:"example"}],
-                          comments:{totalCount:Math.floor(Math.random()*10)}
+                          forks:{totalCount:faker.random.number(10)},
+                          files:[{name:faker.system.fileName()}],
+                          comments:{totalCount:faker.random.number(10)}
+                        },
+                        {
+                          stargazerCount:faker.random.number(10),
+                          isFork:false,
+                          forks:{totalCount:faker.random.number(10)},
+                          files:[{name:faker.system.fileName()}],
+                          comments:{totalCount:faker.random.number(10)}
                         }
                       ]
                     }
@@ -228,11 +257,12 @@
                       nodes:[
                         {
                           name:"User-owned project",
-                          updatedAt:new Date().toISOString(),
+                          updatedAt:`${faker.date.recent()}`,
+                          body:faker.lorem.paragraph(),
                           progress:{
-                            doneCount:Math.floor(Math.random()*10),
-                            inProgressCount:Math.floor(Math.random()*10),
-                            todoCount:Math.floor(Math.random()*10),
+                            doneCount:faker.random.number(10),
+                            inProgressCount:faker.random.number(10),
+                            todoCount:faker.random.number(10),
                             enabled:true
                           }
                         }
@@ -249,11 +279,12 @@
                     repository:{
                       project:{
                         name:"Repository project example",
-                        updatedAt:new Date().toISOString(),
+                        updatedAt:`${faker.date.recent()}`,
+                        body:faker.lorem.paragraph(),
                         progress:{
-                          doneCount:Math.floor(Math.random()*10),
-                          inProgressCount:Math.floor(Math.random()*10),
-                          todoCount:Math.floor(Math.random()*10),
+                          doneCount:faker.random.number(10),
+                          inProgressCount:faker.random.number(10),
+                          todoCount:faker.random.number(10),
                           enabled:true
                         }
                       }
@@ -269,20 +300,20 @@
                     starredRepositories:{
                       edges:[
                         {
-                          starredAt:"2020-10-16T18:53:16Z",
+                          starredAt:`${faker.date.recent(14)}`,
                           node:{
                             description:"📊 An image generator with 20+ metrics about your GitHub account such as activity, community, repositories, coding habits, website performances, music played, starred topics, etc. that you can put on your profile or elsewhere !",
-                            forkCount:12,
+                            forkCount:faker.random.number(100),
                             isFork:false,
                             issues:{
-                              totalCount: 12
+                              totalCount:faker.random.number(100),
                             },
                             nameWithOwner:"lowlighter/metrics",
                             openGraphImageUrl:"https://repository-images.githubusercontent.com/293860197/7fd72080-496d-11eb-8fe0-238b38a0746a",
                             pullRequests:{
-                              totalCount:23
+                              totalCount:faker.random.number(100),
                             },
-                            stargazerCount:120,
+                            stargazerCount:faker.random.number(10000),
                             licenseInfo:{
                               nickname:null,
                               name:"MIT License"
@@ -301,7 +332,7 @@
             //Stargazers query
               if (/^query Stargazers /.test(query)) {
                 console.debug(`metrics/compute/mocks > mocking graphql api result > Stargazers`)
-                return /after: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/m.test(query) ? ({
+                return /after: "MOCKED_CURSOR"/m.test(query) ? ({
                   repository:{
                     stargazers:{
                       edges:[],
@@ -310,9 +341,9 @@
                 }) : ({
                   repository:{
                     stargazers:{
-                      edges:new Array(Math.ceil(20+80*Math.random())).fill(null).map(() => ({
-                        starredAt:new Date(Date.now()-Math.floor(30*Math.random())*24*60*60*1000).toISOString(),
-                        cursor:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                      edges:new Array(faker.random.number({min:50, max:100})).fill(null).map(() => ({
+                        starredAt:`${faker.date.recent(30)}`,
+                        cursor:"MOCKED_CURSOR"
                       }))
                     }
                   }
@@ -322,7 +353,7 @@
               if (/^query People /.test(query)) {
                 console.debug(`metrics/compute/mocks > mocking graphql api result > People`)
                 const type = query.match(/(?<type>followers|following)[(]/)?.groups?.type ?? "(unknown type)"
-                return /after: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/m.test(query) ? ({
+                return /after: "MOCKED_CURSOR"/m.test(query) ? ({
                   user:{
                     [type]:{
                       edges:[],
@@ -331,11 +362,71 @@
                 }) : ({
                   user:{
                     [type]:{
-                      edges:new Array(Math.ceil(20+80*Math.random())).fill(null).map(() => ({
-                        cursor:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                      edges:new Array(Math.ceil(20+80*Math.random())).fill(null).map((login = faker.internet.userName()) => ({
+                        cursor:"MOCKED_CURSOR",
                         node:{
-                          login:"user",
-                          avatarUrl:"https://github.com/identicons/user.png",
+                          login,
+                          avatarUrl:null,
+                        }
+                      }))
+                    }
+                  }
+                })
+              }
+            //People query (repositories)
+              if (/^query PeopleRepository /.test(query)) {
+                console.debug(`metrics/compute/mocks > mocking graphql api result > People`)
+                const type = query.match(/(?<type>stargazers|watchers)[(]/)?.groups?.type ?? "(unknown type)"
+                return /after: "MOCKED_CURSOR"/m.test(query) ? ({
+                  user:{
+                    repository:{
+                      [type]:{
+                        edges:[],
+                      }
+                    }
+                  }
+                }) : ({
+                  user:{
+                    repository:{
+                      [type]:{
+                        edges:new Array(Math.ceil(20+80*Math.random())).fill(null).map((login = faker.internet.userName()) => ({
+                          cursor:"MOCKED_CURSOR",
+                          node:{
+                            login,
+                            avatarUrl:null,
+                          }
+                        }))
+                      }
+                    }
+                  }
+                })
+              }
+            //People sponsors query
+              if (/^query PeopleSponsors /.test(query)) {
+                console.debug(`metrics/compute/mocks > mocking graphql api result > People`)
+                const type = query.match(/(?<type>sponsorshipsAsSponsor|sponsorshipsAsMaintainer)[(]/)?.groups?.type ?? "(unknown type)"
+                return /after: "MOCKED_CURSOR"/m.test(query) ? ({
+                  user:{
+                    login,
+                    [type]:{
+                      edges:[]
+                    }
+                  }
+                }) : ({
+                  user:{
+                    login,
+                    [type]:{
+                      edges:new Array(Math.ceil(20+80*Math.random())).fill(null).map((login = faker.internet.userName()) => ({
+                        cursor:"MOCKED_CURSOR",
+                        node:{
+                          sponsorEntity:{
+                            login:faker.internet.userName(),
+                            avatarUrl:null,
+                          },
+                          sponsorable:{
+                            login:faker.internet.userName(),
+                            avatarUrl:null,
+                          }
                         }
                       }))
                     }
@@ -358,6 +449,8 @@
           getViews:rest.repos.getViews,
           getContributorsStats:rest.repos.getContributorsStats,
           listCommits:rest.repos.listCommits,
+          listContributors:rest.repos.listContributors,
+          getByUsername:rest.users.getByUsername,
         }
 
         //Raw request
@@ -369,7 +462,7 @@
                 if (/^HEAD .$/.test(url)) {
                   console.debug(`metrics/compute/mocks > mocking rest api result > rest.request HEAD`)
                   return ({
-                    status: 200,
+                    status:200,
                     url:"https://api.github.com/",
                     headers:{
                       server:"GitHub.com",
@@ -380,37 +473,37 @@
                   })
                 }
               //Commit content
-                if (/^https:..api.github.com.repos.lowlighter.metrics.commits.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/.test(url)) {
+                if (/^https:..api.github.com.repos.lowlighter.metrics.commits.MOCKED_SHA/.test(url)) {
                   console.debug(`metrics/compute/mocks > mocking rest api result > rest.request ${url}`)
                   return ({
-                    status: 200,
-                    url:"https://api.github.com/repos/lowlighter/metrics/commits/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    status:200,
+                    url:"https://api.github.com/repos/lowlighter/metrics/commits/MOCKED_SHA",
                     data:{
-                      sha:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                      sha:"MOCKED_SHA",
                       commit:{
                         author:{
-                          name:"lowlighter",
-                          email:"22963968+lowlighter@users.noreply.github.com",
-                          date:new Date().toISOString(),
+                          name:faker.internet.userName(),
+                          email:faker.internet.email(),
+                          date:`${faker.date.recent(7)}`,
                         },
                         committer:{
-                          name:"lowlighter",
-                          email:"22963968+lowlighter@users.noreply.github.com",
-                          date:new Date().toISOString(),
+                          name:faker.internet.userName(),
+                          email:faker.internet.email(),
+                          date:`${faker.date.recent(7)}`,
                         },
                       },
                       author:{
-                        login:"lowlighter",
-                        id:22963968,
+                        login:faker.internet.userName(),
+                        id:faker.random.number(100000000),
                       },
                       committer:{
-                        login:"lowlighter",
-                        id:22963968,
+                        login:faker.internet.userName(),
+                        id:faker.random.number(100000000),
                       },
                       files: [
                         {
-                          sha:"5ab8c4fb6a0be4c157419c3b9d7b522dca354b3f",
-                          filename:"index.mjs",
+                          sha:"MOCKED_SHA",
+                          filename:faker.system.fileName(),
                           patch:"@@ -0,0 +1,5 @@\n+//Imports\n+  import app from \"./src/app.mjs\"\n+\n+//Start app\n+  await app()\n\\ No newline at end of file"
                         },
                       ]
@@ -426,7 +519,7 @@
           rest.rateLimit.get = new Proxy(unmocked.rateLimit, {
             apply:function(target, that, args) {
               return ({
-                status: 200,
+                status:200,
                 url:"https://api.github.com/rate_limit",
                 headers:{
                   server:"GitHub.com",
@@ -435,12 +528,12 @@
                 },
                 data:{
                   resources:{
-                    core:{limit:5000, used:0, remaining:5000, reset:0 },
-                    search:{limit:30, used:0, remaining:30, reset:0 },
-                    graphql:{limit:5000, used:0, remaining:5000, reset:0 },
-                    integration_manifest:{limit:5000, used:0, remaining:5000, reset:0 },
-                    source_import:{limit:100, used:0, remaining:100, reset:0 },
-                    code_scanning_upload:{limit:500, used:0, remaining:500, reset:0 },
+                    core:{limit:5000, used:0, remaining:5000, reset:0},
+                    search:{limit:30, used:0, remaining:30, reset:0},
+                    graphql:{limit:5000, used:0, remaining:5000, reset:0},
+                    integration_manifest:{limit:5000, used:0, remaining:5000, reset:0},
+                    source_import:{limit:100, used:0, remaining:100, reset:0},
+                    code_scanning_upload:{limit:500, used:0, remaining:500, reset:0},
                   },
                   rate:{limit:5000, used:0, remaining:"MOCKED", reset:0}
                 }
@@ -450,11 +543,11 @@
 
         //Events list
           rest.activity.listEventsForAuthenticatedUser = new Proxy(unmocked.listEventsForAuthenticatedUser, {
-            apply:function(target, that, [{page, per_page}]) {
+            apply:function(target, that, [{username:login, page, per_page}]) {
               console.debug(`metrics/compute/mocks > mocking rest api result > rest.activity.listEventsForAuthenticatedUser`)
               return ({
                 status:200,
-                url:`https://api.github.com/users/lowlighter/events?per_page=${per_page}&page=${page}`,
+                url:`https://api.github.com/users/${login}/events?per_page=${per_page}&page=${page}`,
                 headers:{
                   server:"GitHub.com",
                   status:"200 OK",
@@ -465,160 +558,159 @@
                     id:"10000000000",
                     type:"CommitCommentEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       comment:{
                         user:{
-                          login:"lowlighter",
+                          login,
                         },
-                        path:"README.md",
-                        commit_id:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                        body:"This is a commit comment",
+                        path:faker.system.fileName(),
+                        commit_id:"MOCKED_SHA",
+                        body:faker.lorem.sentence(),
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000001",
                     type:"PullRequestReviewCommentEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       action:"created",
                       comment:{
                         user:{
-                          login:"lowlighter",
+                          login,
                         },
-                        body:"This is pull request review comment",
+                        body:faker.lorem.paragraph(),
                       },
                       pull_request:{
-                        title:"Pull request example",
+                        title:faker.lorem.sentence(),
                         number:1,
                         user:{
-                          login:"lowlighter",
+                          login:faker.internet.userName(),
                         },
                         body:"",
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000002",
                     type:"IssuesEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
-                      action:"closed",
+                      action:faker.random.arrayElement(["opened", "closed", "reopened"]),
                       issue:{
                         number:2,
-                        title:"Issue example",
+                        title:faker.lorem.sentence(),
                         user:{
-                          login:"lowlighter",
+                          login,
                         },
-                        body:"Hello this is an example",
-                        performed_via_github_app: null
+                        body:faker.lorem.paragraph(),
+                        performed_via_github_app:null
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000003",
                     type:"GollumEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/lowlighter",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       pages:[
                         {
-                          page_name:"Home",
-                          title:"Home",
+                          page_name:faker.lorem.sentence(),
+                          title:faker.lorem.sentence(),
                           summary:null,
                           action:"created",
-                          sha:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          sha:"MOCKED_SHA",
                         }
                       ]
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000004",
                     type:"IssueCommentEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       action:"created",
                       issue:{
                         number:3,
-                        title:"Issue example",
+                        title:faker.lorem.sentence(),
                         user:{
-                          login:"lowlighter",
+                          login,
                         },
                         labels:[
                           {
-                            name:"question",
+                            name:"lorem ipsum",
                             color:"d876e3",
                           }
                         ],
                         state:"open",
                       },
                       comment:{
-                        body:"Hello world !",
-                        performed_via_github_app: null
+                        body:faker.lorem.paragraph(),
+                        performed_via_github_app:null
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000005",
                     type:"ForkEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      id:327522930,
-                      name:"lowlighter/gracidea",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       forkee:{
-                        name:"gracidea",
-                        full_name:"lowlighter/gracidea",
+                        name:faker.random.word(),
+                        full_name:`${faker.random.word()}/${faker.random.word()}`,
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000006",
                     type:"PullRequestReviewEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       action:"created",
                       review:{
                         user:{
-                          login:"lowlighter",
+                          login,
                         },
                         state:"approved",
                       },
@@ -626,151 +718,151 @@
                         state:"open",
                         number:4,
                         locked:false,
-                        title:"Pull request example",
+                        title:faker.lorem.sentence(),
                         user:{
-                          login:"user",
+                          login:faker.internet.userName(),
                         },
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000007",
                     type:"ReleaseEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       action:"published",
                       release:{
-                        tag_name:"v3.1",
-                        name:"Version 3.1",
-                        draft: false,
-                        prerelease: true,
+                        tag_name:`v${faker.random.number()}.${faker.random.number()}`,
+                        name:faker.random.words(4),
+                        draft:faker.random.boolean(),
+                        prerelease:faker.random.boolean(),
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000008",
                     type:"CreateEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
-                      ref:"feat-new-plugin",
-                      ref_type:"branch",
+                      ref:faker.lorem.slug(),
+                      ref_type:faker.random.arrayElement(["tag", "branch"]),
                       master_branch:"master",
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"100000000009",
                     type:"WatchEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/gracidea",
+                      name:"lowlighter/metrics",
                     },
                     payload:{action:"started"},
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000010",
                     type:"DeleteEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
-                      ref:"feat-plugin-merged",
-                      ref_type:"branch",
+                      ref:faker.lorem.slug(),
+                      ref_type:faker.random.arrayElement(["tag", "branch"]),
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000011",
                     type:"PushEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       size:1,
                       ref:"refs/heads/master",
                       commits:[
                         {
-                          sha:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                          message:"Commit example",
+                          sha:"MOCKED_SHA",
+                          message:faker.lorem.sentence(),
                         }
                       ]
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000012",
                     type:"PullRequestEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
-                      action:"opened",
+                      action:faker.random.arrayElement(["opened", "closed"]),
                       number:5,
                       pull_request:{
                         user:{
-                          login:"lowlighter",
+                          login,
                         },
                         state:"open",
-                        title:"Pull request example",
-                        additions:210,
-                        deletions:126,
-                        changed_files:10,
+                        title:faker.lorem.sentence(),
+                        additions:faker.random.number(1000),
+                        deletions:faker.random.number(1000),
+                        changed_files:faker.random.number(10),
                       }
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000013",
                     type:"MemberEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{
                       member:{
-                        login:"botlighter",
+                        login:faker.internet.userName(),
                       },
                       action:"added"
                     },
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   },
                   {
                     id:"10000000014",
                     type:"PublicEvent",
                     actor:{
-                      login:"lowlighter",
+                      login,
                     },
                     repo:{
-                      name:"lowlighter/metrics",
+                      name:`${faker.random.word()}/${faker.random.word()}`,
                     },
                     payload:{},
-                    created_at:new Date(Date.now()-Math.floor(-Math.random()*14)*Math.floor(-Math.random()*24)*60*60*1000).toISOString(),
+                    created_at:faker.date.recent(7),
                   }
                 ]
               })
@@ -779,13 +871,13 @@
 
         //Repository traffic
           rest.repos.getViews = new Proxy(unmocked.getViews, {
-            apply:function(target, that, args) {
+            apply:function(target, that, [{owner, repo}]) {
               console.debug(`metrics/compute/mocks > mocking rest api result > rest.repos.getViews`)
-              const count = Math.floor(Math.random()*1000)*2
-              const uniques = Math.floor(Math.random()*count)*2
+              const count = faker.random.number(10000)*2
+              const uniques = faker.random.number(count)*2
               return ({
                 status:200,
-                url:"https://api.github.com/repos/lowlighter/metrics/traffic/views",
+                url:`https://api.github.com/repos/${owner}/${repo}/traffic/views`,
                 headers:{
                   server:"GitHub.com",
                   status:"200 OK",
@@ -795,8 +887,8 @@
                   count,
                   uniques,
                   views:[
-                    {timestamp:new Date().toISOString(), count:count/2, uniques:uniques/2},
-                    {timestamp:new Date().toISOString(), count:count/2, uniques:uniques/2},
+                    {timestamp:`${faker.date.recent()}`, count:count/2, uniques:uniques/2},
+                    {timestamp:`${faker.date.recent()}`, count:count/2, uniques:uniques/2},
                   ]
                 }
               })
@@ -805,27 +897,27 @@
 
         //Repository contributions
           rest.repos.getContributorsStats = new Proxy(unmocked.getContributorsStats, {
-            apply:function(target, that, args) {
+            apply:function(target, that, [{owner, repo}]) {
               console.debug(`metrics/compute/mocks > mocking rest api result > rest.repos.getContributorsStats`)
               return ({
                 status:200,
-                url:"https://api.github.com/repos/lowlighter/metrics/stats/contributors",
-                headers: {
+                url:`https://api.github.com/repos/${owner}/${repo}/stats/contributors`,
+                headers:{
                   server:"GitHub.com",
                   status:"200 OK",
                   "x-oauth-scopes":"repo",
                 },
                 data:[
                   {
-                    total:Math.floor(Math.random()*1000),
+                    total:faker.random.number(10000),
                     weeks:[
-                      {w:1, a:Math.floor(Math.random()*10000), d:Math.floor(Math.random()*10000), c:Math.floor(Math.random()*10000)},
-                      {w:2, a:Math.floor(Math.random()*10000), d:Math.floor(Math.random()*10000), c:Math.floor(Math.random()*10000)},
-                      {w:3, a:Math.floor(Math.random()*10000), d:Math.floor(Math.random()*10000), c:Math.floor(Math.random()*10000)},
-                      {w:4, a:Math.floor(Math.random()*10000), d:Math.floor(Math.random()*10000), c:Math.floor(Math.random()*10000)},
+                      {w:1, a:faker.random.number(10000), d:faker.random.number(10000), c:faker.random.number(10000)},
+                      {w:2, a:faker.random.number(10000), d:faker.random.number(10000), c:faker.random.number(10000)},
+                      {w:3, a:faker.random.number(10000), d:faker.random.number(10000), c:faker.random.number(10000)},
+                      {w:4, a:faker.random.number(10000), d:faker.random.number(10000), c:faker.random.number(10000)},
                     ],
                     author: {
-                      login:"lowlighter",
+                      login:owner,
                     }
                   }
                 ]
@@ -835,11 +927,11 @@
 
         //Repository contributions
           rest.repos.listCommits = new Proxy(unmocked.listCommits, {
-            apply:function(target, that, [{page, per_page}]) {
+            apply:function(target, that, [{page, per_page, owner, repo}]) {
               console.debug(`metrics/compute/mocks > mocking rest api result > rest.repos.listCommits`)
               return ({
                 status:200,
-                url:`https://api.github.com/repos/lowlighter/metrics/commits?per_page=${per_page}&page=${page}`,
+                url:`https://api.github.com/repos/${owner}/${repo}/commits?per_page=${per_page}&page=${page}`,
                 headers: {
                   server:"GitHub.com",
                   status:"200 OK",
@@ -847,15 +939,15 @@
                 },
                 data:page < 2 ? new Array(per_page).fill(null).map(() =>
                   ({
-                    sha:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    sha:"MOCKED_SHA",
                     commit:{
                       author:{
-                        name:"lowlighter",
-                        date:new Date(Date.now()-Math.floor(-Math.random()*14)*24*60*60*1000).toISOString()
+                        name:owner,
+                        date:`${faker.date.recent(14)}`
                       },
                       committer:{
-                        name:"lowlighter",
-                        date:new Date(Date.now()-Math.floor(-Math.random()*14)*24*60*60*1000).toISOString()
+                        name:owner,
+                        date:`${faker.date.recent(14)}`
                       },
                     }
                   })
@@ -863,6 +955,49 @@
               })
             }
           })
+
+        //Repository contributors
+          rest.repos.listContributors = new Proxy(unmocked.listContributors, {
+            apply:function(target, that, [{owner, repo}]) {
+              console.debug(`metrics/compute/mocks > mocking rest api result > rest.repos.listContributors`)
+              return ({
+                status:200,
+                url:`https://api.github.com/repos/${owner}/${repo}/contributors`,
+                headers: {
+                  server:"GitHub.com",
+                  status:"200 OK",
+                  "x-oauth-scopes":"repo",
+                },
+                data:new Array(40+faker.random.number(60)).fill(null).map(() => ({
+                  login:faker.internet.userName(),
+                  avatar_url:null,
+                  contributions:faker.random.number(1000),
+                }))
+              })
+            }
+          })
+
+        //User informations
+          rest.users.getByUsername = new Proxy(unmocked.getByUsername, {
+            apply:function(target, that, [{username}]) {
+              console.debug(`metrics/compute/mocks > mocking rest api result > rest.repos.getByUsername`)
+              return ({
+                status:200,
+                url:`'https://api.github.com/users/${username}/`,
+                headers: {
+                  server:"GitHub.com",
+                  status:"200 OK",
+                  "x-oauth-scopes":"repo",
+                },
+                data:{
+                  login:faker.internet.userName(),
+                  avatar_url:null,
+                  contributions:faker.random.number(1000),
+                }
+              })
+            }
+          })
+
       }
 
     //Axios mocking
@@ -895,6 +1030,128 @@
                       })
                     }
                 }
+              //Anilist api
+                if (/^https:..graphql.anilist.co/.test(url)) {
+                  //Initialization and media generator
+                    const query = body.query
+                    const media = ({type}) => ({
+                      title:{romaji:faker.lorem.words(), english:faker.lorem.words(), native:faker.lorem.words()},
+                      description:faker.lorem.paragraphs(),
+                      type,
+                      status:faker.random.arrayElement(["FINISHED", "RELEASING", "NOT_YET_RELEASED", "CANCELLED", "HIATUS"]),
+                      episodes:100+faker.random.number(100),
+                      volumes:faker.random.number(100),
+                      chapters:100+faker.random.number(1000),
+                      averageScore:faker.random.number(100),
+                      countryOfOrigin:"JP",
+                      genres:new Array(6).fill(null).map(_ => faker.lorem.word()),
+                      coverImage:{medium:null},
+                      startDate:{year:faker.date.past(20).getFullYear()}
+                    })
+                  //User statistics query
+                    if (/^query Statistics /.test(query)) {
+                      console.debug(`metrics/compute/mocks > mocking anilist api result > Statistics`)
+                      return ({
+                        status:200,
+                        data:{
+                          data:{
+                            User:{
+                              id:faker.random.number(100000),
+                              name:faker.internet.userName(),
+                              about:null,
+                              statistics:{
+                                anime:{
+                                  count:faker.random.number(1000),
+                                  minutesWatched:faker.random.number(100000),
+                                  episodesWatched:faker.random.number(10000),
+                                  genres:new Array(4).fill(null).map(_ => ({genre:faker.lorem.word()})),
+                                },
+                                manga:{
+                                  count:faker.random.number(1000),
+                                  chaptersRead:faker.random.number(100000),
+                                  volumesRead:faker.random.number(10000),
+                                  genres:new Array(4).fill(null).map(_ => ({genre:faker.lorem.word()})),
+                                },
+                              }
+                            }
+                          }
+                        }
+                      })
+                    }
+                  //Favorites characters
+                    if (/^query FavoritesCharacters /.test(query)) {
+                      console.debug(`metrics/compute/mocks > mocking anilist api result > Favorites characters`)
+                      return ({
+                        status:200,
+                        data:{
+                          data:{
+                            User:{
+                              favourites:{
+                                characters:{
+                                  nodes:new Array(2+faker.random.number(16)).fill(null).map(_ => ({
+                                      name:{full:faker.name.findName(), native:faker.name.findName()},
+                                      image:{medium:null}
+                                    }),
+                                  ),
+                                  pageInfo:{currentPage:1, hasNextPage:false}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      })
+                    }
+                  //Favorites anime/manga query
+                    if (/^query Favorites /.test(query)) {
+                      console.debug(`metrics/compute/mocks > mocking anilist api result > Favorites`)
+                      const type = /anime[(]/.test(query) ? "ANIME" : /manga[(]/.test(query) ? "MANGA" : "OTHER"
+                      return ({
+                        status:200,
+                        data:{
+                          data:{
+                            User:{
+                              favourites:{
+                                [type.toLocaleLowerCase()]:{
+                                  nodes:new Array(16).fill(null).map(_ => media({type})),
+                                  pageInfo:{currentPage:1, hasNextPage:false},
+                                }
+                              }
+                            }
+                          }
+                        }
+                      })
+                    }
+                  //Medias query
+                    if (/^query Medias /.test(query)) {
+                      console.debug(`metrics/compute/mocks > mocking anilist api result > Medias`)
+                      const type = body.variables.type
+                      return ({
+                        status:200,
+                        data:{
+                          data:{
+                            MediaListCollection:{
+                              lists:[
+                                {
+                                  name:{ANIME:"Watching", MANGA:"Reading", OTHER:"Completed"}[type],
+                                  isCustomList:false,
+                                  entries:new Array(16).fill(null).map(_ => ({
+                                    status:faker.random.arrayElement(["CURRENT", "PLANNING", "COMPLETED", "DROPPED", "PAUSED", "REPEATING"]),
+                                    progress:faker.random.number(100),
+                                    progressVolumes: null,
+                                    score:0,
+                                    startedAt:{year:null, month:null, day:null},
+                                    completedAt:{year:null, month:null, day:null},
+                                    media:media({type})
+                                  })),
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      })
+                    }
+
+                }
               return target(...args)
             }
           })
@@ -904,6 +1161,7 @@
             apply:function(target, that, args) {
               //Arguments
                 const [url, options] = args
+                const tested = url.match(/&url=(?<tested>.*?)(?:&|$)/)?.groups?.tested ?? faker.internet.url()
               //Pagespeed api
                 if (/^https:..www.googleapis.com.pagespeedonline.v5/.test(url)) {
                   //Pagespeed result
@@ -913,10 +1171,10 @@
                         status:200,
                         data:{
                           captchaResult:"CAPTCHA_NOT_NEEDED",
-                          id:"https://simon.lecoq.io/",
+                          id:tested,
                           lighthouseResult:{
-                            requestedUrl:"https://simon.lecoq.io/",
-                            finalUrl:"https://simon.lecoq.io/",
+                            requestedUrl:tested,
+                            finalUrl:tested,
                             lighthouseVersion:"6.3.0",
                             audits:{
                               "final-screenshot":{
@@ -936,41 +1194,41 @@
                                 details:{
                                   items:[
                                     {
-                                      observedFirstContentfulPaint:283,
-                                      observedFirstVisualChangeTs:1789259909429,
-                                      observedFirstContentfulPaintTs:1789259857628,
-                                      firstContentfulPaint:370,
-                                      observedDomContentLoaded:251,
-                                      observedFirstMeaningfulPaint:642,
-                                      maxPotentialFID:203,
-                                      observedLoad:330,
-                                      firstMeaningfulPaint:370,
-                                      observedCumulativeLayoutShift:0.0028944855967078186,
-                                      observedSpeedIndex:711,
-                                      observedSpeedIndexTs:1789260285891,
-                                      observedTimeOriginTs:1789259574429,
-                                      observedLargestContentfulPaint:857,
-                                      cumulativeLayoutShift:0.0028944855967078186,
-                                      observedFirstPaintTs:1789259857628,
-                                      observedTraceEndTs:1789261300953,
-                                      largestContentfulPaint:1085,
-                                      observedTimeOrigin:0,
-                                      speedIndex:578,
-                                      observedTraceEnd:1727,
-                                      observedDomContentLoadedTs:1789259825567,
-                                      observedFirstPaint:283,
-                                      totalBlockingTime:133,
-                                      observedLastVisualChangeTs:1789260426429,
-                                      observedFirstVisualChange:335,
-                                      observedLargestContentfulPaintTs:1789260431554,
-                                      estimatedInputLatency:13,
-                                      observedLoadTs:1789259904916,
-                                      observedLastVisualChange:852,
-                                      firstCPUIdle:773,
-                                      interactive:953,
-                                      observedNavigationStartTs:1789259574429,
-                                      observedNavigationStart:0,
-                                      observedFirstMeaningfulPaintTs:1789260216895
+                                      observedFirstContentfulPaint:faker.random.number(500),
+                                      observedFirstVisualChangeTs:faker.time.recent(),
+                                      observedFirstContentfulPaintTs:faker.time.recent(),
+                                      firstContentfulPaint:faker.random.number(500),
+                                      observedDomContentLoaded:faker.random.number(500),
+                                      observedFirstMeaningfulPaint:faker.random.number(1000),
+                                      maxPotentialFID:faker.random.number(500),
+                                      observedLoad:faker.random.number(500),
+                                      firstMeaningfulPaint:faker.random.number(500),
+                                      observedCumulativeLayoutShift:faker.random.float({max:1}),
+                                      observedSpeedIndex:faker.random.number(1000),
+                                      observedSpeedIndexTs:faker.time.recent(),
+                                      observedTimeOriginTs:faker.time.recent(),
+                                      observedLargestContentfulPaint:faker.random.number(1000),
+                                      cumulativeLayoutShift:faker.random.float({max:1}),
+                                      observedFirstPaintTs:faker.time.recent(),
+                                      observedTraceEndTs:faker.time.recent(),
+                                      largestContentfulPaint:faker.random.number(2000),
+                                      observedTimeOrigin:faker.random.number(10),
+                                      speedIndex:faker.random.number(1000),
+                                      observedTraceEnd:faker.random.number(2000),
+                                      observedDomContentLoadedTs:faker.time.recent(),
+                                      observedFirstPaint:faker.random.number(500),
+                                      totalBlockingTime:faker.random.number(500),
+                                      observedLastVisualChangeTs:faker.time.recent(),
+                                      observedFirstVisualChange:faker.random.number(500),
+                                      observedLargestContentfulPaintTs:faker.time.recent(),
+                                      estimatedInputLatency:faker.random.number(100),
+                                      observedLoadTs:faker.time.recent(),
+                                      observedLastVisualChange:faker.random.number(1000),
+                                      firstCPUIdle:faker.random.number(1000),
+                                      interactive:faker.random.number(1000),
+                                      observedNavigationStartTs:faker.time.recent(),
+                                      observedNavigationStart:faker.random.number(10),
+                                      observedFirstMeaningfulPaintTs:faker.time.recent()
                                     },
                                   ]
                                 },
@@ -980,26 +1238,26 @@
                               "best-practices":{
                                 id:"best-practices",
                                 title:"Best Practices",
-                                score:Math.floor(Math.random()*100)/100,
+                                score:faker.random.float({max:1}),
                               },
                               seo:{
                                 id:"seo",
                                 title:"SEO",
-                                score:Math.floor(Math.random()*100)/100,
+                                score:faker.random.float({max:1}),
                               },
                               accessibility:{
                                 id:"accessibility",
                                 title:"Accessibility",
-                                score:Math.floor(Math.random()*100)/100,
+                                score:faker.random.float({max:1}),
                               },
                               performance: {
                                 id:"performance",
                                 title:"Performance",
-                                score:Math.floor(Math.random()*100)/100,
+                                score:faker.random.float({max:1}),
                               }
                             },
                           },
-                          analysisUTCTimestamp:new Date().toISOString()
+                          analysisUTCTimestamp:`${faker.date.recent()}`,
                         }
                       })
                     }
@@ -1009,6 +1267,8 @@
                   //Get recently played tracks
                     if (/me.player.recently-played/.test(url)&&(options?.headers?.Authorization === "Bearer MOCKED_TOKEN_ACCESS")) {
                       console.debug(`metrics/compute/mocks > mocking spotify api result > ${url}`)
+                      const artist = faker.random.words()
+                      const track = faker.random.words(5)
                       return ({
                           status:200,
                           data:{
@@ -1019,42 +1279,42 @@
                                     album_type:"single",
                                     artists:[
                                       {
-                                        name:"EGOIST",
+                                        name:artist,
                                         type:"artist",
                                       }
                                     ],
                                     images:[
                                       {
                                         height:640,
-                                        url:"https://i.scdn.co/image/ab67616d0000b27366371d0ad05c3f402d9cb2ae",
+                                        url:faker.image.abstract(),
                                         width:640
                                       },
                                       {
                                         height:300,
-                                        url:"https://i.scdn.co/image/ab67616d00001e0266371d0ad05c3f402d9cb2ae",
+                                        url:faker.image.abstract(),
                                         width:300
                                       },
                                       {
                                         height:64,
-                                        url:"https://i.scdn.co/image/ab67616d0000485166371d0ad05c3f402d9cb2ae",
+                                        url:faker.image.abstract(),
                                         width:64
                                       }
                                     ],
-                                    name:"Fallen",
-                                    release_date:"2014-11-19",
+                                    name:track,
+                                    release_date:`${faker.date.past()}`.substring(0, 10),
                                     type:"album",
                                   },
                                   artists:[
                                     {
-                                      name:"EGOIST",
+                                      name:artist,
                                       type:"artist",
                                     }
                                   ],
-                                  name:"Fallen",
-                                  preview_url:"https://p.scdn.co/mp3-preview/f30eb6d1c55afa13ce754559a41ab683a1a76b02?cid=fa6ae353840041ee8af3bd1d21a66783",
+                                  name:track,
+                                  preview_url:faker.internet.url(),
                                   type:"track",
                                 },
-                                played_at:new Date().toISOString(),
+                                played_at:`${faker.date.recent()}`,
                                 context:{
                                   type:"album",
                                 }
@@ -1064,20 +1324,84 @@
                       })
                     }
                 }
+              //Last.fm api
+                if (/^https:..ws.audioscrobbler.com.*$/.test(url)) {
+                  //Get recently played tracks
+                    if (/user.getrecenttracks/.test(url)) {
+                      console.debug(`metrics/compute/mocks > mocking lastfm api result > ${url}`)
+                      const artist = faker.random.word()
+                      const album = faker.random.words(3)
+                      const track = faker.random.words(5)
+                      const date = faker.date.recent()
+                      return ({
+                          status:200,
+                          data:{
+                            recenttracks:{
+                              "@attr":{
+                                page:"1",
+                                perPage:"1",
+                                user:"RJ",
+                                total:"100",
+                                pages:"100",
+                              },
+                              track:[
+                                {
+                                  artist:{
+                                    mbid:"",
+                                    "#text":artist,
+                                  },
+                                  album:{
+                                    mbid:"",
+                                    "#text":album,
+                                  },
+                                  image:[
+                                    {
+                                      size:"small",
+                                      "#text":faker.image.abstract(),
+                                    },
+                                    {
+                                      size:"medium",
+                                      "#text":faker.image.abstract(),
+                                    },
+                                    {
+                                      size:"large",
+                                      "#text":faker.image.abstract(),
+                                    },
+                                    {
+                                      size:"extralarge",
+                                      "#text":faker.image.abstract(),
+                                    },
+                                  ],
+                                  streamable:"0",
+                                  date:{
+                                    uts:Math.floor(date.getTime() / 1000),
+                                    "#text":date.toUTCString().slice(5, 22),
+                                  },
+                                  url:faker.internet.url(),
+                                  name:track,
+                                  mbid:"",
+                                },
+                              ],
+                            },
+                          },
+                      })
+                    }
+                }
               //Twitter api
                 if (/^https:..api.twitter.com/.test(url)) {
                   //Get user profile
                     if ((/users.by.username/.test(url))&&(options?.headers?.Authorization === "Bearer MOCKED_TOKEN")) {
                       console.debug(`metrics/compute/mocks > mocking twitter api result > ${url}`)
+                      const username = url.match(/username[/](?<username>.*?)[?]/)?.groups?.username ?? faker.internet.userName()
                       return ({
                           status:200,
                           data:{
                             data:{
-                              profile_image_url:"https://pbs.twimg.com/profile_images/1338344493234286592/C_ujKIUa_normal.png",
-                              name:"GitHub",
-                              verified:true,
-                              id:"13334762",
-                              username:"github",
+                              profile_image_url:faker.image.people(),
+                              name:faker.name.findName(),
+                              verified:faker.random.boolean(),
+                              id:faker.random.number(1000000).toString(),
+                              username,
                             },
                           }
                       })
@@ -1090,8 +1414,8 @@
                         data:{
                           data:[
                             {
-                              id:"1000000000000000001",
-                              created_at:new Date().toISOString(),
+                              id:faker.random.number(100000000000000).toString(),
+                              created_at:`${faker.date.recent()}`,
                               entities:{
                                 mentions:[
                                   {start:22, end:33, username:"lowlighter"},
@@ -1100,25 +1424,25 @@
                               text:"Checkout metrics from @lowlighter ! #GitHub",
                             },
                             {
-                              id:"1000000000000000000",
-                              created_at:new Date().toISOString(),
-                              text:"Hello world !",
+                              id:faker.random.number(100000000000000).toString(),
+                              created_at:`${faker.date.recent()}`,
+                              text:faker.lorem.paragraph(),
                             }
                           ],
                           includes:{
                             users:[
                               {
-                                id:"100000000000000000",
+                                id:faker.random.number(100000000000000).toString(),
                                 name:"lowlighter",
                                 username:"lowlighter",
                               },
                             ]
                           },
                           meta:{
-                            newest_id:"1000000000000000001",
-                            oldest_id:"1000000000000000000",
+                            newest_id:faker.random.number(100000000000000).toString(),
+                            oldest_id:faker.random.number(100000000000000).toString(),
                             result_count:2,
-                            next_token:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                            next_token:"MOCKED_CURSOR",
                           },
                         }
                       })

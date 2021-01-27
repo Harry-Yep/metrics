@@ -127,6 +127,11 @@
       plugin_music:true,
       plugin_music_provider: "spotify",
     }, {skip:["terminal", "repository"]}],
+    ["Music plugin (recent - lastfm)", {
+      plugin_music:true,
+      plugin_music_provider: "lastfm",
+      plugin_music_user: "RJ",
+    }, {skip:["terminal", "repository"]}],
     ["Language plugin (default)", {
       plugin_languages:true,
     }],
@@ -138,10 +143,19 @@
       plugin_languages:true,
       plugin_languages_skipped:"metrics",
     }],
+    ["Language plugin (custom color set)", {
+      plugin_languages:true,
+      plugin_languages_colors:"0:ff0000,1:red",
+    }],
+    ["Language plugin (custom color set)", {
+      plugin_languages:true,
+      plugin_languages_colors:"complementary",
+    }],
     ["Language plugin (complete)", {
       plugin_languages:true,
       plugin_languages_ignored:"html, css, dockerfile",
       plugin_languages_skipped:"metrics",
+      plugin_languages_colors:"rainbow",
     }],
     ["Follow-up plugin (default)", {
       plugin_followup:true,
@@ -196,6 +210,12 @@
       plugin_projects:true,
       plugin_projects_repositories:"lowlighter/metrics/projects/1",
       plugin_projects_limit:0,
+    }, {skip:["terminal"]}],
+    ["Projects plugin (descriptions)", {
+      plugin_projects:true,
+      plugin_projects_repositories:"lowlighter/metrics/projects/1",
+      plugin_projects_limit:0,
+      plugin_projects_descriptions:true,
     }, {skip:["terminal"]}],
     ["Lines plugin (default)", {
       base:"repositories",
@@ -266,9 +286,66 @@
       plugin_people:true,
       plugin_people_types:"following",
     }, {skip:["terminal", "repository"]}],
+    ["People plugin (sponsoring)", {
+      plugin_people:true,
+      plugin_people_types:"sponsoring",
+    }, {skip:["terminal", "repository"]}],
+    ["People plugin (sponsors)", {
+      plugin_people:true,
+      plugin_people_types:"sponsors",
+    }, {skip:["terminal"]}],
+    ["People plugin (stargazers)", {
+      plugin_people:true,
+      plugin_people_types:"stargazers",
+    }, {skip:["classic", "terminal"]}],
+    ["People plugin (watchers)", {
+      plugin_people:true,
+      plugin_people_types:"watchers",
+    }, {skip:["classic", "terminal"]}],
+    ["People plugin (thanks)", {
+      plugin_people:true,
+      plugin_people_types:"thanks",
+      plugin_people_thanks:"lowlighter",
+    }, {skip:["classic", "terminal"]}],
     ["People plugin (identicons)", {
       plugin_people:true,
       plugin_people_identicons:true,
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (default)", {
+      plugin_anilist:true,
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (manga only)", {
+      plugin_anilist:true,
+      plugin_anilist_medias:"manga",
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (anime only)", {
+      plugin_anilist:true,
+      plugin_anilist_medias:"anime",
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (favorites section)", {
+      plugin_anilist:true,
+      plugin_anilist_sections:"favorites",
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (watching/reading section)", {
+      plugin_anilist:true,
+      plugin_anilist_sections:"watching, reading",
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (characters section)", {
+      plugin_anilist:true,
+      plugin_anilist_sections:"characters",
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (additional options)", {
+      plugin_anilist:true,
+      plugin_anilist_limit:0,
+      plugin_anilist_shuffle:false,
+      plugin_anilist_user:"anilist",
+    }, {skip:["terminal", "repository"]}],
+    ["Anilist plugin (complete)", {
+      plugin_anilist:true,
+      plugin_anilist_medias:"manga, anime",
+      plugin_anilist_sections:"favorites, watching, reading, characters",
+      plugin_anilist_limit:0,
+      plugin_anilist_shuffle:false,
     }, {skip:["terminal", "repository"]}],
   ]
 
@@ -314,3 +391,16 @@
           })).toBe(true), 60*1e3)
     })
   )
+
+  describe("Additional options", () => {
+    test("Community templates", async () => expect(await action.run({
+      token:"MOCKED_TOKEN",
+      plugin_pagespeed_token:"MOCKED_TOKEN",
+      plugin_tweets_token:"MOCKED_TOKEN",
+      plugin_music_token:"MOCKED_CLIENT_ID, MOCKED_CLIENT_SECRET, MOCKED_REFRESH_TOKEN",
+      template:"@classic", base:"",
+      config_timezone:"Europe/Paris",
+      plugins_errors_fatal:true, dryrun:true, use_mocked_data:true, verify:true,
+      setup_community_templates:"lowlighter/metrics@master:classic",
+    })).toBe(true), 60*1e3)
+  })

@@ -1,5 +1,5 @@
 /** Template common processor */
-  export default async function ({login, q, dflags}, {conf, data, rest, graphql, plugins, queries}, {s, pending, imports}) {
+  export default async function ({login, q, dflags}, {conf, data, rest, graphql, plugins, queries, account}, {s, pending, imports}) {
 
     //Init
       const computed = data.computed = {commits:0, sponsorships:0, licenses:{favorite:"", used:{}}, token:{}, repositories:{watchers:0, stargazers:0, issues_open:0, issues_closed:0, pr_open:0, pr_merged:0, forks:0, forked:0, releases:0}}
@@ -32,7 +32,7 @@
         pending.push((async () => {
           try {
             console.debug(`metrics/compute/${login}/plugins > ${name} > started`)
-            data.plugins[name] = await imports.plugins[name]({login, q, imports, data, computed, rest, graphql, queries}, plugins[name])
+            data.plugins[name] = await imports.plugins[name]({login, q, imports, data, computed, rest, graphql, queries, account}, plugins[name])
             console.debug(`metrics/compute/${login}/plugins > ${name} > completed`)
           }
           catch (error) {
@@ -75,7 +75,7 @@
       const years = Math.floor(diff)
       const months = Math.floor((diff-years)*12)
       computed.registration = years ? `${years} year${s(years)} ago` : months ? `${months} month${s(months)} ago` : `${Math.ceil(diff*365)} day${s(Math.ceil(diff*365))} ago`
-      computed.cakeday = [new Date(), new Date(data.user.createdAt)].map(date => date.toISOString().match(/(?<mmdd>\d{2}-\d{2})(?=T)/)?.groups?.mmdd).every((v, _, a) => v === a[0])
+      computed.cakeday = years > 1 ? [new Date(), new Date(data.user.createdAt)].map(date => date.toISOString().match(/(?<mmdd>\d{2}-\d{2})(?=T)/)?.groups?.mmdd).every((v, _, a) => v === a[0]) : false
 
     //Compute calendar
       computed.calendar = data.user.calendar.contributionCalendar.weeks.flatMap(({contributionDays}) => contributionDays).slice(0, 14).reverse()

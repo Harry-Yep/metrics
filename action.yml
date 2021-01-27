@@ -38,6 +38,13 @@ inputs:
     description: SVG optimization
     default: yes
 
+  # Setup additional templates from remote repositories (like forks)
+  # Format is : user/repo@branch:template
+  # To use a community template, set "template" option to "@template" (where template is the template name)
+  setup_community_templates:
+    description: Additional community templates to setup
+    default: ""
+
   # Timezone used by metrics
   # See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   # Some plugins will use it to calibrate dates
@@ -204,6 +211,17 @@ inputs:
     description: List of skipped repositories
     default: ""
 
+  # List of custom colors for specified languages
+  # Use this option when GitHub's color are too similar for your most used languages
+  #
+  # It is possible to use either hexadecimal colors or named colors
+  # - Use "rainbow" values for a predefined set of colors
+  # - Use `${n}:${color}` to change the color of the n-th most used language (e.g. "0:red" to make your most used language red)
+  # - Use `${language}:${color}` to change the color of named language (e.g. "javascript:red" to make JavaScript language red, language case is ignored)
+  plugin_languages_colors:
+    description: Custom languages colors
+    default: ""
+
   # Follow-up plugin
   # Display the number and the ratio of opened/closed issues and opened/merged pull requests on your repositories
   plugin_followup:
@@ -222,6 +240,7 @@ inputs:
   # Supported values are :
   # - "apple" for Apple Music
   # - "spotify" for Spotify
+  # - "lastfm" for Last.fm
   plugin_music_provider:
     description: Name of the music provider you're using
     default: ""
@@ -230,6 +249,7 @@ inputs:
   # This may be required depending on the music provider and the mode you use
   # - "apple" : not required
   # - "spotify" : required for "recent" mode, format is "client_id, client_secret, refresh_token"
+  # - "lastfm" : required, format is "api_key"
   plugin_music_token:
     description: Music provider personal token
     default: ""
@@ -253,6 +273,12 @@ inputs:
   plugin_music_limit:
     description: Number of tracks to display
     default: 4
+
+  # Music service username
+  # Leave empty to default to the login "user"'s GitHub account
+  plugin_music_user:
+    description: "Music provider username"
+    default: ""
 
   # Posts plugin
   # Display recent posts from an external source
@@ -348,6 +374,11 @@ inputs:
     description: Number of active projects to display
     default: 4
 
+  # Display projects descriptions if enabled
+  plugin_projects_descriptions:
+    description: Display projects descriptions
+    default: no
+
   # Tweets plugin
   # Enable it to display recent tweets of the twitter username attached to "user"
   plugin_tweets:
@@ -438,18 +469,74 @@ inputs:
     default: 28
 
   # List of users categories to display (comma separated)
-  # Supported values are:
+  # For user's metrics, supported values are:
   # - "followers"
-  # - "following"
+  # - "following"/"followed"
+  # - "sponsors"/"sponsorshipsAsMaintainer"
+  # - "sponsoring"/"sponsored"/"sponsorshipsAsSponsor"
+  # - "thanks" (see "plugin_people_thanks" below)
+  # For repositories' metrics, supported values are:
+  # - "contributors"
+  # - "stargazers"
+  # - "watchers"
+  # - "sponsors"/"sponsorshipsAsMaintainer"
+  # - "thanks" (see "plugin_people_thanks" below)
   plugin_people_types:
     description: Categories to display
     default: followers, following
+
+  # List of users to thanks (comma seperated)
+  # When using "thanks" as a type, it'll display the users you listed in this option
+  # This can be used to create "Special thanks" badges that you can embed elsewhere
+  plugin_people_thanks:
+    description: Users to thanks in "thanks" section type
+    default: ""
 
   # Display GitHub identicons instead of users' real avatar
   # Mostly for privacy purposes
   plugin_people_identicons:
     description: Use identicons instead of real avatars
     default: no
+
+  # Display your favorites animes and mangas from AniList
+  plugin_anilist:
+    description: Display your favorites animes and mangas from AniList
+    default: no
+
+  # Medias to display from AniList (comma-separated list)
+  # Supported values are:
+  # - "anime"
+  # - "manga"
+  plugin_anilist_medias:
+    description: Medias to display from AniList data
+    default: anime, manga
+
+  # Sections to display from AniList data (comma-separated list)
+  # Values in "plugin_anilist_medias" may also impact displayed sections
+  # Supported values are:
+  # - "favorites" for favorites animes/mangas
+  # - "watching" for currently watched animes
+  # - "reading" for currently read mangas
+  # - "characters" for favorites characters
+  plugin_anilist_sections:
+    description: Sections to display from AniList data
+    default: favorites
+
+  # Maximum number of medias to display per section from AniList Data
+  plugin_anilist_limit:
+    description: Medias to display
+    default: 2
+
+  # Shuffle AniList data
+  plugin_anilist_shuffle:
+    description: Shuffle AniList data
+    default: yes
+
+  # Username on AniList
+  # Default to GitHub username
+  plugin_anilist_user:
+    description: AniList login
+    default: ""
 
   # ====================================================================================
   # Options below are mostly used for testing
