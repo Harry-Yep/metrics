@@ -1,5 +1,5 @@
-(function () {
-  //Load asset
+(function ({axios, faker, ejs} = {axios:globalThis.axios, faker:globalThis.faker, ejs:globalThis.ejs}) {
+  //Load assets
     const cached = new Map()
     async function load(url) {
       if (!cached.has(url))
@@ -19,7 +19,7 @@
       return values.sort((a, b) => b - a)
     }
   //Placeholder function
-    window.placeholder = async function (set) {
+    globalThis.placeholder = async function (set) {
       //Load templates informations
         let {image, style, fonts, partials} = await load(`/.templates/${set.templates.selected}`)
         await Promise.all(partials.map(async partial => await load(`/.templates/${set.templates.selected}/partials/${partial}.ejs`)))
@@ -78,6 +78,7 @@
               avatar:"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOcOnfpfwAGfgLYttYINwAAAABJRU5ErkJggg=="
             },
           //User data
+            account:"user",
             user:{
               databaseId:faker.random.number(10000000),
               name:"(placeholder)",
@@ -127,10 +128,10 @@
                         id:faker.random.number(100000000000000).toString(),
                         created_at:faker.date.recent(),
                         entities: {
-                          mentions: [ { start: 22, end: 33, username: 'lowlighter' } ]
+                          mentions: [ {start:22, end:33, username:"lowlighter"} ]
                         },
                         text: 'Checkout metrics from  <span class="mention">@lowlighter</span>  !  <span class="hashtag">#GitHub</span> ',
-                        mentions: [ 'lowlighter' ]
+                        mentions: ["lowlighter"]
                       },
                       ...new Array(Number(options["tweets.limit"])-1).fill(null).map(_ => ({
                         id:faker.random.number(100000000000000).toString(),
@@ -177,10 +178,11 @@
               //Languages
                 ...(set.plugins.enabled.languages ? ({
                   languages:{
+                    details:options["languages.details"].split(",").map(x => x.trim()).filter(x => x),
                     get colors() { return Object.fromEntries(Object.entries(this.favorites).map(([key, {color}]) => [key, color])) },
                     total:faker.random.number(10000),
                     get stats() { return Object.fromEntries(Object.entries(this.favorites).map(([key, {value}]) => [key, value])) },
-                    favorites:distribution(7).map((value, index, array) => ({name:faker.lorem.word(), color:faker.internet.color(), value, x:array.slice(0, index).reduce((a, b) => a + b, 0)}))
+                    favorites:distribution(7).map((value, index, array) => ({name:faker.lorem.word(), color:faker.internet.color(), value, size:faker.random.number(1000000), x:array.slice(0, index).reduce((a, b) => a + b, 0)}))
                   }
                 }) : null),
               //Habits
@@ -413,6 +415,28 @@
                     return result
                   }
                 }) : null),
+              //Wakatime
+                ...(set.plugins.enabled.wakatime ? ({
+                  get wakatime() {
+                    const stats = (array) => {
+                      const elements = []
+                      let result = new Array(4+faker.random.number(2)).fill(null).map(_ => ({
+                        name:array ? faker.random.arrayElement(array) : faker.lorem.words(),
+                        percent:faker.random.number(100)/100, total_seconds:faker.random.number(1000000),
+                      }))
+                      return result.filter(({name}) => elements.includes(name) ? false : (elements.push(name), true)).sort((a, b) => b.percent - a.percent)
+                    }
+                    return {
+                      sections:options["wakatime.sections"].split(",").map(x => x.trim()).filter(x => x),
+                      days:Number(options["wakatime.days"])||7,
+                      time:{total:faker.random.number(100000), daily:faker.random.number(24)},
+                      editors:stats(["VS Code", "Chrome", "IntelliJ", "PhpStorm", "WebStorm", "Android Studio", "Visual Studio", "Sublime Text", "PyCharm", "Vim", "Atom", "Xcode"]),
+                      languages:stats(["JavaScript", "TypeScript", "PHP", "Java", "Python", "Vue.js", "HTML", "C#", "JSON", "Dart", "SCSS", "Kotlin", "JSX", "Go", "Ruby", "YAML"]),
+                      projects:stats(),
+                      os:stats(["Mac", "Windows", "Linux"]),
+                    }
+                  }
+                }) : null),
               //Anilist
                 ...(set.plugins.enabled.anilist ? ({
                   anilist:{
@@ -587,7 +611,31 @@
                 }) : null),
             },
         }
+      //Formatters
+        data.f.bytes = function (n) {
+          for (const {u, v} of [{u:"E", v:10**18}, {u:"P", v:10**15}, {u:"T", v:10**12}, {u:"G", v:10**9}, {u:"M", v:10**6}, {u:"k", v:10**3}])
+            if (n/v >= 1)
+              return `${(n/v).toFixed(2).substr(0, 4).replace(/[.]0*$/, "")} ${u}B`
+          return `${n} byte${n > 1 ? "s" : ""}`
+        }
+        data.f.percentage = function (n, {rescale = true} = {}) {
+          return `${(n*(rescale ? 100 : 1)).toFixed(2)
+            .replace(/(?<=[.])([1-9]*)(0+)$/, (m, a, b) => a)
+            .replace(/[.]$/, "")}%`
+        }
+        data.f.ellipsis = function (text, {length = 20} = {}) {
+          text = `${text}`
+          if (text.length < length)
+            return text
+          return `${text.substring(0, length)}…`
+        }
       //Render
         return await ejs.render(image, data, {async:true, rmWhitespace:true})
+    }
+  //Reset globals contexts
+    globalThis.placeholder.init = function(globals) {
+      axios = globals.axios || axios
+      faker = globals.faker || faker
+      ejs = globals.ejs || ejs
     }
 })()

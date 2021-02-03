@@ -1,26 +1,25 @@
 //Setup
-  export default async function ({login, imports, data, q}, {enabled = false, token = null} = {}) {
+  export default async function ({login, imports, data, q, account}, {enabled = false, token = null} = {}) {
     //Plugin execution
       try {
         //Check if plugin is enabled and requirements are met
           if ((!enabled)||(!q.pagespeed)||((!data.user.websiteUrl)&&(!q["pagespeed.url"])))
             return null
-        //Parameters override
-          let {"pagespeed.detailed":detailed = false, "pagespeed.screenshot":screenshot = false, "pagespeed.url":url = data.user.websiteUrl} = q
-          //Duration in days
-            detailed = !!detailed
+
+        //Load inputs
+          let {detailed, screenshot, url} = imports.metadata.plugins.pagespeed.inputs({data, account, q})
         //Format url if needed
           if (!/^https?:[/][/]/.test(url))
             url = `https://${url}`
-          const result = {url, detailed, scores:[], metrics:{}}
+          const {protocol, host} = imports.url.parse(url)
+          const result = {url:`${protocol}//${host}`, detailed, scores:[], metrics:{}}
         //Load scores from API
-          console.debug(`metrics/compute/${login}/plugins > pagespeed > querying api for ${url}`)
+          console.debug(`metrics/compute/${login}/plugins > pagespeed > querying api for ${result.url}`)
           const scores = new Map()
           await Promise.all(["performance", "accessibility", "best-practices", "seo"].map(async category => {
             //Perform audit
               console.debug(`metrics/compute/${login}/plugins > pagespeed > performing audit ${category}`)
               const request = await imports.axios.get(`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?category=${category}&url=${url}${token ? `&key=${token}` : ""}`)
-              console.debug(request.data)
               const {score, title} = request.data.lighthouseResult.categories[category]
               scores.set(category, {score, title})
               console.debug(`metrics/compute/${login}/plugins > pagespeed > performed audit ${category} (status code ${request.status})`)
@@ -31,14 +30,15 @@
               }
           }))
           result.scores = [scores.get("performance"), scores.get("accessibility"), scores.get("best-practices"), scores.get("seo")]
+
         //Detailed metrics
           if (detailed) {
             console.debug(`metrics/compute/${login}/plugins > pagespeed > performing detailed audit`)
             const request = await imports.axios.get(`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?&url=${url}${token ? `&key=${token}` : ""}`)
-            console.debug(request.data)
             Object.assign(result.metrics, ...request.data.lighthouseResult.audits.metrics.details.items)
             console.debug(`metrics/compute/${login}/plugins > pagespeed > performed detailed audit (status code ${request.status})`)
           }
+
         //Results
           return result
       }
