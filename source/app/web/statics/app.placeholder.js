@@ -257,6 +257,17 @@
                     }))
                   }
                 }) : null),
+              //Nightscout
+              ...(set.plugins.enabled.nightscout ? ({
+                nightscout:{
+                  url: options["nightscout.url"] != null && options["nightscout.url"] != "https://example.herokuapp.com" ? options["nightscout.url"]: "https://testapp.herokuapp.com/",
+                  datapoints: faker.random.number({min: 8, max: 12}),
+                  lowalert: faker.random.number({min: 60, max: 90}),
+                  highalert: faker.random.number({min: 150, max: 200}),
+                  urgentlowalert: faker.random.number({min: 40, max: 59}),
+                  urgenthighalert: faker.random.number({min: 201, max: 300})
+                }
+              }) : null),
               //Pagespeed
                 ...(set.plugins.enabled.pagespeed ? ({
                   pagespeed:{
@@ -500,13 +511,15 @@
               //Activity
                 ...(set.plugins.enabled.activity ? ({
                   activity:{
+                    timestamps:options["activity.timestamps"],
                     events:new Array(Number(options["activity.limit"])).fill(null).map(_ => [
                       {
                         type:"push",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
                         size:1,
                         branch:"master",
-                        commits: [ { sha:faker.git.shortSha(), message:faker.lorem.sentence()} ]
+                        commits: [ { sha:faker.git.shortSha(), message:faker.lorem.sentence()} ],
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"comment",
@@ -517,6 +530,7 @@
                         mobile:null,
                         number:faker.git.shortSha(),
                         title:"",
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"comment",
@@ -527,6 +541,7 @@
                         mobile:null,
                         number:faker.random.number(100),
                         title:faker.lorem.sentence(),
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"comment",
@@ -537,6 +552,7 @@
                         mobile:null,
                         number:faker.random.number(100),
                         title:faker.lorem.sentence(),
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"issue",
@@ -545,6 +561,7 @@
                         user:set.user,
                         number:faker.random.number(100),
                         title:faker.lorem.sentence(),
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"pr",
@@ -553,16 +570,19 @@
                         user:set.user,
                         number:faker.random.number(100),
                         title:faker.lorem.sentence(),
-                        lines:{added:faker.random.number(1000), deleted:faker.random.number(1000)}, files:{changed:faker.random.number(10)}
+                        lines:{added:faker.random.number(1000), deleted:faker.random.number(1000)}, files:{changed:faker.random.number(10)},
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"wiki",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
-                        pages:[faker.lorem.sentence(), faker.lorem.sentence()]
+                        pages:[faker.lorem.sentence(), faker.lorem.sentence()],
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"fork",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"review",
@@ -570,6 +590,7 @@
                         user:set.user,
                         number:faker.random.number(100),
                         title:faker.lorem.sentence(),
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"release",
@@ -578,30 +599,36 @@
                         name:faker.random.words(4),
                         draft:faker.random.boolean(),
                         prerelease:faker.random.boolean(),
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"ref/create",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
-                        ref:{name:faker.lorem.slug(), type:faker.random.arrayElement(["tag", "branch"]),}
+                        ref:{name:faker.lorem.slug(), type:faker.random.arrayElement(["tag", "branch"])},
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"ref/delete",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
-                        ref:{name:faker.lorem.slug(), type:faker.random.arrayElement(["tag", "branch"]),}
+                        ref:{name:faker.lorem.slug(), type:faker.random.arrayElement(["tag", "branch"])},
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"member",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
-                        user:set.user
+                        user:set.user,
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"public",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
+                        timestamp:faker.date.recent(),
                       },
                       {
                         type:"star",
                         repo:`${faker.random.word()}/${faker.random.word()}`,
-                        action:"started"
+                        action:"started",
+                        timestamp:faker.date.recent(),
                       },
                     ][Math.floor(Math.random()*15)])
                   }
@@ -635,6 +662,9 @@
           if (text.length < length)
             return text
           return `${text.substring(0, length)}…`
+        }
+        data.f.date = function (string, options) {
+          return new Intl.DateTimeFormat("en-GB", options).format(new Date(string))
         }
       //Render
         return await ejs.render(image, data, {async:true, rmWhitespace:true})

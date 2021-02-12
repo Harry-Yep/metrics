@@ -4,10 +4,10 @@
  */
 
 //Setup
-  export default async function ({login, graphql, data, q, queries, imports}, conf) {
+  export default async function({login, graphql, data, q, queries, imports}, conf) {
     //Load inputs
       console.debug(`metrics/compute/${login}/base > started`)
-      let {repositories, repositories_forks:forks} = imports.metadata.plugins.base.inputs({data, q, account:"bypass"}, {repositories:conf.settings.repositories ?? 100})
+      let {repositories, "repositories.forks":forks, "repositories.affiliations":affiliations} = imports.metadata.plugins.base.inputs({data, q, account:"bypass"}, {repositories:conf.settings.repositories ?? 100})
 
     //Skip initial data gathering if not needed
       if (conf.settings.notoken)
@@ -16,14 +16,14 @@
     //Base parts (legacy handling for web instance)
       const defaulted = ("base" in q) ? legacy.converter(q.base) ?? true : true
       for (const part of conf.settings.plugins.base.parts)
-        data.base[part] = `base.${part}` in q ? legacy.converter(q[ `base.${part}`]) : defaulted
+        data.base[part] = `base.${part}` in q ? legacy.converter(q[`base.${part}`]) : defaulted
 
     //Iterate through account types
       for (const account of ["user", "organization"]) {
         try {
           //Query data from GitHub API
             console.debug(`metrics/compute/${login}/base > account ${account}`)
-            const queried = await graphql(queries.base[account]({login, "calendar.from":new Date(Date.now()-14*24*60*60*1000).toISOString(), "calendar.to":(new Date()).toISOString(), forks:forks ? "" : ", isFork: false"}))
+            const queried = await graphql(queries.base[account]({login, "calendar.from":new Date(Date.now()-14*24*60*60*1000).toISOString(), "calendar.to":(new Date()).toISOString(), forks:forks ? "" : ", isFork: false", affiliations:affiliations ? `, ownerAffiliations: ${affiliations.toLocaleUpperCase()}` : ""}))
             Object.assign(data, {user:queried[account]})
             postprocess?.[account]({login, data})
           //Query repositories from GitHub API
@@ -33,7 +33,7 @@
                 let pushed = 0
                 do {
                   console.debug(`metrics/compute/${login}/base > retrieving repositories after ${cursor}`)
-                  const {[account]:{repositories:{edges, nodes}}} = await graphql(queries.base.repositories({login, account, after:cursor ? `after: "${cursor}"` : "", repositories:Math.min(repositories, {user:100, organization:25}[account]), forks:forks ? "" : ", isFork: false"}))
+                  const {[account]:{repositories:{edges, nodes}}} = await graphql(queries.base.repositories({login, account, after:cursor ? `after: "${cursor}"` : "", repositories:Math.min(repositories, {user:100, organization:25}[account]), forks:forks ? "" : ", isFork: false", affiliations:affiliations ? `, ownerAffiliations: ${affiliations.toLocaleUpperCase()}` : ""}))
                   cursor = edges?.[edges?.length-1]?.cursor
                   data.user.repositories.nodes.push(...nodes)
                   pushed = nodes.length
@@ -46,7 +46,8 @@
           //Success
             console.debug(`metrics/compute/${login}/base > graphql query > account ${account} > success`)
             return {}
-        } catch (error) {
+        }
+        catch (error) {
           console.debug(`metrics/compute/${login}/base > account ${account} > failed : ${error}`)
           console.debug(`metrics/compute/${login}/base > checking next account`)
         }
@@ -69,7 +70,7 @@
     //Organization
       organization({login, data}) {
         console.debug(`metrics/compute/${login}/base > applying postprocessing`)
-        data.account = "organization",
+        data.account = "organization"
         Object.assign(data.user, {
           isHireable:false,
           starredRepositories:{totalCount:0},
@@ -107,7 +108,7 @@
           repositories:{totalCount:0, totalDiskUsage:0, nodes:[]},
           packages:{totalCount:0},
         })
-      }
+      },
   }
 
 //Legacy functions
@@ -119,5 +120,5 @@
         return false
       if (Number.isFinite(Number(value)))
         return !!(Number(value))
-    }
+    },
   }

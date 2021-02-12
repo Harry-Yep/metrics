@@ -1,11 +1,11 @@
 //Imports
-  import util from "util"
-  import ejs from "ejs"
-  import SVGO from "svgo"
   import * as utils from "./utils.mjs"
+  import ejs from "ejs"
+  import util from "util"
+  import SVGO from "svgo"
 
 //Setup
-  export default async function metrics({login, q, dflags = []}, {graphql, rest, plugins, conf, die = false, verify = false, convert = null}, {Plugins, Templates}) {
+  export default async function metrics({login, q}, {graphql, rest, plugins, conf, die = false, verify = false, convert = null}, {Plugins, Templates}) {
     //Compute rendering
       try {
 
@@ -23,7 +23,7 @@
 
         //Initialization
           const pending = []
-          const queries = conf.queries
+          const {queries} = conf
           const data = {animated:true, base:{}, config:{}, errors:[], plugins:{}, computed:{}}
           const imports = {plugins:Plugins, templates:Templates, metadata:conf.metadata, ...utils}
 
@@ -39,7 +39,7 @@
         //Executing base plugin and compute metrics
           console.debug(`metrics/compute/${login} > compute`)
           await Plugins.base({login, q, data, rest, graphql, plugins, queries, pending, imports}, conf)
-          await computer({login, q, dflags}, {conf, data, rest, graphql, plugins, queries, account:data.account}, {pending, imports})
+          await computer({login, q}, {conf, data, rest, graphql, plugins, queries, account:data.account}, {pending, imports})
           const promised = await Promise.all(pending)
 
         //Check plugins errors
@@ -47,7 +47,7 @@
           if (errors.length) {
             console.warn(`metrics/compute/${login} > ${errors.length} errors !`)
             if (die)
-              throw new Error(`An error occured during rendering, dying`)
+              throw new Error("An error occured during rendering, dying")
             else
               console.warn(util.inspect(errors, {depth:Infinity, maxStringLength:256}))
           }
@@ -55,7 +55,9 @@
         //Rendering and resizing
           console.debug(`metrics/compute/${login} > render`)
           let rendered = await ejs.render(image, {...data, s:imports.s, f:imports.format, style, fonts}, {views, async:true})
-          const {resized, mime} = await imports.svgresize(rendered, {paddings:q["config.padding"], convert})
+          if (q["config.twemoji"])
+            rendered = await imports.svgemojis(rendered)
+          const {resized, mime} = await imports.svgresize(rendered, {paddings:q["config.padding"] || conf.settings.padding, convert})
           rendered = resized
 
         //Additional SVG transformations

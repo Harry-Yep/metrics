@@ -22,6 +22,12 @@ inputs:
     description: Include forks in metrics
     default: no
   
+  # Filter repositories by user affiliations
+  # Note that it may affect some plugin outputs (broad affiliations will result in less representative metrics)
+  repositories_affiliations:
+    description: Repositories affiliations
+    default: owner
+  
   # ====================================================================================
   # 🧱 Core
   
@@ -91,6 +97,12 @@ inputs:
     description: Configure content order
     default: ""
   
+  # Use twemojis instead of emojis
+  # May increase filesize but emojis will be rendered the same across all platforms
+  config_twemoji:
+    description: Use twemojis instead of emojis
+    default: no
+  
   # Enable SVG CSS animations
   config_animations:
     description: SVG CSS animations
@@ -101,7 +113,7 @@ inputs:
   # Specify one value (for both width and height) or two values (one for width and one for height)
   config_padding:
     description: Image padding
-    default: 6%
+    default: 6%, 12%
   
   # Metrics output format
   config_output:
@@ -169,6 +181,16 @@ inputs:
   plugin_activity_filter:
     description: Events types to keep
     default: all
+  
+  # Set events visibility (use this to restrict events when using a "repo" token)
+  plugin_activity_visibility:
+    description: Set events visibility
+    default: all
+  
+  # Display events timestamps
+  plugin_activity_timestamps:
+    description: Display events timestamps
+    default: no
   
   # ====================================================================================
   # 🌸 Anilist
@@ -309,6 +331,31 @@ inputs:
     default: 0%
   
   # ====================================================================================
+  # 📜 Licenses
+  
+  # Enable or disable plugin
+  plugin_licenses:
+    description: Display licenses informations
+    default: no
+  
+  # Command to use to setup target repository
+  # It is required to install all dependencies that will be analyzed with github/licensed
+  plugin_licenses_setup:
+    description: Command to setup target repository
+    default: ""
+  
+  # Display used licenses from both repository license and dependencies licenses ratio
+  plugin_licenses_ratio:
+    description: Display used licenses ratio
+    default: no
+  
+  # Display permissions, limitations and conditions from both repository license and dependencies licenses
+  # Note that this is NOT legal advice, use at your own risk
+  plugin_licenses_legal:
+    description: Display legal informations about used licenses
+    default: yes
+  
+  # ====================================================================================
   # 👨‍💻 Lines of code changed
   
   # Enable or disable plugin
@@ -355,10 +402,53 @@ inputs:
     description: Maximum number of tracks to display
     default: 4
   
+  # Display when track was last played
+  plugin_music_played_at:
+    description: Display when the track was played
+    default: no
+  
   # Username on music provider service
   plugin_music_user:
     description: Music provider username
     default: .user.login
+  
+  # ====================================================================================
+  # 💉 Nightscout
+  
+  # Enable or disable plugin
+  plugin_nightscout:
+    description: Displays Blood Glucose
+    default: no
+  
+  # Nightscout site URL
+  plugin_nightscout_url:
+    description: Your Nightscout site URL
+    default: https://example.herokuapp.com
+  
+  # Controls how big the graph is
+  plugin_nightscout_datapoints:
+    description: How many datapoints to show on the graph. 0 and 1 disable the graph.
+    default: 12
+  
+  # Low value used for colors and text alerts
+  plugin_nightscout_lowalert:
+    description: When the blood sugar is considered low
+    default: 80
+  
+  # High value used for colors and text alerts
+  plugin_nightscout_highalert:
+    description: When the blood sugar is considered high
+    default: 180
+  
+  # Urgent low value used for colors and text alerts
+  plugin_nightscout_urgentlowalert:
+    description: When the blood sugar is considered urgently low
+    default: 50
+  
+  # Urgent high value used for colors and text alerts
+  plugin_nightscout_urgenthighalert:
+    description: When the blood sugar is considered urgently high
+    default: 250
   
   # ====================================================================================
   # ⏱️ Website performances

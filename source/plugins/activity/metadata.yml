@@ -1,8 +1,10 @@
 name: "📰 Recent activity"
 cost: 1 REST request per 100 events
+categorie: github
 supports:
   - user
   - organization
+  - repository
 inputs:
 
   # Enable or disable plugin
@@ -34,6 +36,7 @@ inputs:
     type: array
     format: comma-separated
     default: all
+    example: issue, pr, review, wiki, star
     values:
       - all        # Display all types of events
       - comment    # Display commits, issues and pull requests comments
@@ -49,3 +52,18 @@ inputs:
       - star       # Display starred repositories
       - member     # Display collaborators additions
       - public     # Display repositories made public
+
+  # Set events visibility (use this to restrict events when using a "repo" token)
+  plugin_activity_visibility:
+    description: Set events visibility
+    type: string
+    default: all
+    values:
+      - public
+      - all
+
+  # Display events timestamps
+  plugin_activity_timestamps:
+    description: Display events timestamps
+    type: boolean
+    default: no

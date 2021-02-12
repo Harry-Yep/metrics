@@ -8,45 +8,49 @@
   import axios from "axios"
   import puppeteer from "puppeteer"
   import imgb64 from "image-to-base64"
+  import git from "simple-git"
+  import twemojis from "twemoji-parser"
 
-  export {fs, os, paths, url, util, processes, axios, puppeteer, imgb64}
+  export {fs, os, paths, url, util, processes, axios, puppeteer, imgb64, git}
 
-/** Returns module __dirname */
+/**Returns module __dirname */
   export function __module(module) {
     return paths.join(paths.dirname(url.fileURLToPath(module)))
   }
 
-/** Plural formatter */
+/**Plural formatter */
   export function s(value, end = "") {
     return value !== 1 ? {y:"ies", "":"s"}[end] : end
   }
 
-/** Formatter */
+/**Formatter */
   export function format(n, {sign = false} = {}) {
-    for (const {u, v} of [{u:"b", v:10**9}, {u:"m", v:10**6}, {u:"k", v:10**3}])
+    for (const {u, v} of [{u:"b", v:10**9}, {u:"m", v:10**6}, {u:"k", v:10**3}]) {
       if (n/v >= 1)
         return `${(sign)&&(n > 0) ? "+" : ""}${(n/v).toFixed(2).substr(0, 4).replace(/[.]0*$/, "")}${u}`
+    }
     return `${(sign)&&(n > 0) ? "+" : ""}${n}`
   }
 
-/** Bytes formatter */
+/**Bytes formatter */
   export function bytes(n) {
-    for (const {u, v} of [{u:"E", v:10**18}, {u:"P", v:10**15}, {u:"T", v:10**12}, {u:"G", v:10**9}, {u:"M", v:10**6}, {u:"k", v:10**3}])
+    for (const {u, v} of [{u:"E", v:10**18}, {u:"P", v:10**15}, {u:"T", v:10**12}, {u:"G", v:10**9}, {u:"M", v:10**6}, {u:"k", v:10**3}]) {
       if (n/v >= 1)
         return `${(n/v).toFixed(2).substr(0, 4).replace(/[.]0*$/, "")} ${u}B`
+    }
     return `${n} byte${n > 1 ? "s" : ""}`
   }
   format.bytes = bytes
 
-/** Percentage formatter */
+/**Percentage formatter */
   export function percentage(n, {rescale = true} = {}) {
     return `${(n*(rescale ? 100 : 1)).toFixed(2)
-      .replace(/(?<=[.])([1-9]*)(0+)$/, (m, a, b) => a)
+      .replace(/(?<=[.])(?<decimal>[1-9]*)0+$/, "$<decimal>")
       .replace(/[.]$/, "")}%`
   }
   format.percentage = percentage
 
-/** Text ellipsis formatter */
+/**Text ellipsis formatter */
   export function ellipsis(text, {length = 20} = {}) {
     text = `${text}`
     if (text.length < length)
@@ -55,7 +59,13 @@
   }
   format.ellipsis = ellipsis
 
-/** Array shuffler */
+/**Date formatter */
+  export function date(string, options) {
+    return new Intl.DateTimeFormat("en-GB", options).format(new Date(string))
+  }
+  format.date = date
+
+/**Array shuffler */
   export function shuffle(array) {
     for (let i = array.length-1; i > 0; i--) {
       const j = Math.floor(Math.random()*(i+1))
@@ -64,7 +74,7 @@
     return array
   }
 
-/** Escape html */
+/**Escape html */
   export function htmlescape(string, u = {"&":true, "<":true, ">":true, '"':true, "'":true}) {
     return string
       .replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, u["&"] ? "&amp;" : "&")
@@ -74,18 +84,21 @@
       .replace(/'/g, u["'"] ? "&apos;" : "'")
   }
 
-/** Expand url */
+/**Expand url */
   export async function urlexpand(url) {
     try {
       return (await axios.get(url)).request.res.responseUrl
-    } catch {
+    }
+    catch {
       return url
     }
   }
 
-/** Run command */
-  export async function run(command, options) {
-    return await new Promise((solve, reject) => {
+/**Run command */
+  export async function run(command, options, {prefixed = true} = {}) {
+    const prefix = {win32:"wsl"}[process.platform] ?? ""
+    command = `${prefixed ? prefix : ""} ${command}`.trim()
+    return new Promise((solve, reject) => {
       console.debug(`metrics/command > ${command}`)
       const child = processes.exec(command, options)
       let [stdout, stderr] = ["", ""]
@@ -93,25 +106,42 @@
       child.stderr.on("data", data => stderr += data)
       child.on("close", code => {
         console.debug(`metrics/command > ${command} > exited with code ${code}`)
+        console.debug(stdout)
+        console.debug(stderr)
         return code === 0 ? solve(stdout) : reject(stderr)
       })
     })
   }
 
-/** Render svg */
-  export async function svgresize(svg, {paddings = ["6%"], convert} = {}) {
+/**Check command existance */
+  export async function which(command) {
+    try {
+      console.debug(`metrics/command > checking existence of ${command}`)
+      await run(`which ${command}`)
+      return true
+    }
+    catch {
+      console.debug(`metrics/command > checking existence of ${command} > failed`)
+    }
+    return false
+  }
+
+/**Render svg */
+  export async function svgresize(svg, {paddings, convert}) {
     //Instantiate browser if needed
       if (!svgresize.browser) {
         svgresize.browser = await puppeteer.launch({headless:true, executablePath:process.env.PUPPETEER_BROWSER_PATH, args:["--no-sandbox", "--disable-extensions", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]})
         console.debug(`metrics/svgresize > started ${await svgresize.browser.version()}`)
       }
     //Format padding
-      const [pw = 1, ph] = paddings.map(padding => `${padding}`.substring(0, padding.length-1)).map(value => 1+Number(value)/100)
+      const [pw = 1, ph] = (Array.isArray(paddings) ? paddings : `${paddings}`.split(",").map(x => x.trim())).map(padding => `${padding}`.substring(0, padding.length-1)).map(value => 1+Number(value)/100)
       const padding = {width:pw, height:ph ?? pw}
       console.debug(`metrics/svgresize > padding width*${padding.width}, height*${padding.height}`)
     //Render through browser and resize height
       const page = await svgresize.browser.newPage()
-      await page.setContent(svg, {waitUntil:"load"})
+      await page.setContent(svg, {waitUntil:["load", "domcontentloaded", "networkidle2"]})
+      await page.addStyleTag({content:"body { margin: 0; padding: 0; }"})
+      await wait(1)
       let mime = "image/svg+xml"
       let {resized, width, height} = await page.evaluate(async padding => {
         //Disable animations
@@ -141,7 +171,21 @@
       return {resized, mime}
   }
 
-/** Wait */
+/**Render twemojis */
+  export async function svgemojis(svg) {
+    //Load emojis
+      const emojis = new Map()
+      for (const {text:emoji, url} of twemojis.parse(svg)) {
+        if (!emojis.has(emoji))
+          emojis.set(emoji, (await axios.get(url)).data.replace(/^<svg /, '<svg class="twemoji" '))
+      }
+    //Apply replacements
+      for (const [emoji, twemoji] of emojis)
+        svg = svg.replace(new RegExp(emoji, "g"), twemoji)
+    return svg
+  }
+
+/**Wait */
   export async function wait(seconds) {
-    await new Promise(solve => setTimeout(solve, seconds*1000))
+    await new Promise(solve => setTimeout(solve, seconds*1000)) //eslint-disable-line no-promise-executor-return
   }

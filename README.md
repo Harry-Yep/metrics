@@ -24,7 +24,7 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
 <table>
   <tr>
     <th colspan="2" align="center">
-      <a href="source/plugins/README.md">🧩 19 plugins</a>
+      <a href="source/plugins/README.md">🧩 21 plugins</a>
     </th>
   </tr>
   <tr>
@@ -83,7 +83,7 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
   </tr>
   <tr>
     <th><a href="source/plugins/languages/README.md">🈷️ Most used languages</a></th>
-    <th><a href="source/plugins/lines/README.md">👨‍💻 Lines of code changed</a></th>
+    <th><a href="source/plugins/licenses/README.md">📜 Licenses</a></th>
   </tr>
   <tr>
     <td align="center">
@@ -94,15 +94,22 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
       <img width="900" height="1" alt="">
     </td>
     <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.lines.svg">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.licenses.svg">
+      <details><summary>With licenses ratio</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.licenses.ratio.svg">
+      </details>
       <img width="900" height="1" alt="">
     </td>
   </tr>
   <tr>
+    <th><a href="source/plugins/lines/README.md">👨‍💻 Lines of code changed</a></th>
     <th><a href="source/plugins/music/README.md">🎼 Music plugin</a></th>
-    <th><a href="source/plugins/pagespeed/README.md">⏱️ Website performances</a></th>
   </tr>
   <tr>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.lines.svg">
+      <img width="900" height="1" alt="">
+    </td>
     <td align="center">
       <details open><summary>🎼 Favorite tracks version</summary>
         <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.music.playlist.svg">
@@ -110,6 +117,16 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
       <details open><summary>Recently listened version</summary>
         <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.music.recent.svg">
       </details>
+      <img width="900" height="1" alt="">
+    </td>
+  </tr>
+  <tr>
+    <th><a href="source/plugins/nightscout/README.md">💉 Nightscout</a></th>
+    <th><a href="source/plugins/pagespeed/README.md">⏱️ Website performances</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/legoandmars/legoandmars/blob/master/metrics.plugin.nightscout.svg">
       <img width="900" height="1" alt="">
     </td>
     <td align="center">
@@ -549,8 +566,10 @@ https://my-personal-domain.com/my-github-user?base=0&base.repositories=1
     <th nowrap="nowrap" align="center">💡</th>
     <th nowrap="nowrap" align="center">📅</th>
     <th nowrap="nowrap" align="center">🈷️</th>
+    <th nowrap="nowrap" align="center">📜</th>
     <th nowrap="nowrap" align="center">👨‍💻</th>
     <th nowrap="nowrap" align="center">🎼</th>
+    <th nowrap="nowrap" align="center">💉</th>
     <th nowrap="nowrap" align="center">⏱️</th>
     <th nowrap="nowrap" align="center">🧑‍🤝‍🧑</th>
     <th nowrap="nowrap" align="center">✒️</th>
@@ -572,8 +591,10 @@ https://my-personal-domain.com/my-github-user?base=0&base.repositories=1
     <th nowrap="nowrap" align="center" data-plugin="habits">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="isocalendar">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="languages">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="licenses">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="music">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="nightscout">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="pagespeed">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="people">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="posts">✔️</th>
@@ -588,15 +609,17 @@ https://my-personal-domain.com/my-github-user?base=0&base.repositories=1
   <tr>
     <th nowrap="nowrap">📘 Repository</th>    
     <th nowrap="nowrap" align="center" data-plugin="base">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="activity">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="activity">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="anilist">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="followup">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="gists">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="habits">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="isocalendar">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="languages">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="licenses">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="music">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="nightscout">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="pagespeed">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="people">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="posts">❌</th>
@@ -618,8 +641,10 @@ https://my-personal-domain.com/my-github-user?base=0&base.repositories=1
     <th nowrap="nowrap" align="center" data-plugin="habits">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="isocalendar">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="languages">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="licenses">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="music">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="nightscout">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="pagespeed">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="people">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="posts">❌</th>
@@ -657,8 +682,10 @@ See their respective documentation for more informations about how to setup them
 * [💡 Coding habits](/source/plugins/habits/README.md)
 * [📅 Isometric commit calendar](/source/plugins/isocalendar/README.md)
 * [🈷️ Most used languages](/source/plugins/languages/README.md)
+* [📜 Licenses](/source/plugins/licenses/README.md)
 * [👨‍💻 Lines of code changed](/source/plugins/lines/README.md)
 * [🎼 Music plugin](/source/plugins/music/README.md)
+* [💉 Nightscout](/source/plugins/nightscout/README.md)
 * [⏱️ Website performances](/source/plugins/pagespeed/README.md)
 * [🧑‍🤝‍🧑 People plugin](/source/plugins/people/README.md)
 * [✒️ Recent posts](/source/plugins/posts/README.md)
@@ -753,4 +780,5 @@ MIT License
 Copyright (c) 2020 lowlighter
 ```
 
+![License details](https://github.com/lowlighter/lowlighter/blob/master/metrics.licenses.svg)
 
