@@ -1,5 +1,6 @@
 [
   "base.header",
+  "introduction",
   "followup",
   "languages",
   "projects",
@@ -7,5 +8,6 @@
   "stargazers",
   "people",
   "activity",
+  "contributors",
   "licenses"
 ]

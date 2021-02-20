@@ -12,7 +12,7 @@
   "debug": false,                  "//": "Debug logs",
   "mocked": false,                 "//": "Use mocked data instead of live APIs (use 'force' to use mocked token even if real token are defined)",
   "repositories": 100,             "//": "Number of repositories to use",
-  "padding": ["6%", "12%"],        "//": "Image padding (default)",
+  "padding": ["6%", "15%"],        "//": "Image padding (default)",
   "community": {
     "templates": [],               "//": "Additional community templates to setup"
   },
@@ -25,8 +25,8 @@
     "activity":{
       "enabled": false,            "//": "Display recent activity"
     },
-    "anilist":{
-      "enabled": false,            "//": "Display data from your AniList account"
+    "contributors":{
+      "enabled": false,            "//": "Display repository contributors"
     },
     "followup":{
       "enabled": false,            "//": "Display follow-up of repositories issues and pull requests"
@@ -36,6 +36,9 @@
     },
     "habits":{
       "enabled": false,            "//": "Display coding habits metrics"
+    },
+    "introduction":{
+      "enabled": false,            "//": "Display account or repository introduction"
     },
     "isocalendar":{
       "enabled": false,            "//": "Display an isometric view of your commits calendar"
@@ -49,22 +52,8 @@
     "lines":{
       "enabled": false,            "//": "Display lines of code metrics"
     },
-    "music":{
-      "token": null,               "//":"Music provider personal token",
-      "enabled": false,            "//": "Display your music tracks"
-    },
-    "nightscout":{
-      "enabled": false,            "//": "Displays Blood Glucose"
-    },
-    "pagespeed":{
-      "token": null,               "//":"PageSpeed token",
-      "enabled": false,            "//": "Display a website Google PageSpeed metrics"
-    },
     "people":{
       "enabled": false,            "//": "Display GitHub users from various affiliations"
-    },
-    "posts":{
-      "enabled": false,            "//": "Display recent posts"
     },
     "projects":{
       "enabled": false,            "//": "Display active projects"
@@ -81,6 +70,20 @@
     "traffic":{
       "enabled": false,            "//": "Display repositories traffic metrics"
     },
+    "anilist":{
+      "enabled": false,            "//": "Display data from your AniList account"
+    },
+    "music":{
+      "token": null,               "//":"Music provider personal token",
+      "enabled": false,            "//": "Display your music tracks"
+    },
+    "pagespeed":{
+      "token": null,               "//":"PageSpeed token",
+      "enabled": false,            "//": "Display a website Google PageSpeed metrics"
+    },
+    "posts":{
+      "enabled": false,            "//": "Display recent posts"
+    },
     "tweets":{
       "token": null,               "//":"Twitter API token",
       "enabled": false,            "//": "Display recent tweets"
@@ -88,6 +91,9 @@
     "wakatime":{
       "token": null,               "//":"WakaTime API token",
       "enabled": false,            "//": "Display WakaTime stats"
+    },
+    "nightscout":{
+      "enabled": false,            "//": "Displays Blood Glucose"
     },
     "//": ""
   }
