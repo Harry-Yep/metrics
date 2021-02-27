@@ -63,7 +63,8 @@
           skip(req, _res) {
             return !!cache.get(req.params.login)
           },
-          message:"Too many requests",
+          message:"Too many requests: retry later",
+          headers:true,
           ...ratelimiter,
         }))
       }
@@ -74,11 +75,11 @@
       })
 
     //Base routes
-      const limiter = ratelimit({max:debug ? Number.MAX_SAFE_INTEGER : 60, windowMs:60*1000})
+      const limiter = ratelimit({max:debug ? Number.MAX_SAFE_INTEGER : 60, windowMs:60*1000, headers:false})
       const metadata = Object.fromEntries(Object.entries(conf.metadata.plugins)
-        .filter(([key]) => !["base", "core"].includes(key))
-        .map(([key, value]) => [key, Object.fromEntries(Object.entries(value).filter(([key]) => ["name", "icon", "categorie", "web", "supports"].includes(key)))]))
-      const enabled = Object.entries(metadata).map(([name]) => ({name, enabled:plugins[name]?.enabled ?? false}))
+        .map(([key, value]) => [key, Object.fromEntries(Object.entries(value).filter(([key]) => ["name", "icon", "categorie", "web", "supports"].includes(key)))])
+        .map(([key, value]) => [key, key === "core" ? {...value, web:Object.fromEntries(Object.entries(value.web).filter(([key]) => /^config[.]/.test(key)).map(([key, value]) => [key.replace(/^config[.]/, ""), value]))} : value]))
+      const enabled = Object.entries(metadata).filter(([_name, {categorie}]) => categorie !== "core").map(([name]) => ({name, enabled:plugins[name]?.enabled ?? false}))
       const templates =  Object.entries(Templates).map(([name]) => ({name, enabled:(conf.settings.templates.enabled.length ? conf.settings.templates.enabled.includes(name) : true) ?? false}))
       const actions = {flush:new Map()}
       let requests = {limit:0, used:0, remaining:0, reset:NaN}
@@ -119,9 +120,10 @@
         app.get("/.js/prism.markdown.min.js", limiter, (req, res) => res.sendFile(`${conf.paths.node_modules}/prismjs/components/prism-markdown.min.js`))
       //Meta
         app.get("/.version", limiter, (req, res) => res.status(200).send(conf.package.version))
-        app.get("/.requests", limiter, async(req, res) => res.status(200).json(requests))
+        app.get("/.requests", limiter, (req, res) => res.status(200).json(requests))
+        app.get("/.hosted", limiter, (req, res) => res.status(200).json(conf.settings.hosted || null))
       //Cache
-        app.get("/.uncache", limiter, async(req, res) => {
+        app.get("/.uncache", limiter, (req, res) => {
           const {token, user} = req.query
           if (token) {
             if (actions.flush.has(token)) {
@@ -129,7 +131,7 @@
               cache.del(actions.flush.get(token))
               return res.sendStatus(200)
             }
-            return res.sendStatus(404)
+            return res.sendStatus(400)
           }
           {
             const token = `${Math.random().toString(16).replace("0.", "")}${Math.random().toString(16).replace("0.", "")}`
@@ -139,24 +141,43 @@
         })
 
     //Metrics
-      app.get("/:login", ...middlewares, async(req, res) => {
+      const pending = new Set()
+      app.get("/:login/:repository?", ...middlewares, async(req, res) => {
         //Request params
           const login = req.params.login?.replace(/[\n\r]/g, "")
+          const repository = req.params.repository?.replace(/[\n\r]/g, "")
+          if (!/^[-\w]+$/i.test(login)) {
+            console.debug(`metrics/app/${login} > 400 (invalid username)`)
+            return res.status(400).send("Bad request: username seems invalid")
+          }
+        //Allowed list check
           if ((restricted.length)&&(!restricted.includes(login))) {
-            console.debug(`metrics/app/${login} > 403 (not in whitelisted users)`)
-            return res.sendStatus(403)
+            console.debug(`metrics/app/${login} > 403 (not in allowed users)`)
+            return res.status(403).send("Forbidden: username not in allowed list")
           }
         //Read cached data if possible
           if ((!debug)&&(cached)&&(cache.get(login))) {
             const {rendered, mime} = cache.get(login)
             res.header("Content-Type", mime)
-            res.send(rendered)
-            return
+            return res.send(rendered)
           }
         //Maximum simultaneous users
           if ((maxusers)&&(cache.size()+1 > maxusers)) {
             console.debug(`metrics/app/${login} > 503 (maximum users reached)`)
-            return res.sendStatus(503)
+            return res.status(503).send("Service Unavailable: maximum number of users reached, only cached metrics are available")
+          }
+        //Prevent multiples requests
+          if (pending.has(login)) {
+            console.debug(`metrics/app/${login} > 409 (multiple requests)`)
+            return res.status(409).send(`Conflict: a request for "${login}" is already being processed, retry later once previous one is finished`)
+          }
+          pending.add(login)
+        //Repository alias
+          if (repository) {
+            console.debug(`metrics/app/${login} > compute repository metrics`)
+            if (!req.query.template)
+              req.query.template = "repository"
+            req.query.repo = repository
           }
 
         //Compute rendering
@@ -175,23 +196,27 @@
                 cache.put(login, {rendered, mime}, cached)
             //Send response
               res.header("Content-Type", mime)
-              res.send(rendered)
+              return res.send(rendered)
           }
         //Internal error
           catch (error) {
             //Not found user
               if ((error instanceof Error)&&(/^user not found$/.test(error.message))) {
                 console.debug(`metrics/app/${login} > 404 (user/organization not found)`)
-                return res.sendStatus(404)
+                return res.status(404).send("Not found: unknown user or organization")
               }
             //Invalid template
               if ((error instanceof Error)&&(/^unsupported template$/.test(error.message))) {
                 console.debug(`metrics/app/${login} > 400 (bad request)`)
-                return res.sendStatus(400)
+                return res.status(400).send("Bad request: unsupported template")
               }
             //General error
               console.error(error)
-              res.sendStatus(500)
+              return res.status(500).send("Internal Server Error: failed to process metrics correctly")
+          }
+        //After rendering
+          finally {
+            pending.delete(login)
           }
       })
 
