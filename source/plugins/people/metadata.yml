@@ -1,6 +1,7 @@
 name: "🧑‍🤝‍🧑 People plugin"
 cost: 1 GraphQL request per 100 users + 1 REST request per user in "plugin_people_thanks"
 categorie: github
+index: 9
 supports:
   - user
   - organization
@@ -53,6 +54,14 @@ inputs:
   # This is useful to craft "Special thanks" badges
   plugin_people_thanks:
     description: GitHub users to personally thanks
+    type: array
+    format: comma-separated
+    default: ""
+
+  # Add specified users to GitHub sponsors ("sponsors" must be specified in "plugin_people_types")
+  # This is useful to list sponsors from unsupported GitHub sponsors sources
+  plugin_people_sponsors_custom:
+    description: Custom GitHub sponsors
     type: array
     format: comma-separated
     default: ""

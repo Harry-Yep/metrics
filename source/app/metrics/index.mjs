@@ -26,6 +26,7 @@
           const {queries} = conf
           const data = {animated:true, base:{}, config:{}, errors:[], plugins:{}, computed:{}}
           const imports = {plugins:Plugins, templates:Templates, metadata:conf.metadata, ...utils}
+          const experimental = new Set(decodeURIComponent(q["experimental.features"] ?? "").split(" ").map(x => x.trim().toLocaleLowerCase()).filter(x => x))
 
         //Partial parts
           {
@@ -52,41 +53,53 @@
               console.warn(util.inspect(errors, {depth:Infinity, maxStringLength:256}))
           }
 
-        //Rendering and resizing
+        //JSON output
+          if (convert === "json") {
+            console.debug(`metrics/compute/${login} > json output`)
+            return {rendered:data, mime:"application/json"}
+          }
+
+        //Rendering
           console.debug(`metrics/compute/${login} > render`)
           let rendered = await ejs.render(image, {...data, s:imports.s, f:imports.format, style, fonts}, {views, async:true})
+
+        //Additional transformations
           if (q["config.twemoji"])
             rendered = await imports.svg.twemojis(rendered)
           if (q["config.gemoji"])
             rendered = await imports.svg.gemojis(rendered, {rest})
+        //Optimize rendering
+          if ((conf.settings?.optimize)&&(!q.raw)) {
+            console.debug(`metrics/compute/${login} > optimize`)
+            if (experimental.has("--optimize")) {
+              const {error, data:optimized} = await SVGO.optimize(rendered, {multipass:true, plugins:SVGO.extendDefaultPlugins([
+                //Additional cleanup
+                  {name:"cleanupListOfValues"},
+                  {name:"removeRasterImages"},
+                  {name:"removeScriptElement"},
+                //Force CSS style consistency
+                  {name:"inlineStyles", active:false},
+                  {name:"removeViewBox", active:false},
+              ])})
+              if (error)
+                throw new Error(`Could not optimize SVG: \n${error}`)
+              rendered = optimized
+              console.debug(`metrics/compute/${login} > optimize > success`)
+            }
+            else
+              console.debug(`metrics/compute/${login} > optimize > this feature is currently disabled due to display issues (use --optimize flag in experimental features to force enable it)`)
+          }
+        //Verify svg
+          if (verify) {
+            console.debug(`metrics/compute/${login} > verify SVG`)
+            const libxmljs = (await import("libxmljs")).default
+            const parsed = libxmljs.parseXml(rendered)
+            if (parsed.errors.length)
+              throw new Error(`Malformed SVG : \n${parsed.errors.join("\n")}`)
+          }
+        //Resizing
           const {resized, mime} = await imports.svg.resize(rendered, {paddings:q["config.padding"] || conf.settings.padding, convert})
           rendered = resized
-
-        //Additional SVG transformations
-          if (/svg/.test(mime)) {
-            //Optimize rendering
-              if ((conf.settings?.optimize)&&(!q.raw)) {
-                console.debug(`metrics/compute/${login} > optimize`)
-                const {data:optimized} = await SVGO.optimize(rendered, {multipass:true, plugins:SVGO.extendDefaultPlugins([
-                  //Additional cleanup
-                    {name:"cleanupListOfValues"},
-                    {name:"removeRasterImages"},
-                    {name:"removeScriptElement"},
-                  //Force CSS style consistency
-                    {name:"inlineStyles", active:false},
-                    {name:"removeViewBox", active:false},
-                ])})
-                rendered = optimized
-              }
-            //Verify svg
-              if (verify) {
-                console.debug(`metrics/compute/${login} > verify SVG`)
-                const libxmljs = (await import("libxmljs")).default
-                const parsed = libxmljs.parseXml(rendered)
-                if (parsed.errors.length)
-                  throw new Error(`Malformed SVG : \n${parsed.errors.join("\n")}`)
-              }
-          }
 
         //Result
           console.debug(`metrics/compute/${login} > success`)

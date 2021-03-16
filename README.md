@@ -1,8 +1,12 @@
-# 📊 Metrics
+# 📊 Metrics [<img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=280144&theme=dark" alt="" align="right" width="190" height="41">](https://www.producthunt.com/posts/github-metrics?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-github-metrics)
 
-![Build](https://github.com/lowlighter/metrics/workflows/Build/badge.svg)
+![Build](https://github.com/lowlighter/metrics/workflows/Build/badge.svg) [![Metrics (examples)](https://github.com/lowlighter/lowlighter/actions/workflows/metrics.yml/badge.svg)](https://github.com/lowlighter/lowlighter/actions/workflows/metrics.yml)
 
 Generate your metrics that you can embed everywhere, including your GitHub profile readme! It works for both user and organization accounts, and even for repositories!
+
+
+<sup>*⚠️ This is the documentation of **v3.6-beta** (`@master` branch) which includes [unreleased features](https://github.com/lowlighter/metrics/compare/latest...master), see documentation of **v3.5** (`@latest` branch) [here](https://github.com/lowlighter/metrics/blob/latest/README.md).*</sup>
+
 
 <table>
   <tr>
@@ -21,64 +25,14 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
   </tr>
 </table>
 
+
+And you can customize these heavily with plugins, templates and hundreds of options!
+
 <table>
   <tr>
     <th colspan="2" align="center">
-      <a href="source/plugins/README.md">🧩 25 plugins</a>
+      <a href="source/plugins/README.md">🧩 27 plugins</a>
     </th>
-  </tr>
-  <tr>
-    <th><a href="source/plugins/activity/README.md">📰 Recent activity</a></th>
-    <th><a href="source/plugins/contributors/README.md">🏅 Repository contributors</a></th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.activity.svg">
-      <img width="900" height="1" alt="">
-    </td>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.contributors.svg">
-      <details open><summary>With number of contributions</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.contributors.contributions.svg">
-      </details>
-      <img width="900" height="1" alt="">
-    </td>
-  </tr>
-  <tr>
-    <th><a href="source/plugins/followup/README.md">🎟️ Follow-up of issues and pull requests</a></th>
-    <th><a href="source/plugins/gists/README.md">🎫 Gists</a></th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.followup.svg">
-      <img width="900" height="1" alt="">
-    </td>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.gists.svg">
-      <img width="900" height="1" alt="">
-    </td>
-  </tr>
-  <tr>
-    <th><a href="source/plugins/habits/README.md">💡 Coding habits</a></th>
-    <th><a href="source/plugins/introduction/README.md">🙋 Introduction</a></th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.habits.facts.svg">
-      <details open><summary>Charts version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.habits.charts.svg">
-      </details>
-      <img width="900" height="1" alt="">
-    </td>
-    <td align="center">
-      <details open><summary>Account version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.introduction.svg">
-      </details>
-      <details open><summary>Repository version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.introduction.repository.svg">
-      </details>
-      <img width="900" height="1" alt="">
-    </td>
   </tr>
   <tr>
     <th><a href="source/plugins/isocalendar/README.md">📅 Isometric commit calendar</a></th>
@@ -101,8 +55,30 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
     </td>
   </tr>
   <tr>
+    <th><a href="source/plugins/introduction/README.md">🙋 Introduction</a></th>
+    <th><a href="source/plugins/habits/README.md">💡 Coding habits</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <details open><summary>Account version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.introduction.svg">
+      </details>
+      <details open><summary>Repository version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.introduction.repository.svg">
+      </details>
+      <img width="900" height="1" alt="">
+    </td>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.habits.facts.svg">
+      <details open><summary>Charts version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.habits.charts.svg">
+      </details>
+      <img width="900" height="1" alt="">
+    </td>
+  </tr>
+  <tr>
     <th><a href="source/plugins/licenses/README.md">📜 Repository licenses</a></th>
-    <th><a href="source/plugins/lines/README.md">👨‍💻 Lines of code changed</a></th>
+    <th><a href="source/plugins/contributors/README.md">🏅 Repository contributors</a></th>
   </tr>
   <tr>
     <td align="center">
@@ -113,44 +89,10 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
       <img width="900" height="1" alt="">
     </td>
     <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.lines.svg">
-      <img width="900" height="1" alt="">
-    </td>
-  </tr>
-  <tr>
-    <th><a href="source/plugins/people/README.md">🧑‍🤝‍🧑 People plugin</a></th>
-    <th><a href="source/plugins/projects/README.md">🗂️ Active projects</a></th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.followers.svg">
-      <details><summary>Followed people version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.following.svg">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.contributors.svg">
+      <details><summary>With number of contributions</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.contributors.contributions.svg">
       </details>
-      <details><summary>Special thanks version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.thanks.svg">
-      </details>
-      <details><summary>Repository template version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.repository.svg">
-      </details>
-      <img width="900" height="1" alt="">
-    </td>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.projects.svg">
-      <img width="900" height="1" alt="">
-    </td>
-  </tr>
-  <tr>
-    <th><a href="source/plugins/skyline/README.md">🌇 GitHub Skyline 3D calendar</a></th>
-    <th><a href="source/plugins/stargazers/README.md">✨ Stargazers over last weeks</a></th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.skyline.svg">
-      <img width="900" height="1" alt="">
-    </td>
-    <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.stargazers.svg">
       <img width="900" height="1" alt="">
     </td>
   </tr>
@@ -172,36 +114,90 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
     </td>
   </tr>
   <tr>
-    <th><a href="source/plugins/traffic/README.md">🧮 Repositories traffic</a></th>
-    <th><a href="source/plugins/anilist/README.md">🌸 Anilist watch list and reading list</a></th>
+    <th><a href="source/plugins/reactions/README.md">🎭 Comment reactions</a></th>
+    <th><a href="source/plugins/people/README.md">🧑‍🤝‍🧑 People plugin</a></th>
   </tr>
   <tr>
     <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.traffic.svg">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.reactions.svg">
+      <img width="900" height="1" alt="">
     </td>
     <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.svg">
-      <details><summary>Manga version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.manga.svg">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.followers.svg">
+      <details><summary>Followed people version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.following.svg">
       </details>
-      <details open><summary>Favorites characters version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.characters.svg">
+      <details><summary>Special thanks version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.thanks.svg">
+      </details>
+      <details><summary>Repository template version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.people.repository.svg">
       </details>
       <img width="900" height="1" alt="">
     </td>
   </tr>
   <tr>
-    <th><a href="source/plugins/music/README.md">🎼 Music plugin</a></th>
+    <th><a href="source/plugins/gists/README.md">🎫 Gists</a></th>
+    <th><a href="source/plugins/followup/README.md">🎟️ Follow-up of issues and pull requests</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.gists.svg">
+      <img width="900" height="1" alt="">
+    </td>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.followup.svg">
+      <img width="900" height="1" alt="">
+    </td>
+  </tr>
+  <tr>
+    <th><a href="source/plugins/lines/README.md">👨‍💻 Lines of code changed</a></th>
+    <th><a href="source/plugins/traffic/README.md">🧮 Repositories traffic</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.lines.svg">
+      <img width="900" height="1" alt="">
+    </td>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.traffic.svg">
+    </td>
+  </tr>
+  <tr>
+    <th><a href="source/plugins/stargazers/README.md">✨ Stargazers over last weeks</a></th>
+    <th><a href="source/plugins/projects/README.md">🗂️ Active projects</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.stargazers.svg">
+      <img width="900" height="1" alt="">
+    </td>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.projects.svg">
+      <img width="900" height="1" alt="">
+    </td>
+  </tr>
+  <tr>
+    <th><a href="source/plugins/activity/README.md">📰 Recent activity</a></th>
+    <th><a href="source/plugins/achievements/README.md">🏆 Achievements</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.activity.svg">
+      <img width="900" height="1" alt="">
+    </td>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.achievements.svg">
+      <img width="900" height="1" alt="">
+    </td>
+  </tr>
+  <tr>
+    <th><a href="source/plugins/skyline/README.md">🌇 GitHub Skyline 3D calendar</a></th>
     <th><a href="source/plugins/pagespeed/README.md">⏱️ Website performances</a></th>
   </tr>
   <tr>
     <td align="center">
-      <details open><summary>🎼 Favorite tracks version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.music.playlist.svg">
-      </details>
-      <details open><summary>Recently listened version</summary>
-        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.music.recent.svg">
-      </details>
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.skyline.svg">
       <img width="900" height="1" alt="">
     </td>
     <td align="center">
@@ -216,12 +212,40 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
     </td>
   </tr>
   <tr>
-    <th><a href="source/plugins/posts/README.md">✒️ Recent posts</a></th>
+    <th><a href="source/plugins/music/README.md">🎼 Music plugin</a></th>
+    <th><a href="source/plugins/tweets/README.md">🐤 Latest tweets</a></th>
+  </tr>
+  <tr>
+    <td align="center">
+      <details open><summary>🎼 Favorite tracks version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.music.playlist.svg">
+      </details>
+      <details open><summary>Recently listened version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.music.recent.svg">
+      </details>
+      <img width="900" height="1" alt="">
+    </td>
+    <td align="center">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.tweets.svg">
+      <details><summary>With tweets attachments version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.tweets.attachments.svg">
+      </details>
+      <img width="900" height="1" alt="">
+    </td>
+  </tr>
+  <tr>
+    <th><a href="source/plugins/anilist/README.md">🌸 Anilist watch list and reading list</a></th>
     <th><a href="source/plugins/stackoverflow/README.md">🗨️ Stackoverflow plugin</a></th>
   </tr>
   <tr>
     <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.posts.svg">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.svg">
+      <details><summary>Manga version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.manga.svg">
+      </details>
+      <details open><summary>Favorites characters version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.anilist.characters.svg">
+      </details>
       <img width="900" height="1" alt="">
     </td>
     <td align="center">
@@ -230,12 +254,15 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
     </td>
   </tr>
   <tr>
-    <th><a href="source/plugins/tweets/README.md">🐤 Latest tweets</a></th>
+    <th><a href="source/plugins/posts/README.md">✒️ Recent posts</a></th>
     <th><a href="source/plugins/wakatime/README.md">⏰ WakaTime plugin</a></th>
   </tr>
   <tr>
     <td align="center">
-      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.tweets.svg">
+      <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.posts.svg">
+      <details><summary>With posts descriptions and cover images version</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.posts.full.svg">
+      </details>
       <img width="900" height="1" alt="">
     </td>
     <td align="center">
@@ -298,9 +325,7 @@ Generate your metrics that you can embed everywhere, including your GitHub profi
 
 ## 🦑 Interested to get your own?
 
-Try it now at [metrics.lecoq.io](https://metrics.lecoq.io/) with your GitHub username!
-
-Some plugins are not are not available at [metrics.lecoq.io](https://metrics.lecoq.io/), for a fully-featured experience use it as a [GitHub Action](https://github.com/marketplace/actions/github-metrics-as-svg-image) instead!
+For a fully-featured experience you should use **metrics** as a [GitHub Action](https://github.com/marketplace/actions/github-metrics-as-svg-image), but you can also try it now at [metrics.lecoq.io](https://metrics.lecoq.io/) with your GitHub username!
 
 # 📜 How to use?
 
@@ -319,7 +344,7 @@ Assuming your username is `my-github-user`, you can then embed rendered metrics 
 ```
 
 <details>
-<summary>💬 How to setup?</summary>
+<summary><b>💬 How to setup?</b> <i>(click to expand)</i></summary>
 
 ### 0. Setup your personal repository
 
@@ -366,8 +391,8 @@ on:
   # Schedule updates (each hour)
   schedule: [{cron: "0 * * * *"}]
   # Lines below let you run workflow manually and on each commit (optional)
-  push: {branches: ["master", "main"]}
   workflow_dispatch:
+  push: {branches: ["master", "main"]}
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
@@ -377,8 +402,6 @@ jobs:
         with:
           # Your GitHub token
           token: ${{ secrets.METRICS_TOKEN }}
-          # GITHUB_TOKEN is a special auto-generated token restricted to current repository, which is used to push files in it
-          committer_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 See all supported options in [action.yml](action.yml).
@@ -430,9 +453,10 @@ For convenience, you can use the shared instance available at [metrics.lecoq.io]
 ```
 
 This is mostly intended for previews, to enjoy all features consider using GitHub Action instead.
+Availability is not guaranteed.
 
 <details>
-<summary>💬 Fair use</summary>
+<summary><b>💬 Fair use</b> <i>(click to expand)</i></summary>
 
 To ensure service availability, shared instance has a few limitations:
   * Images are cached for 15 minutes
@@ -458,7 +482,7 @@ Assuming your username is `my-github-user`, you can then embed rendered metrics 
 ```
 
 <details>
-<summary>💬 How to setup?</summary>
+<summary><b>💬 How to setup?</b> <i>(click to expand)</i></summary>
 
 ### 0. Prepare your server
 
@@ -581,116 +605,124 @@ https://my-personal-domain.com/my-github-user?base=0&base.repositories=1
   <tr>
     <th nowrap="nowrap">Template\Plugin</th>    
     <th nowrap="nowrap" align="center" title="🗃️ Base content">🗃️</th>
-    <th nowrap="nowrap" align="center" title="📰 Recent activity">📰</th>
-    <th nowrap="nowrap" align="center" title="🏅 Repository contributors">🏅</th>
-    <th nowrap="nowrap" align="center" title="🎟️ Follow-up of issues and pull requests">🎟️</th>
-    <th nowrap="nowrap" align="center" title="🎫 Gists">🎫</th>
-    <th nowrap="nowrap" align="center" title="💡 Coding habits">💡</th>
-    <th nowrap="nowrap" align="center" title="🙋 Introduction">🙋</th>
     <th nowrap="nowrap" align="center" title="📅 Isometric commit calendar">📅</th>
     <th nowrap="nowrap" align="center" title="🈷️ Most used languages">🈷️</th>
+    <th nowrap="nowrap" align="center" title="🙋 Introduction">🙋</th>
+    <th nowrap="nowrap" align="center" title="💡 Coding habits">💡</th>
     <th nowrap="nowrap" align="center" title="📜 Repository licenses">📜</th>
-    <th nowrap="nowrap" align="center" title="👨‍💻 Lines of code changed">👨‍💻</th>
-    <th nowrap="nowrap" align="center" title="🧑‍🤝‍🧑 People plugin">🧑‍🤝‍🧑</th>
-    <th nowrap="nowrap" align="center" title="🗂️ Active projects">🗂️</th>
-    <th nowrap="nowrap" align="center" title="🌇 GitHub Skyline 3D calendar">🌇</th>
-    <th nowrap="nowrap" align="center" title="✨ Stargazers over last weeks">✨</th>
+    <th nowrap="nowrap" align="center" title="🏅 Repository contributors">🏅</th>
     <th nowrap="nowrap" align="center" title="🌟 Recently starred repositories">🌟</th>
     <th nowrap="nowrap" align="center" title="📌 Starred topics">📌</th>
+    <th nowrap="nowrap" align="center" title="🎭 Comment reactions">🎭</th>
+    <th nowrap="nowrap" align="center" title="🧑‍🤝‍🧑 People plugin">🧑‍🤝‍🧑</th>
+    <th nowrap="nowrap" align="center" title="🎫 Gists">🎫</th>
+    <th nowrap="nowrap" align="center" title="🎟️ Follow-up of issues and pull requests">🎟️</th>
+    <th nowrap="nowrap" align="center" title="👨‍💻 Lines of code changed">👨‍💻</th>
     <th nowrap="nowrap" align="center" title="🧮 Repositories traffic">🧮</th>
-    <th nowrap="nowrap" align="center" title="🌸 Anilist watch list and reading list">🌸</th>
-    <th nowrap="nowrap" align="center" title="🎼 Music plugin">🎼</th>
+    <th nowrap="nowrap" align="center" title="✨ Stargazers over last weeks">✨</th>
+    <th nowrap="nowrap" align="center" title="🗂️ Active projects">🗂️</th>
+    <th nowrap="nowrap" align="center" title="📰 Recent activity">📰</th>
+    <th nowrap="nowrap" align="center" title="🏆 Achievements">🏆</th>
+    <th nowrap="nowrap" align="center" title="🌇 GitHub Skyline 3D calendar">🌇</th>
     <th nowrap="nowrap" align="center" title="⏱️ Website performances">⏱️</th>
-    <th nowrap="nowrap" align="center" title="✒️ Recent posts">✒️</th>
-    <th nowrap="nowrap" align="center" title="🗨️ Stackoverflow plugin">🗨️</th>
+    <th nowrap="nowrap" align="center" title="🎼 Music plugin">🎼</th>
     <th nowrap="nowrap" align="center" title="🐤 Latest tweets">🐤</th>
+    <th nowrap="nowrap" align="center" title="🌸 Anilist watch list and reading list">🌸</th>
+    <th nowrap="nowrap" align="center" title="🗨️ Stackoverflow plugin">🗨️</th>
+    <th nowrap="nowrap" align="center" title="✒️ Recent posts">✒️</th>
     <th nowrap="nowrap" align="center" title="⏰ WakaTime plugin">⏰</th>
     <th nowrap="nowrap" align="center" title="💉 Nightscout">💉</th>
   </tr>  
   <tr>
     <th nowrap="nowrap">📗 Classic</th>    
     <th nowrap="nowrap" align="center" data-plugin="base">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="activity">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="contributors">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="followup">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="gists">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="habits">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="introduction">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="isocalendar">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="languages">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="introduction">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="habits">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="licenses">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="people">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="projects">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="skyline">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="stargazers">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="contributors">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="stars">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="topics">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="reactions">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="people">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="gists">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="followup">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="traffic">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="anilist">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="music">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="stargazers">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="projects">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="activity">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="achievements">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="skyline">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="pagespeed">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="posts">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="stackoverflow">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="music">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="tweets">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="anilist">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="stackoverflow">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="posts">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="wakatime">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="nightscout">✔️</th>
   </tr>
   <tr>
     <th nowrap="nowrap">📘 Repository</th>    
     <th nowrap="nowrap" align="center" data-plugin="base">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="activity">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="contributors">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="followup">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="gists">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="habits">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="introduction">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="isocalendar">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="languages">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="introduction">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="habits">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="licenses">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="people">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="projects">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="skyline">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="stargazers">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="contributors">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="stars">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="topics">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="reactions">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="people">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="gists">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="followup">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="traffic">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="anilist">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="music">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="stargazers">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="projects">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="activity">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="achievements">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="skyline">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="pagespeed">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="posts">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="stackoverflow">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="music">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="tweets">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="anilist">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="stackoverflow">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="posts">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="wakatime">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="nightscout">❌</th>
   </tr>
   <tr>
     <th nowrap="nowrap">📙 Terminal</th>    
     <th nowrap="nowrap" align="center" data-plugin="base">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="activity">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="contributors">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="followup">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="gists">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="habits">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="introduction">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="isocalendar">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="languages">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="introduction">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="habits">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="licenses">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="people">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="projects">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="skyline">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="stargazers">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="contributors">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="stars">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="topics">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="reactions">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="people">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="gists">✔️</th>
+    <th nowrap="nowrap" align="center" data-plugin="followup">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="lines">✔️</th>
     <th nowrap="nowrap" align="center" data-plugin="traffic">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="anilist">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="music">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="stargazers">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="projects">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="activity">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="achievements">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="skyline">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="pagespeed">✔️</th>
-    <th nowrap="nowrap" align="center" data-plugin="posts">❌</th>
-    <th nowrap="nowrap" align="center" data-plugin="stackoverflow">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="music">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="tweets">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="anilist">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="stackoverflow">❌</th>
+    <th nowrap="nowrap" align="center" data-plugin="posts">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="wakatime">❌</th>
     <th nowrap="nowrap" align="center" data-plugin="nightscout">❌</th>
   </tr>
@@ -715,30 +747,32 @@ See their respective documentation for more informations about how to setup them
   * [🗃️ Base content](/source/plugins/base/README.md)
   * [🧱 Core](/source/plugins/core/README.md)
 * **Github**
-  * [📰 Recent activity](/source/plugins/activity/README.md)
-  * [🏅 Repository contributors](/source/plugins/contributors/README.md)
-  * [🎟️ Follow-up of issues and pull requests](/source/plugins/followup/README.md)
-  * [🎫 Gists](/source/plugins/gists/README.md)
-  * [💡 Coding habits](/source/plugins/habits/README.md)
-  * [🙋 Introduction](/source/plugins/introduction/README.md)
   * [📅 Isometric commit calendar](/source/plugins/isocalendar/README.md)
   * [🈷️ Most used languages](/source/plugins/languages/README.md)
+  * [🙋 Introduction](/source/plugins/introduction/README.md)
+  * [💡 Coding habits](/source/plugins/habits/README.md)
   * [📜 Repository licenses](/source/plugins/licenses/README.md)
-  * [👨‍💻 Lines of code changed](/source/plugins/lines/README.md)
-  * [🧑‍🤝‍🧑 People plugin](/source/plugins/people/README.md)
-  * [🗂️ Active projects](/source/plugins/projects/README.md)
-  * [🌇 GitHub Skyline 3D calendar](/source/plugins/skyline/README.md)
-  * [✨ Stargazers over last weeks](/source/plugins/stargazers/README.md)
+  * [🏅 Repository contributors](/source/plugins/contributors/README.md)
   * [🌟 Recently starred repositories](/source/plugins/stars/README.md)
   * [📌 Starred topics](/source/plugins/topics/README.md)
+  * [🎭 Comment reactions](/source/plugins/reactions/README.md)
+  * [🧑‍🤝‍🧑 People plugin](/source/plugins/people/README.md)
+  * [🎫 Gists](/source/plugins/gists/README.md)
+  * [🎟️ Follow-up of issues and pull requests](/source/plugins/followup/README.md)
+  * [👨‍💻 Lines of code changed](/source/plugins/lines/README.md)
   * [🧮 Repositories traffic](/source/plugins/traffic/README.md)
+  * [✨ Stargazers over last weeks](/source/plugins/stargazers/README.md)
+  * [🗂️ Active projects](/source/plugins/projects/README.md)
+  * [📰 Recent activity](/source/plugins/activity/README.md)
+  * [🏆 Achievements](/source/plugins/achievements/README.md)
+  * [🌇 GitHub Skyline 3D calendar](/source/plugins/skyline/README.md)
 * **Social**
-  * [🌸 Anilist watch list and reading list](/source/plugins/anilist/README.md)
-  * [🎼 Music plugin](/source/plugins/music/README.md)
   * [⏱️ Website performances](/source/plugins/pagespeed/README.md)
-  * [✒️ Recent posts](/source/plugins/posts/README.md)
-  * [🗨️ Stackoverflow plugin](/source/plugins/stackoverflow/README.md)
+  * [🎼 Music plugin](/source/plugins/music/README.md)
   * [🐤 Latest tweets](/source/plugins/tweets/README.md)
+  * [🌸 Anilist watch list and reading list](/source/plugins/anilist/README.md)
+  * [🗨️ Stackoverflow plugin](/source/plugins/stackoverflow/README.md)
+  * [✒️ Recent posts](/source/plugins/posts/README.md)
   * [⏰ WakaTime plugin](/source/plugins/wakatime/README.md)
 * **Health**
   * [💉 Nightscout](/source/plugins/nightscout/README.md)
@@ -750,7 +784,7 @@ While metrics targets mainly user accounts, it's possible to render metrics for 
 ![Metrics (organization account)](https://github.com/lowlighter/lowlighter/blob/master/metrics.organization.svg)
 
 <details>
-<summary>💬 Metrics for organizations</summary>
+<summary><b>💬 Metrics for organizations</b> <i>(click to expand)</i></summary>
 
 Setup is the same as for user accounts, though you'll need to add `read:org` scope, **whether you're member of target organization or not**.
 
@@ -771,14 +805,13 @@ To support private repositories, add full `repo` scope to your personal token.
   with:
     # ... other options
     token: ${{ secrets.METRICS_TOKEN }}          # A personal token from an user account with read:org scope
-    committer_token: ${{ secrets.GITHUB_TOKEN }} # GitHub auto-generated token
     user: organization-name                      # Organization name
 ```
 
 </details>
 
 <details>
-<summary>💬 Organizations memberships for user accounts</summary>
+<summary><b>💬 Organizations memberships for user accounts</b> <i>(click to expand)</i></summary>
 
 Only public memberships can be displayed by metrics by default.
 You can manage your membership visibility in the `People` tab of your organization:
@@ -814,6 +847,10 @@ Copyright (c) 2020 lowlighter
 
 ![License details](https://github.com/lowlighter/lowlighter/blob/master/metrics.licenses.svg)
 
+![Sponsors](https://github.com/lowlighter/lowlighter/blob/master/metrics.sponsors.svg)
+
+[`♥️ Become a sponsor`](https://www.buymeacoffee.com/lowlighter)
+
 ## 📖 Useful references
 
 * [GitHub GraphQL API](https://docs.github.com/en/graphql)
@@ -829,5 +866,6 @@ Copyright (c) 2020 lowlighter
 * [ankurparihar/readme-pagespeed-insights](https://github.com/ankurparihar/readme-pagespeed-insights)
 * [jasonlong/isometric-contributions](https://github.com/jasonlong/isometric-contributions)
 * [jamesgeorge007/github-activity-readme](https://github.com/jamesgeorge007/github-activity-readme)
-
+* [vvo/sourcekarma](https://github.com/vvo/sourcekarma)
+* [ryo-ma/github-profile-trophy](https://github.com/ryo-ma/github-profile-trophy)
 

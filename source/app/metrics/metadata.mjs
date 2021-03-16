@@ -13,6 +13,7 @@
       const __metrics = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../../..")
       const __templates = path.join(__metrics, "source/templates")
       const __plugins = path.join(__metrics, "source/plugins")
+      const __package = path.join(__metrics, "package.json")
 
     //Init
       const logger = log ? console.debug : () => null
@@ -28,8 +29,8 @@
       }
     //Reorder keys
       const {base, core, ...plugins} = Plugins //eslint-disable-line no-unused-vars
-      Plugins = Object.fromEntries(Object.entries(Plugins).sort(([_an, a], [_bn, b]) => categories.indexOf(a.categorie) - categories.indexOf(b.categorie)))
-
+      Plugins = Object.fromEntries(Object.entries(Plugins).sort(([_an, a], [_bn, b]) => a.categorie === b.categorie ? (a.index ?? Infinity) - (b.index ?? Infinity) : categories.indexOf(a.categorie) - categories.indexOf(b.categorie)))
+      logger(`metrics/metadata > loaded [${Object.keys(Plugins).join(", ")}]`)
     //Load templates metadata
       let Templates = {}
       logger("metrics/metadata > loading templates metadata")
@@ -45,8 +46,11 @@
       const {classic, repository, community, ...templates} = Templates
       Templates = {classic, repository, ...templates, community}
 
+    //Packaged metadata
+      const packaged = JSON.parse(`${await fs.promises.readFile(__package)}`)
+
     //Metadata
-      return {plugins:Plugins, templates:Templates}
+      return {plugins:Plugins, templates:Templates, packaged}
   }
 
 /**Metadata extractor for templates */

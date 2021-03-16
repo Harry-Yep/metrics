@@ -1,6 +1,7 @@
 name: "🐤 Latest tweets"
 cost: N/A
 categorie: social
+index: 3
 supports:
   - user
   - organization
@@ -18,6 +19,12 @@ inputs:
     description: Twitter API token
     type: token
     default: ""
+
+  # Display tweets attachments (images, video previews, etc.)
+  plugin_tweets_attachments:
+    description: Display tweets attchments
+    type: boolean
+    default: no
 
   # Number of tweets to display
   plugin_tweets_limit:

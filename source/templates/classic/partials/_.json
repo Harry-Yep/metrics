@@ -19,8 +19,10 @@
   "stargazers",
   "people",
   "activity",
+  "reactions",
   "anilist",
   "wakatime",
   "skyline",
-  "stackoverflow"
+  "stackoverflow",
+  "achievements"
 ]
