@@ -230,6 +230,32 @@
                     favorites:distribution(7).map((value, index, array) => ({name:faker.lorem.word(), color:faker.internet.color(), value, size:faker.random.number(1000000), x:array.slice(0, index).reduce((a, b) => a + b, 0)}))
                   }
                 }) : null),
+              //RSS
+                ...(set.plugins.enabled.rss ? ({
+                  rss:{
+                    source:faker.lorem.words(),
+                    description:faker.lorem.paragraph(),
+                    link:options["rss.source"],
+                    feed:new Array(Number(options["rss.limit"])).fill(null).map(_ => ({
+                      title:faker.lorem.sentence(),
+                      date:faker.date.recent()
+                    })),
+                  }
+                }) : null),
+              //Stock price
+                ...(set.plugins.enabled.stock ? ({
+                  stock:{
+                    chart:"(stock chart is not displayed in placeholder)",
+                    currency:"USD",
+                    price:faker.random.number(10000)/100,
+                    previous:faker.random.number(10000)/100,
+                    get delta() { return this.price-this.previous },
+                    symbol:options["stock.symbol"],
+                    company:faker.company.companyName(),
+                    interval:options["stock.interval"],
+                    duration:options["stock.duration"],
+                  }
+                }) : null),
               //Habits
                 ...(set.plugins.enabled.habits ? ({
                   habits:{

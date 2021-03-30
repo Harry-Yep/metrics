@@ -23,10 +23,6 @@
           //GitHub limit tracker
             const {data:requests} = await axios.get("/.requests")
             this.requests = requests
-            setInterval(async () => {
-              const {data:requests} = await axios.get("/.requests")
-              this.requests = requests
-            }, 15000)
           //Generate placeholder
             this.mock({timeout:200})
             setInterval(() => {
@@ -195,7 +191,7 @@
           //Resize mock image
             mockresize() {
               const svg = document.querySelector(".preview .image svg")
-              if (svg) {
+              if ((svg)&&(svg.getAttribute("height") === 99999)) {
                 const height = svg.querySelector("#metrics-end")?.getBoundingClientRect()?.y-svg.getBoundingClientRect()?.y
                 if (Number.isFinite(height))
                   svg.setAttribute("height", height)

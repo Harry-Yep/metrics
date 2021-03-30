@@ -3,6 +3,7 @@
   import ejs from "ejs"
   import util from "util"
   import SVGO from "svgo"
+  import xmlformat from "xml-formatter"
 
 //Setup
   export default async function metrics({login, q}, {graphql, rest, plugins, conf, die = false, verify = false, convert = null}, {Plugins, Templates}) {
@@ -27,6 +28,8 @@
           const data = {animated:true, base:{}, config:{}, errors:[], plugins:{}, computed:{}}
           const imports = {plugins:Plugins, templates:Templates, metadata:conf.metadata, ...utils}
           const experimental = new Set(decodeURIComponent(q["experimental.features"] ?? "").split(" ").map(x => x.trim().toLocaleLowerCase()).filter(x => x))
+          if (conf.settings["debug.headless"])
+            imports.puppeteer.headless = false
 
         //Partial parts
           {
@@ -69,6 +72,7 @@
           if (q["config.gemoji"])
             rendered = await imports.svg.gemojis(rendered, {rest})
         //Optimize rendering
+          rendered = xmlformat(rendered, {lineSeparator:"\n"})
           if ((conf.settings?.optimize)&&(!q.raw)) {
             console.debug(`metrics/compute/${login} > optimize`)
             if (experimental.has("--optimize")) {
@@ -92,10 +96,11 @@
         //Verify svg
           if (verify) {
             console.debug(`metrics/compute/${login} > verify SVG`)
-            const libxmljs = (await import("libxmljs")).default
+            const libxmljs = (await import("libxmljs2")).default
             const parsed = libxmljs.parseXml(rendered)
             if (parsed.errors.length)
               throw new Error(`Malformed SVG : \n${parsed.errors.join("\n")}`)
+            console.debug(`metrics/compute/${login} > verified SVG, no parsing errors found`)
           }
         //Resizing
           const {resized, mime} = await imports.svg.resize(rendered, {paddings:q["config.padding"] || conf.settings.padding, convert})

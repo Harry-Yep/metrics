@@ -74,7 +74,7 @@
               case "playlist":{
                 //Start puppeteer and navigate to playlist
                   console.debug(`metrics/compute/${login}/plugins > music > starting browser`)
-                  const browser = await imports.puppeteer.launch({headless:true, executablePath:process.env.PUPPETEER_BROWSER_PATH, args:["--no-sandbox", "--disable-extensions", "--disable-setuid-sandbox", "--disable-dev-shm-usage"], ignoreDefaultArgs:["--disable-extensions"]})
+                  const browser = await imports.puppeteer.launch()
                   console.debug(`metrics/compute/${login}/plugins > music > started ${await browser.version()}`)
                   const page = await browser.newPage()
                   console.debug(`metrics/compute/${login}/plugins > music > loading page`)
@@ -98,8 +98,8 @@
                         //Parse tracklist
                           await frame.waitForSelector("table")
                           tracks = [...await frame.evaluate(() => [...document.querySelectorAll("table tr")].map(tr => ({
-                            name:tr.querySelector("td:nth-child(2) div:nth-child(1)").innerText,
-                            artist:tr.querySelector("td:nth-child(2) div:nth-child(2)").innerText,
+                            name:tr.querySelector("td:nth-child(2) div div:nth-child(1)").innerText,
+                            artist:tr.querySelector("td:nth-child(2) div div:nth-child(2)").innerText,
                             //Spotify doesn't provide artworks so we fallback on playlist artwork instead
                             artwork:window.getComputedStyle(document.querySelector("button[title=Play]").parentNode, null).backgroundImage.match(/^url\("(?<url>https:...+)"\)$/)?.groups?.url ?? null,
                           })))]
