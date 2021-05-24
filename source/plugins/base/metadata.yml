@@ -1,5 +1,5 @@
 name: "🗃️ Base content"
-cost: 1 GraphQL request
+cost: 2 GraphQL requests + 1 GraphQL request per 100 repositories fetched
 categorie: core
 supports:
   - user
@@ -34,14 +34,24 @@ inputs:
     type: boolean
     default: no
 
-  # Filter repositories by user affiliations
+  # Filter repositories by user affiliations (you can specify multiple affiliations constraints)
+  # Set to "" to use all repositories related to you
   # Note that it may affect some plugin outputs (broad affiliations will result in less representative metrics)
   repositories_affiliations:
     description: Repositories affiliations
-    type: string
+    type: array
+    format: comma-separated
     default: owner
     values:
-      - ""                  # Use all repositories related to you
       - owner               # Use repositories you own
       - collaborator        # Use repositories you have contributed too
       - organization_member # Use repositories where you're an organization member
+
+  # List of default repositories that will be skipped
+  # Plugins supporting a "skip repositories option" will automatically append repositories listed in this option
+  repositories_skipped:
+    description: Default repositories to skip
+    type: array
+    format: comma-separated
+    default: ""
+    example: my-repo-1, my-repo-2, owner/repo-3 ...

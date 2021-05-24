@@ -55,6 +55,25 @@ Some templates may accept additional custom options that you can pass through th
     query: '{"custom_colo r":"#FF0000"}'
 ```
 
+### 🎨 Custom CSS styling
+
+You can inject CSS rules using `extras_css` option.
+
+If you make heavy use of this option, consider using [community templates](/source/templates/community/README.md) instead.
+
+#### ℹ️ Examples workflows
+
+```yaml
+- uses: lowlighter/metrics@latest
+  with:
+    # ... other options
+    base: header
+    extras_css: |
+      h2 {
+        color: red;
+      }
+```
+
 ### 🌐 Set timezone
 
 By default, dates are based on Greenwich meridian (GMT/UTC).
@@ -121,6 +140,21 @@ It may increase filesize since it replace unicode characters by SVG images.
     config_twemoji: yes
 ```
 
+### ↔️ Controlling display size
+
+Some templates like `classic` and `repositories` support different output display size:
+- `regular` (default) will render a medium-sized image, which is suitable for both desktop and mobile displays and is preferable when using data-intensive metrics (since text may be scaled down on small devices)
+- `large` will render a large-sized image, which may be more suitable for some plugins (like displaying topics icons,  repository contributors, etc.)
+
+#### ℹ️ Examples workflows
+
+```yaml
+- uses: lowlighter/metrics@latest
+  with:
+    # ... other options
+    config_display: large
+```
+
 ### 🎞️ SVG CSS Animations
 
 As rendered metrics use HTML and CSS, some templates have animations.
@@ -142,7 +176,9 @@ As it can depend on fonts and operating system, it is possible that final result
 
 You can adjust padding by using `config_padding` option.
 
-Specify a single value to apply it to both height and with, and two values to use the first one for width and the second for height. Both positive and negative values are accepted, but you must specify a percentage.
+Specify a single value to apply it to both height and with, and two values to use the first one for width and the second for height. Both positive and negative values are accepted.
+
+The allowed format is `(absolute padding) + (relative padding)%` (each operand is optional).
 
 #### ℹ️ Examples workflows
 
@@ -150,10 +186,10 @@ Specify a single value to apply it to both height and with, and two values to us
 - uses: lowlighter/metrics@latest
   with:
     # ... other options
-    config_padding: 6%, 10% # 6% width padding, 10% height padding
+    config_padding: 16, 16 + 9% # 16px width padding, 16px + 9% height padding
 ```
 
-### 🧶 Using commits, pull requests or manual review to handle metrics output
+### 🧶 Using commits, pull requests, manual reviews or gists to handle metrics output
 
 It is possible to configure output behaviour using `output_action` option, which can be set to:
 - `none`, where output will be generated in `/rendered/${filename}` without being pushed
@@ -163,6 +199,8 @@ It is possible to configure output behaviour using `output_action` option, which
   - By appending either `-merge`, `-squash` or `-rebase`, pull request will be automatically merged with given method
   - This method is useful to combine all editions of a single run with multiples metrics steps into a single commit on targetted branch
   - If you choose to manually merge pull requests, be sure to disable `push:` triggers on your workflow, as it'll count as your own commit
+- `gist`, where output will be stored an already existing gist
+  - To use this feature, a `gists` scope must be granted to your `token` and `committer_gist` identifier must be provided
 
 #### ℹ️ Examples workflows
 
@@ -216,6 +254,21 @@ It could then be processed for other usages.
   with:
     # ... other options
     config_output: png
+```
+
+### 🖨️ Convert output to PDF
+
+It is possible to convert output to PDF when using a markdown template by setting `config_output` to `markdown-pdf`.
+
+#### ℹ️ Examples workflows
+
+```yaml
+- uses: lowlighter/metrics@latest
+  with:
+    # ... other options
+    markdown: template.md
+    markdown_cache: .cache
+    config_output: markdown-pdf
 ```
 
 ### 🐳 Faster execution with prebuilt docker images

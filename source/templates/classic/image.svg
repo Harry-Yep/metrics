@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="99999" class="<%= !animated ? 'no-animations' : '' %>">
+<svg xmlns="http://www.w3.org/2000/svg" width="<%= large ? 960 : 480 %>" height="99999" class="<%= large ? 'large' : '' %> <%= !animated ? 'no-animations' : '' %>">
 
   <defs><style><%= fonts %></style></defs>
   <style><%= style %></style>
@@ -14,7 +14,7 @@
           <% if (account === "user") { %>
             <span>These metrics <%= !computed.token.scopes.includes("repo") ? "do not include all" : "include" %> private contributions<% if ((config.timezone?.name)&&(!config.timezone?.error)) { %>, timezone <%= config.timezone.name %><% } %></span>
           <% } %>
-          <span>Last updated <%= new Date().toGMTString() %> with lowlighter/metrics@<%= meta.version %></span>
+          <span>Last updated <%= meta.generated %> with lowlighter/metrics@<%= meta.version %></span>
         </footer>
       <% } %>
       <div id="metrics-end"></div>

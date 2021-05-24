@@ -52,11 +52,33 @@ inputs:
     type: string
     default: Update ${filename} - [Skip GitHub Action]
 
+  # Instead of saving metrics to a repository, it's possible to save them to a gist to avoid "commits pollution"
+  # Gist must be created prior and you must pass its identifier in the following option
+  # Set "gist" in "output_action" to use this option
+  committer_gist:
+    description: Gist used to store metrics
+    type: string
+    default: ""
+
   # Rendered metrics output path, relative to repository's root
+  # When using "*", the correct extension will automatically on "config_output" value
   filename:
     description: Rendered metrics output path
     type: string
-    default: github-metrics.svg
+    default: github-metrics.*
+
+  # Rendered markdown output path (when using a markdown template)
+  # It can be either a local path or a link (e.g. raw.githubusercontent.com)
+  markdown:
+    description: Rendered markdown output path
+    type: string
+    default: TEMPLATE.md
+
+  # Rendered markdown file cache (when using a markdown template)
+  markdown_cache:
+    description: Rendered markdown file cache
+    type: string
+    default: .cache
 
   # Output action
   output_action:
@@ -70,6 +92,7 @@ inputs:
       - pull-request-merge  # Same as "pull-request" and additionaly merge pull request
       - pull-request-squash # Same as "pull-request" and additionaly squash and merge pull request
       - pull-request-rebase # Same as "pull-request" and additionaly rebase and merge pull request
+      - gist                # Save output to "committer_gist"
 
   # Optimize SVG image to reduce its filesize
   # Some templates may not support this option
@@ -102,6 +125,17 @@ inputs:
     type: json
     default: "{}"
 
+  # Define additional CSS that will be injected in used template
+  # Example:
+  # config_extras_css꞉ |
+  #   h2 {
+  #     color: red;
+  #   }
+  extras_css:
+    description: Extra CSS
+    type: string
+    default: ""
+
   # Timezone used by metrics
   # See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   config_timezone:
@@ -133,6 +167,15 @@ inputs:
     type: boolean
     default: yes
 
+  # Render display width
+  config_display:
+    description: Render display width
+    type: string
+    default: regular
+    values:
+      - regular  # 480px width
+      - large    # 960px width (may not be supported by all templates)
+
   # Enable SVG CSS animations
   config_animations:
     description: SVG CSS animations
@@ -144,20 +187,22 @@ inputs:
   # Specify one value (for both width and height) or two values (one for width and one for height)
   config_padding:
     description: Image padding
-    type: array
-    format: comma-separated
-    default: 6%, 13%
+    type: string
+    default: 16, 16 + 9%
 
   # Metrics output format
   config_output:
     description: Output image format
     type: string
-    default: svg
+    default: auto
     values:
+      - auto         # Defaults to template default
       - svg
-      - png  # Does not support animations
-      - jpeg # Does not support animations and transparency
-      - json # Outputs a JSON file instead of an image
+      - png          # Does not support animations
+      - jpeg         # Does not support animations and transparency
+      - json         # Outputs a JSON file instead of an image
+      - markdown     # Outputs a Markdown file instead of an image
+      - markdown-pdf # Outputs a Markdown file as PDF instead of an image
 
   # Number of retries in case rendering fail
   retries:

@@ -5,15 +5,15 @@
       Achievements
     </h2>
     <div class="row">
-      <section>
+      <section class="largeable-flex-wrap">
         <% if (plugins.achievements.error) { %>
           <div class="field error">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M2.343 13.657A8 8 0 1113.657 2.343 8 8 0 012.343 13.657zM6.03 4.97a.75.75 0 00-1.06 1.06L6.94 8 4.97 9.97a.75.75 0 101.06 1.06L8 9.06l1.97 1.97a.75.75 0 101.06-1.06L9.06 8l1.97-1.97a.75.75 0 10-1.06-1.06L8 6.94 6.03 4.97z"></path></svg>
             <%= plugins.achievements.error.message %>
           </div>
         <% } else { %>
-          <% for (const {title, text, icon, rank, gh = NaN, progress = 0, unlock = null} of plugins.achievements.list) { %>
-            <div class="achievement <%= rank === "$" ? "secret" : rank.charAt(0).toLocaleLowerCase() %>">
+          <% for (const {title, text, icon, rank, leaderboard = null, progress = 0, unlock = null} of plugins.achievements.list) { %>
+            <div class="achievement <%= rank === "$" ? "secret" : rank.charAt(0).toLocaleLowerCase() %> largeable-width-half">
               <div class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" height="44" width="44">
                   <defs>
@@ -33,9 +33,9 @@
               <div class="info">
                 <div class="title">
                   <%= title %>
-                  <% if ((Number.isFinite(gh))&&(gh < 100000)) { %>
+                  <% if (leaderboard) { %>
                     <span class="gh">
-                      Top <%= gh %>
+                      ranked <%= f(leaderboard.user) %> out of <%= f(leaderboard.total) %> <%= leaderboard.type %>
                     </span>
                   <% } %>
                 </div>

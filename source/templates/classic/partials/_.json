@@ -5,6 +5,7 @@
   "base.repositories",
   "followup",
   "languages",
+  "notable",
   "projects",
   "gists",
   "pagespeed",
@@ -24,7 +25,9 @@
   "anilist",
   "wakatime",
   "skyline",
+  "support",
   "stackoverflow",
   "stock",
-  "achievements"
+  "achievements",
+  "screenshot"
 ]

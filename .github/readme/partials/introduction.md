@@ -1,7 +1,7 @@
 Generate your metrics that you can embed everywhere, including your GitHub profile readme! It works for both user and organization accounts, and even for repositories!
 
 <% if (/[.]0-beta$/.test(packaged.version)) { %>
-<sup>*⚠️ This is the documentation of **v<%= packaged.version.replace(/[.]0-beta$/, "") %>-beta** (`@master` branch) which includes [unreleased features](https://github.com/lowlighter/metrics/compare/latest...master), see documentation of **v<%= (Number(packaged.version.replace(/[.]0-beta$/, ""))-0.1).toFixed(1) %>** (`@latest` branch) [here](https://github.com/lowlighter/metrics/blob/latest/README.md).*</sup>
+> <sup>*⚠️ This is the documentation of **v<%= packaged.version.replace(/[.]0-beta$/, "") %>-beta** (`@master` branch) which includes [unreleased features](https://github.com/lowlighter/metrics/compare/latest...master), see documentation of [**v<%= (Number(packaged.version.replace(/[.]0-beta$/, ""))-0.01).toFixed(2).replace(/[.]0/, ".") %>** (`@latest` branch) here](https://github.com/lowlighter/metrics/blob/latest/README.md).*</sup>
 <% } %>
 
 <table>
@@ -55,12 +55,12 @@ And you can customize these heavily with plugins, templates and hundreds of opti
 <% } %>
 <% {
   let cell = 0
-  const elements = Object.entries(templates).filter(([key, value]) => value)
+  const elements = Object.entries(templates).filter(([key, value]) => (value)&&(!["community"].includes(key)))
 %>
 <table>
   <tr>
     <th colspan="2" align="center">
-      <a href="source/templates/README.md">🖼️ <%= elements.length-1 %>+ templates</a>
+      <a href="source/templates/README.md">🖼️ <%= elements.length %>+ templates</a>
     </th>
   </tr>
 <%  if (elements.length%2)
@@ -71,7 +71,7 @@ And you can customize these heavily with plugins, templates and hundreds of opti
         if (cell === "even") {
 -%>
   <tr>
-<% } %>    <th><a href="source/templates/<%= template %>/README.md"><%= name -%></a></th>
+<% } %>    <th><a href="source/templates/<%= template %>/README.md"><%- name -%></a></th>
 <%      if (cell === "odd") {
 -%>  </tr>
 <% }}
@@ -83,5 +83,11 @@ And you can customize these heavily with plugins, templates and hundreds of opti
 <%      if (cell === "odd") {
 -%>  </tr>
 <% }}} -%>
+  <tr>
+    <th colspan="2"><a href="source/templates/community/README.md"><%= templates.community.name -%></a></th>
+  </tr>
+  <tr>
+    <%- templates.community.readme.demo %>
+  </tr>
 </table>
 <% } %>

@@ -22,11 +22,18 @@ inputs:
     description: Include forks in metrics
     default: no
   
-  # Filter repositories by user affiliations
+  # Filter repositories by user affiliations (you can specify multiple affiliations constraints)
+  # Set to "" to use all repositories related to you
   # Note that it may affect some plugin outputs (broad affiliations will result in less representative metrics)
   repositories_affiliations:
     description: Repositories affiliations
     default: owner
+  
+  # List of default repositories that will be skipped
+  # Plugins supporting a "skip repositories option" will automatically append repositories listed in this option
+  repositories_skipped:
+    description: Default repositories to skip
+    default: ""
   
   # ====================================================================================
   # 🧱 Core
@@ -70,10 +77,29 @@ inputs:
     description: Commit message
     default: Update ${filename} - [Skip GitHub Action]
   
+  # Instead of saving metrics to a repository, it's possible to save them to a gist to avoid "commits pollution"
+  # Gist must be created prior and you must pass its identifier in the following option
+  # Set "gist" in "output_action" to use this option
+  committer_gist:
+    description: Gist used to store metrics
+    default: ""
+  
   # Rendered metrics output path, relative to repository's root
+  # When using "*", the correct extension will automatically on "config_output" value
   filename:
     description: Rendered metrics output path
-    default: github-metrics.svg
+    default: github-metrics.*
+  
+  # Rendered markdown output path (when using a markdown template)
+  # It can be either a local path or a link (e.g. raw.githubusercontent.com)
+  markdown:
+    description: Rendered markdown output path
+    default: TEMPLATE.md
+  
+  # Rendered markdown file cache (when using a markdown template)
+  markdown_cache:
+    description: Rendered markdown file cache
+    default: .cache
   
   # Output action
   output_action:
@@ -104,6 +130,16 @@ inputs:
     description: Additional query parameters
     default: "{}"
   
+  # Define additional CSS that will be injected in used template
+  # Example:
+  # config_extras_css꞉ |
+  #   h2 {
+  #     color: red;
+  #   }
+  extras_css:
+    description: Extra CSS
+    default: ""
+  
   # Timezone used by metrics
   # See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   config_timezone:
@@ -129,6 +165,11 @@ inputs:
     description: Use GitHub custom emojis
     default: yes
   
+  # Render display width
+  config_display:
+    description: Render display width
+    default: regular
+  
   # Enable SVG CSS animations
   config_animations:
     description: SVG CSS animations
@@ -139,12 +180,12 @@ inputs:
   # Specify one value (for both width and height) or two values (one for width and one for height)
   config_padding:
     description: Image padding
-    default: 6%, 13%
+    default: 16, 16 + 9%
   
   # Metrics output format
   config_output:
     description: Output image format
-    default: svg
+    default: auto
   
   # Number of retries in case rendering fail
   retries:
@@ -232,11 +273,18 @@ inputs:
     description: Repositories to skip
     default: ""
   
+  # Number of languages to display
+  # Set to 0 to disable limitations
+  plugin_languages_limit:
+    description: Maximum number of languages to display
+    default: 8
+  
   # Overrides default languages colors
   # Use `${n}:${color}` to change the color of the n-th most used language (e.g. "0:red" to make your most used language red)
   # Use `${language}:${color}` to change the color of named language (e.g. "javascript:red" to make JavaScript language red, language case is ignored)
   # Use a value from `colorsets.json` to use a predefined set of colors
   # Both hexadecimal and named colors are supported
+  # This cannot be used when "plugin_languages_limit" is greater than 8
   plugin_languages_colors:
     description: Custom languages colors
     default: github
@@ -341,7 +389,7 @@ inputs:
   # Ignored contributors (useful to ignore bots users)
   plugin_contributors_ignored:
     description: Contributors to ignore
-    default: github-actions[bot]
+    default: github-actions[bot], dependabot[bot], dependabot-preview[bot]
   
   # Display total contributions for each contributor
   plugin_contributors_contributions:
@@ -420,6 +468,11 @@ inputs:
     description: Additional details
     default: ""
   
+  # Ignored users (useful to ignore bots users)
+  plugin_reactions_ignored:
+    description: Users to ignore
+    default: github-actions[bot], dependabot[bot], dependabot-preview[bot]
+  
   # ====================================================================================
   # 🧑‍🤝‍🧑 People plugin
   
@@ -483,6 +536,11 @@ inputs:
     description: Display follow-up of repositories issues and pull requests
     default: no
   
+  # Sections to display
+  plugin_followup_sections:
+    description: Sections to display
+    default: repositories
+  
   # ====================================================================================
   # 👨‍💻 Lines of code changed
   
@@ -490,6 +548,11 @@ inputs:
   plugin_lines:
     description: Display lines of code metrics
     default: no
+  
+  # List of repositories that will be skipped
+  plugin_lines_skipped:
+    description: Repositories to skip
+    default: ""
   
   # ====================================================================================
   # 🧮 Repositories traffic
@@ -546,7 +609,15 @@ inputs:
     description: Maximum number of events to display
     default: 5
   
+  # Number of activity events to load
+  # This should be higher than "plugin_activity_limit"
+  # A high number will consume more requests
+  plugin_activity_load:
+    description: Number of events to load
+    default: 300
+  
   # Filter events by age
+  # Note that it only filter fetched events, you may need to increase "plugin_activity_limit" to display older events
   # Set to 0 to disable age filtering
   plugin_activity_days:
     description: Maximum event age
@@ -566,6 +637,11 @@ inputs:
   plugin_activity_timestamps:
     description: Display events timestamps
     default: no
+  
+  # List of repositories that will be skipped
+  plugin_activity_skipped:
+    description: Repositories to skip
+    default: ""
   
   # ====================================================================================
   # 🏆 Achievements
@@ -603,6 +679,34 @@ inputs:
   plugin_achievements_only:
     description: Unlocked achievements to display
     default: ""
+  
+  # ====================================================================================
+  # 🎩 Notable contributions
+  
+  # Enable or disable plugin
+  plugin_notable:
+    description: Display notable contributions in organizations
+    default: no
+  
+  # Query filter
+  # Based on GitHub search notation
+  # Supported fields are "stars", "forks" and "watchers"
+  plugin_notable_filter:
+    description: Query filter
+    default: ""
+  
+  # Also display repository name along with organization name
+  plugin_notable_repositories:
+    description: Also display repository name
+    default: no
+  
+  # ====================================================================================
+  # 💭 GitHub Community Support
+  
+  # Enable or disable plugin
+  plugin_support:
+    description: GitHub Community Support metrics
+    default: no
   
   # ====================================================================================
   # 🌇 GitHub Skyline 3D calendar
@@ -811,10 +915,17 @@ inputs:
     default: 2
   
   # Number of lines to display per question or answer
+  # Code snippets will take one line slot and should be configured with "plugin_stackoverflow_lines_snippet" instead
   # Set to 0 to disable limitations
   plugin_stackoverflow_lines:
     description: Maximum number of lines to display per question or answer
     default: 4
+  
+  # Number of lines to display per code snippet
+  # Set to 0 to disable limitations
+  plugin_stackoverflow_lines_snippet:
+    description: Maximum number of lines to display per code snippet
+    default: 2
   
   # ====================================================================================
   # ✒️ Recent posts
@@ -898,6 +1009,20 @@ inputs:
     description: Maximum number of entries to display per graph
     default: 5
   
+  # If you use a selfhosted wakatime instance (wakapi)
+  # that is publicly available place your url here
+  #
+  # If you use the public wakapi instance the url
+  # would be https://wakapi.dev
+  plugin_wakatime_url:
+    description: Address where to reach your Wakatime instance
+    default: https://wakatime.com
+  
+  # Username on Wakatime
+  plugin_wakatime_user:
+    description: Your Wakatime user on the selfhosted Wakapi instance
+    default: current
+  
   # ====================================================================================
   # 💹 Stock prices
   
@@ -926,6 +1051,34 @@ inputs:
   plugin_stock_interval:
     description: Time intervals between records
     default: 5m
+  
+  # ====================================================================================
+  # 📸 Website screenshot
+  
+  # Enable or disable plugin
+  plugin_screenshot:
+    description: Display a screenshot of any website
+    default: no
+  
+  # Screenshot title caption
+  plugin_screenshot_title:
+    description: Screenshot title caption
+    default: Screenshot
+  
+  # Website to take screenshot
+  plugin_screenshot_url:
+    description: Website to take screenshot
+    default: ""
+  
+  # Selector to take in screenshot
+  plugin_screenshot_selector:
+    description: Selector to take in screenshot
+    default: body
+  
+  # Display or remove default page background
+  plugin_screenshot_background:
+    description: Display or remove default page background
+    default: yes
   
   # ====================================================================================
   # 💉 Nightscout
@@ -968,9 +1121,9 @@ inputs:
 
 # ====================================================================================
 # Action metadata
-name: GitHub metrics as SVG image
+name: Metrics embed
 author: lowlighter
-description: An SVG generator with 20+ metrics about your GitHub account! Additional plugins are available to display even more!
+description: An infographics generator with 30+ plugins and 100+ options to display stats about your GitHub account!
 branding:
   icon: user-check
   color: gray-dark

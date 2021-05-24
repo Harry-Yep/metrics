@@ -13,7 +13,7 @@
   "debug.headless": false,         "//": "Debug puppeteer process",
   "mocked": false,                 "//": "Use mocked data instead of live APIs (use 'force' to use mocked token even if real token are defined)",
   "repositories": 100,             "//": "Number of repositories to use",
-  "padding": ["6%", "13%"],        "//": "Image padding (default)",
+  "padding": ["16", "16 + 9%"],    "//": "Image padding (default)",
   "hosted": {
     "by": "",                      "//": "Web instance host (displayed in footer)",
     "link": "",                    "//": "Web instance host link (displayed in footer)"
@@ -24,6 +24,10 @@
   "templates": {
     "default": "classic",          "//": "Default template",
     "enabled": [],                 "//": "Enabled templates (empty to enable all)"
+  },
+  "extras": {
+    "default": false,              "//": "Default extras state (advised to let 'false' unless in debug mode)",
+    "css": false,                  "//": "Allow use of 'extras.css' option"
   },
   "plugins.default": false,        "//": "Default plugin state (advised to let 'false' unless in debug mode)",
   "plugins": {                     "//": "Global plugin configuration",

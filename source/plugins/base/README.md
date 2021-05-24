@@ -32,8 +32,9 @@ These are all enabled by default, but you can explicitely opt out from them.
 - uses: lowlighter/metrics@latest
   with:
     # ... other options
-    base: header, repositories       # Only display "header" and "repositories" sections
-    repositories: 100                # Query only last 100 repositories
-    repositories_forks: no           # Don't include forks
-    repositories_affiliations: owner # Display only repositories where user is owner
+    base: header, repositories                     # Only display "header" and "repositories" sections
+    repositories: 100                              # Query only last 100 repositories
+    repositories_forks: no                         # Don't include forks
+    repositories_affiliations: owner, collaborator # Display only repositories where user is owner or collaborator
+    repositories_skipped: lowlighter/lowlighter    # Exclude automatically "lowlighter/lowlighter" repository from plugins allowing a skip list
 ```
