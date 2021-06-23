@@ -29,7 +29,7 @@ export default async function({login, q, imports, data, graphql, queries, accoun
       const path = imports.paths.join(imports.os.tmpdir(), `${repository.databaseId}`)
       //Create temporary directory
       console.debug(`metrics/compute/${login}/plugins > licenses > creating temp dir ${path}`)
-      await imports.fs.rmdir(path, {recursive:true})
+      await imports.fs.rm(path, {recursive:true, force:true})
       await imports.fs.mkdir(path, {recursive:true})
       //Clone repository
       console.debug(`metrics/compute/${login}/plugins > licenses > cloning temp git repository ${repository.url} to ${path}`)
@@ -67,7 +67,7 @@ export default async function({login, q, imports, data, graphql, queries, accoun
         )
       //Cleaning
       console.debug(`metrics/compute/${login}/plugins > licensed > cleaning temp dir ${path}`)
-      await imports.fs.rmdir(path, {recursive:true})
+      await imports.fs.rm(path, {recursive:true, force:true})
     }
     else
       console.debug(`metrics/compute/${login}/plugins > licenses > licensed not available`)
@@ -115,7 +115,7 @@ export default async function({login, q, imports, data, graphql, queries, accoun
   }
 }
 
-/**Licenses colorizer (based on categorie) */
+/**Licenses colorizer (based on category) */
 function colors(licenses) {
   for (const [license, value] of Object.entries(licenses)) {
     const [permissions, conditions] = [value.permissions, value.conditions].map(properties => properties.map(({key}) => key))

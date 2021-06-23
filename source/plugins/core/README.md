@@ -145,6 +145,7 @@ It may increase filesize since it replace unicode characters by SVG images.
 Some templates like `classic` and `repositories` support different output display size:
 - `regular` (default) will render a medium-sized image, which is suitable for both desktop and mobile displays and is preferable when using data-intensive metrics (since text may be scaled down on small devices)
 - `large` will render a large-sized image, which may be more suitable for some plugins (like displaying topics icons,  repository contributors, etc.)
+- `columns` will render a full-width image, with two columns on desktop / one column on mobile
 
 #### ℹ️ Examples workflows
 
@@ -186,7 +187,7 @@ The allowed format is `(absolute padding) + (relative padding)%` (each operand i
 - uses: lowlighter/metrics@latest
   with:
     # ... other options
-    config_padding: 16, 16 + 9% # 16px width padding, 16px + 9% height padding
+    config_padding: 0, 8 + 11% # 0px width padding, 8px + 11% height padding
 ```
 
 ### 🧶 Using commits, pull requests, manual reviews or gists to handle metrics output

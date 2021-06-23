@@ -1,6 +1,6 @@
 name: "🧱 Core"
 cost: N/A
-categorie: core
+category: core
 supports:
   - user
   - organization
@@ -175,6 +175,7 @@ inputs:
     values:
       - regular  # 480px width
       - large    # 960px width (may not be supported by all templates)
+      - columns  # Full width with two columns on desktop / One column on mobile
 
   # Enable SVG CSS animations
   config_animations:
@@ -188,7 +189,7 @@ inputs:
   config_padding:
     description: Image padding
     type: string
-    default: 16, 16 + 9%
+    default: 0, 8 + 11%
 
   # Metrics output format
   config_output:
@@ -284,3 +285,12 @@ inputs:
     description: Use pre-built image from GitHub registry
     type: boolean
     default: yes
+
+  # Time to wait (in seconds) at the end of job
+  # Use this to avoid triggering abuse mechanics on large workflows
+  delay:
+    description: Use this to avoid triggering abuse mechanics on large workflows
+    type: number
+    default: 0
+    min: 0
+    max: 3600

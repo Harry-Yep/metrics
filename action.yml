@@ -17,6 +17,12 @@ inputs:
     description: Number of repositories to use
     default: 100
   
+  # Number of repositories to load at once by queries
+  # If you encounter GitHub queries timeouts, using a lower value here may solve issues
+  repositories_batch:
+    description: Number of repositories to load at once by queries
+    default: 100
+  
   # Include forked repositories into metrics
   repositories_forks:
     description: Include forks in metrics
@@ -34,6 +40,12 @@ inputs:
   repositories_skipped:
     description: Default repositories to skip
     default: ""
+  
+  # List of surnames or email addresses you use when authoring commits
+  # These are mostly used to perform commits analysis to detect ownership
+  commits_authoring:
+    description: List of surnames or email addresses you use when authoring commits
+    default: .user.login
   
   # ====================================================================================
   # 🧱 Core
@@ -180,7 +192,7 @@ inputs:
   # Specify one value (for both width and height) or two values (one for width and one for height)
   config_padding:
     description: Image padding
-    default: 16, 16 + 9%
+    default: 0, 8 + 11%
   
   # Metrics output format
   config_output:
@@ -242,6 +254,12 @@ inputs:
     description: Use pre-built image from GitHub registry
     default: yes
   
+  # Time to wait (in seconds) at the end of job
+  # Use this to avoid triggering abuse mechanics on large workflows
+  delay:
+    description: Use this to avoid triggering abuse mechanics on large workflows
+    default: 0
+  
   # ====================================================================================
   # 📅 Isometric commit calendar
   
@@ -279,6 +297,11 @@ inputs:
     description: Maximum number of languages to display
     default: 8
   
+  # Sections to display
+  plugin_languages_sections:
+    description: Sections to display
+    default: most-used
+  
   # Overrides default languages colors
   # Use `${n}:${color}` to change the color of the n-th most used language (e.g. "0:red" to make your most used language red)
   # Use `${language}:${color}` to change the color of named language (e.g. "javascript:red" to make JavaScript language red, language case is ignored)
@@ -289,6 +312,12 @@ inputs:
     description: Custom languages colors
     default: github
   
+  # Overrides default languages name
+  # Use `${language}:${alias}` to change the name of language (e.g. "javascript:JS" to make JavaScript render as "JS", case of left operand ignored)
+  plugin_languages_aliases:
+    description: Custom languages names
+    default: ""
+  
   # Languages additional details
   plugin_languages_details:
     description: Additional details
@@ -298,6 +327,25 @@ inputs:
   plugin_languages_threshold:
     description: Minimum threshold
     default: 0%
+  
+  # Compute indepth languages statistics by cloning repositories and processing your commits individually
+  # See documentation before enabling
+  plugin_languages_indepth:
+    description: Indepth languages processing (see documentation before enabling)
+    default: false
+  
+  # Number of activity events to load (for recently used languages statistics)
+  # A high number will consume more requests
+  plugin_languages_recent_load:
+    description: Number of events to load (for recently used section)
+    default: 300
+  
+  # Filter events by age (for recently used languages statistics)
+  # Set to 0 to disable age filtering
+  # Note that metrics won't be able to load more events than GitHub is able to provide
+  plugin_languages_recent_days:
+    description: Maximum event age (for recently used section)
+    default: 14
   
   # ====================================================================================
   # 🙋 Introduction
@@ -341,6 +389,11 @@ inputs:
   # Also display languages recently used (this is not the same as plugin_languages, as the latter is an all-time stats)
   plugin_habits_charts:
     description: Display coding habits charts based on recent activity
+    default: no
+  
+  # Trim unused hours on daily chart
+  plugin_habits_trim:
+    description: Trim unused hours on daily chart
     default: no
   
   # ====================================================================================
@@ -443,10 +496,14 @@ inputs:
     default: no
   
   # Maximum number of issue comments to parse
-  # Issues will be fetched before issues comments
   plugin_reactions_limit:
     description: Maximum number of issue comments to parse
     default: 200
+  
+  # Maximum number of issues and pull requests opened to parse
+  plugin_reactions_limit_issues:
+    description: Maximum number of issues and pull requests opened to parse
+    default: 100
   
   # Filter reactions by issue comments age
   # Set to 0 to disable age filtering
@@ -484,7 +541,7 @@ inputs:
   # Number of users to display per section
   plugin_people_limit:
     description: Maximum number of user to display
-    default: 28
+    default: 24
   
   # Size of displayed user's avatar
   plugin_people_size:
@@ -1142,7 +1199,7 @@ runs:
         for INPUT in $(echo $INPUTS | jq -r 'to_entries|map("INPUT_\(.key|ascii_upcase)=\(.value|@uri)")|.[]'); do
           echo $INPUT >> .env
         done
-        env | grep -E '^(GITHUB|ACTIONS|CI)' >> .env
+        env | grep -E '^(GITHUB|ACTIONS|CI|TZ)' >> .env
         echo "Environment variables: loaded"
 
         # Renders output folder
@@ -1213,3 +1270,4 @@ runs:
         METRICS_ACTION_PATH: ${{ github.action_path }}
         METRICS_USE_PREBUILT_IMAGE: ${{ inputs.use_prebuilt_image }}
         INPUTS: ${{ toJson(inputs) }}
+        TZ: ${{ inputs.config_timezone }}

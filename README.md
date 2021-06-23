@@ -5,7 +5,7 @@
 Generate your metrics that you can embed everywhere, including your GitHub profile readme! It works for both user and organization accounts, and even for repositories!
 
 
-> <sup>*⚠️ This is the documentation of **v3.10-beta** (`@master` branch) which includes [unreleased features](https://github.com/lowlighter/metrics/compare/latest...master), see documentation of [**v3.9** (`@latest` branch) here](https://github.com/lowlighter/metrics/blob/latest/README.md).*</sup>
+> <sup>*⚠️ This is the documentation of **v3.11-beta** (`@master` branch) which includes [unreleased features](https://github.com/lowlighter/metrics/compare/latest...master), see documentation of [**v3.10** (`@latest` branch) here](https://github.com/lowlighter/metrics/blob/latest/README.md).*</sup>
 
 
 <table>
@@ -50,6 +50,12 @@ And you can customize these heavily with plugins, templates and hundreds of opti
       <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.languages.svg">
       <details open><summary>With both total bytes size and percentage version</summary>
         <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.languages.details.svg">
+      </details>
+      <details open><summary>Recently used version (based on recent activity)</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.languages.recent.svg">
+      </details>
+      <details><summary>Indepth analysis (clone, analyze and extract commits)</summary>
+        <img alt="" width="400" src="https://github.com/lowlighter/lowlighter/blob/master/metrics.plugin.languages.indepth.svg">
       </details>
       <img width="900" height="1" alt="">
     </td>
@@ -396,7 +402,7 @@ Choose `📊 Metrics embed` if you want to customize your GitHub profile and `�
 
 ### 🐙 Features
 
-* Create infographics from **32 plugins**, **4 templates** and **182 options**
+* Create infographics from **32 plugins**, **4 templates** and **191 options**
   * Even more **customization** with [community templates](source/templates/community) or by [forking this repository](https://github.com/lowlighter/metrics/network/members) and editing HTML/CSS/EJS
 * Support **users**, **organizations** and even **repositories**
 * Transparent by default so it'll blend well whether light or dark mode is used
@@ -523,6 +529,8 @@ Update your README.md to embed your metrics:
 ![Metrics](https://github.com/my-github-user/my-github-user/blob/master/github-metrics.svg)
 <!-- If you're using "main" as default branch -->
 ![Metrics](https://github.com/my-github-user/my-github-user/blob/main/github-metrics.svg)
+<!-- If you're using the "columns" display mode -->
+<img src="https://github.com/my-github-user/my-github-user/blob/master/github-metrics.svg" alt="Metrics" width="100%">
 ```
 </details>
 

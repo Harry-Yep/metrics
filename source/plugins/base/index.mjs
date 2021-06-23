@@ -7,23 +7,19 @@
 export default async function({login, graphql, data, q, queries, imports}, conf) {
   //Load inputs
   console.debug(`metrics/compute/${login}/base > started`)
-  let {repositories, "repositories.forks":_forks, "repositories.affiliations":_affiliations, "repositories.skipped":_skipped} = imports.metadata.plugins.base.inputs({data, q, account:"bypass"}, {repositories:conf.settings.repositories ?? 100})
+  let {repositories, "repositories.forks":_forks, "repositories.affiliations":_affiliations, "repositories.batch":_batch} = imports.metadata.plugins.base.inputs({data, q, account:"bypass"}, {repositories:conf.settings.repositories ?? 100})
   const forks = _forks ? "" : ", isFork: false"
   const affiliations = _affiliations?.length ? `, ownerAffiliations: [${_affiliations.map(x => x.toLocaleUpperCase()).join(", ")}]${conf.authenticated === login ? `, affiliations: [${_affiliations.map(x => x.toLocaleUpperCase()).join(", ")}]` : ""}` : ""
   console.debug(`metrics/compute/${login}/base > affiliations constraints ${affiliations}`)
 
   //Skip initial data gathering if not needed
   if (conf.settings.notoken)
-    return (postprocess.skip({login, data}), {})
+    return (postprocess.skip({login, data, imports}), {})
 
   //Base parts (legacy handling for web instance)
   const defaulted = ("base" in q) ? legacy.converter(q.base) ?? true : true
   for (const part of conf.settings.plugins.base.parts)
     data.base[part] = `base.${part}` in q ? legacy.converter(q[`base.${part}`]) : defaulted
-
-  //Shared options
-  data.shared = {"repositories.skipped":_skipped}
-  console.debug(`metrics/compute/${login}/base > shared options > ${JSON.stringify(data.shared)}`)
 
   //Iterate through account types
   for (const account of ["user", "organization"]) {
@@ -34,23 +30,29 @@ export default async function({login, graphql, data, q, queries, imports}, conf)
       Object.assign(data, {user:queried[account]})
       postprocess?.[account]({login, data})
       //Query repositories from GitHub API
-      {
+      data.user.repositoriesContributedTo.nodes = data.user.repositoriesContributedTo.nodes ?? []
+      for (const type of ({user:["repositories", "repositoriesContributedTo"], organization:["repositories"]}[account] ?? [])) {
         //Iterate through repositories
         let cursor = null
         let pushed = 0
+        const options = {repositories:{forks, affiliations, constraints:""}, repositoriesContributedTo:{forks:"", affiliations:"", constraints:", includeUserRepositories: false, contributionTypes: COMMIT"}}[type] ?? null
         do {
-          console.debug(`metrics/compute/${login}/base > retrieving repositories after ${cursor}`)
-          const {[account]:{repositories:{edges, nodes}}} = await graphql(queries.base.repositories({login, account, after:cursor ? `after: "${cursor}"` : "", repositories:Math.min(repositories, {user:100, organization:25}[account]), forks, affiliations}))
+          console.debug(`metrics/compute/${login}/base > retrieving ${type} after ${cursor}`)
+          const {[account]:{[type]:{edges = [], nodes = []} = {}}} = await graphql(queries.base.repositories({login, account, type, after:cursor ? `after: "${cursor}"` : "", repositories:Math.min(repositories, {user:_batch, organization:Math.min(25, _batch)}[account]), ...options}))
           cursor = edges?.[edges?.length - 1]?.cursor
-          data.user.repositories.nodes.push(...nodes)
+          data.user[type].nodes.push(...nodes)
           pushed = nodes.length
-          console.debug(`metrics/compute/${login}/base > retrieved ${pushed} repositories after ${cursor}`)
-        } while ((pushed) && (cursor) && (data.user.repositories.nodes.length < repositories))
+          console.debug(`metrics/compute/${login}/base > retrieved ${pushed} ${type} after ${cursor}`)
+        } while ((pushed) && (cursor) && (data.user.repositories.nodes.length + data.user.repositoriesContributedTo.nodes.length < repositories))
         //Limit repositories
-        console.debug(`metrics/compute/${login}/base > keeping only ${repositories} repositories`)
-        data.user.repositories.nodes.splice(repositories)
-        console.debug(`metrics/compute/${login}/base > loaded ${data.user.repositories.nodes.length} repositories`)
+        console.debug(`metrics/compute/${login}/base > keeping only ${repositories} ${type}`)
+        data.user[type].nodes.splice(repositories)
+        console.debug(`metrics/compute/${login}/base > loaded ${data.user[type].nodes.length} ${type}`)
       }
+      //Shared options
+      let {"repositories.skipped":skipped, "commits.authoring":authoring} = imports.metadata.plugins.base.inputs({data, q, account:"bypass"})
+      data.shared = {"repositories.skipped":skipped, "commits.authoring":authoring, "repositories.batch":_batch}
+      console.debug(`metrics/compute/${login}/base > shared options > ${JSON.stringify(data.shared)}`)
       //Success
       console.debug(`metrics/compute/${login}/base > graphql query > account ${account} > success`)
       return {}
@@ -105,8 +107,9 @@ const postprocess = {
     })
   },
   //Skip base content query and instantiate an empty user instance
-  skip({login, data}) {
+  skip({login, data, imports}) {
     data.user = {}
+    data.shared = imports.metadata.plugins.base.inputs({data, q:{}, account:"bypass"})
     for (const account of ["user", "organization"])
       postprocess?.[account]({login, data})
     data.account = "bypass"
@@ -120,6 +123,7 @@ const postprocess = {
       twitterUsername:login,
       repositories:{totalCount:0, totalDiskUsage:0, nodes:[]},
       packages:{totalCount:0},
+      repositoriesContributedTo:{nodes:[]},
     })
   },
 }

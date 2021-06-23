@@ -30,7 +30,7 @@ export default async function metadata({log = true} = {}) {
   }
   //Reorder keys
   const {base, core, ...plugins} = Plugins //eslint-disable-line no-unused-vars
-  Plugins = Object.fromEntries(Object.entries(Plugins).sort(([_an, a], [_bn, b]) => a.categorie === b.categorie ? (a.index ?? Infinity) - (b.index ?? Infinity) : categories.indexOf(a.categorie) - categories.indexOf(b.categorie)))
+  Plugins = Object.fromEntries(Object.entries(Plugins).sort(([_an, a], [_bn, b]) => a.category === b.category ? (a.index ?? Infinity) - (b.index ?? Infinity) : categories.indexOf(a.category) - categories.indexOf(b.category)))
   logger(`metrics/metadata > loaded [${Object.keys(Plugins).join(", ")}]`)
   //Load templates metadata
   let Templates = {}
@@ -64,9 +64,9 @@ metadata.plugin = async function({__plugins, name, logger}) {
     const raw = `${await fs.promises.readFile(path.join(__plugins, name, "metadata.yml"), "utf-8")}`
     const {inputs, ...meta} = yaml.load(raw)
 
-    //Categorie
-    if (!categories.includes(meta.categorie))
-      meta.categorie = "other"
+    //category
+    if (!categories.includes(meta.category))
+      meta.category = "other"
 
     //Inputs parser
     {
@@ -78,6 +78,19 @@ metadata.plugin = async function({__plugins, name, logger}) {
           const context = q.repo ? "repository" : account
           if (!meta.supports?.includes(context))
             throw {error:{message:`Not supported for: ${context}`, instance:new Error()}}
+        }
+        //Special values replacer
+        const replacer = value => {
+          value = `${value}`.trim()
+          if (user) {
+            if (value === ".user.login")
+              return user.login ?? value
+            if (value === ".user.twitter")
+              return user.twitterUsername ?? value
+            if (value === ".user.website")
+              return user.websiteUrl ?? value
+          }
+          return value
         }
         //Inputs checks
         const result = Object.fromEntries(
@@ -120,19 +133,11 @@ metadata.plugin = async function({__plugins, name, logger}) {
                   }
                   const separators = {"comma-separated":",", "space-separated":" "}
                   const separator = separators[[format].flat().filter(s => s in separators)[0]] ?? ","
-                  return value.split(separator).map(v => v.trim().toLocaleLowerCase()).filter(v => Array.isArray(values) ? values.includes(v) : true).filter(v => v)
+                  return value.split(separator).map(v => replacer(v).toLocaleLowerCase()).filter(v => Array.isArray(values) ? values.includes(v) : true).filter(v => v)
                 }
                 //String
                 case "string": {
-                  value = `${value}`.trim()
-                  if (user) {
-                    if (value === ".user.login")
-                      return user.login
-                    if (value === ".user.twitter")
-                      return user.twitterUsername
-                    if (value === ".user.website")
-                      return user.websiteUrl
-                  }
+                  value = replacer(value)
                   if ((Array.isArray(values)) && (!values.includes(value)))
                     return defaulted
                   return value

@@ -1,6 +1,6 @@
 name: "🗃️ Base content"
 cost: 2 GraphQL requests + 1 GraphQL request per 100 repositories fetched
-categorie: core
+category: core
 supports:
   - user
   - organization
@@ -28,6 +28,16 @@ inputs:
     default: 100
     min: 0
 
+
+  # Number of repositories to load at once by queries
+  # If you encounter GitHub queries timeouts, using a lower value here may solve issues
+  repositories_batch:
+    description: Number of repositories to load at once by queries
+    type: number
+    default: 100
+    max: 100
+    min: 1
+
   # Include forked repositories into metrics
   repositories_forks:
     description: Include forks in metrics
@@ -44,7 +54,7 @@ inputs:
     default: owner
     values:
       - owner               # Use repositories you own
-      - collaborator        # Use repositories you have contributed too
+      - collaborator        # Use repositories you push access
       - organization_member # Use repositories where you're an organization member
 
   # List of default repositories that will be skipped
@@ -55,3 +65,12 @@ inputs:
     format: comma-separated
     default: ""
     example: my-repo-1, my-repo-2, owner/repo-3 ...
+
+  # List of surnames or email addresses you use when authoring commits
+  # These are mostly used to perform commits analysis to detect ownership
+  commits_authoring:
+    description: List of surnames or email addresses you use when authoring commits
+    type: array
+    format: comma-seperated
+    default: .user.login
+    example: lowlighter, lowlighter@users.noreply.github.com

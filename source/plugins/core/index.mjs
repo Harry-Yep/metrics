@@ -16,11 +16,12 @@ export default async function({login, q}, {conf, data, rest, graphql, plugins, q
   console.debug(`metrics/compute/${login} > formatting common metrics`)
 
   //Timezone config
+  const offset = Number(new Date().toLocaleString("fr", {timeZoneName:"short"}).match(/UTC[+](?<offset>\d+)/)?.groups?.offset * 60 * 60 * 1000) || 0
   if (_timezone) {
     const timezone = {name:_timezone, offset:0}
     data.config.timezone = timezone
     try {
-      timezone.offset = Number(new Date().toLocaleString("fr", {timeZoneName:"short", timeZone:timezone.name}).match(/UTC[+](?<offset>\d+)/)?.groups?.offset * 60 * 60 * 1000) || 0
+      timezone.offset = offset - (Number(new Date().toLocaleString("fr", {timeZoneName:"short", timeZone:timezone.name}).match(/UTC[+](?<offset>\d+)/)?.groups?.offset * 60 * 60 * 1000) || 0)
       console.debug(`metrics/compute/${login} > timezone set to ${timezone.name} (${timezone.offset > 0 ? "+" : ""}${Math.round(timezone.offset / (60 * 60 * 1000))} hours)`)
     }
     catch {
@@ -28,9 +29,12 @@ export default async function({login, q}, {conf, data, rest, graphql, plugins, q
       console.debug(`metrics/compute/${login} > failed to use timezone "${timezone.name}"`)
     }
   }
+  else if (process?.env?.TZ)
+    data.config.timezone = {name:process.env.TZ, offset}
 
   //Display
   data.large = display === "large"
+  data.columns = display === "columns"
 
   //Animations
   data.animated = animations
@@ -73,7 +77,7 @@ export default async function({login, q}, {conf, data, rest, graphql, plugins, q
   }
 
   //Total disk usage
-  computed.diskUsage = `${imports.bytes(data.user.repositories.totalDiskUsage * 1000)}`
+  computed.diskUsage = `${imports.format.bytes(data.user.repositories.totalDiskUsage * 1000)}`
 
   //Compute licenses stats
   computed.licenses.favorite = Object.entries(computed.licenses.used).sort(([_an, a], [_bn, b]) => b - a).slice(0, 1).map(([name, _value]) => name) ?? ""
@@ -108,7 +112,7 @@ export default async function({login, q}, {conf, data, rest, graphql, plugins, q
   data.meta = {
     version:conf.package.version,
     author:conf.package.author,
-    generated:new Date(new Date().getTime() + (data.config.timezone?.offset ?? 0)).toGMTString().replace(/GMT$/g, "").trim()
+    generated:imports.format.date(new Date(), {dateStyle:"short", timeStyle:"short"})
   }
 
   //Debug flags

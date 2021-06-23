@@ -1,6 +1,6 @@
 name: "💡 Coding habits"
-cost: 1 REST request per 100 events + 1 REST request pet commit
-categorie: github
+cost: 1 REST request per 100 events + 1 REST request per commit
+category: github
 index: 3
 supports:
   - user
@@ -41,5 +41,11 @@ inputs:
   # Also display languages recently used (this is not the same as plugin_languages, as the latter is an all-time stats)
   plugin_habits_charts:
     description: Display coding habits charts based on recent activity
+    type: boolean
+    default: no
+
+  # Trim unused hours on daily chart
+  plugin_habits_trim:
+    description: Trim unused hours on daily chart
     type: boolean
     default: no
