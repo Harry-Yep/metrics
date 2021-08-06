@@ -22,10 +22,12 @@ import url from "url"
 import util from "util"
 import fetch from "node-fetch"
 import readline from "readline"
+import emoji from "emoji-name-map"
+import minimatch from "minimatch"
 prism_lang()
 
 //Exports
-export {axios, fs, git, jimp, opengraph, os, paths, processes, rss, url, fetch, util}
+export {axios, fs, git, jimp, opengraph, os, paths, processes, rss, url, fetch, util, emoji, minimatch}
 
 /**Returns module __dirname */
 export function __module(module) {
@@ -307,7 +309,7 @@ export const svg = {
     await page.setContent(`<main class="markdown-body">${rendered}</main>`, {waitUntil:["load", "domcontentloaded", "networkidle2"]})
     console.debug("metrics/svg/pdf > loaded svg successfully")
     const margins = (Array.isArray(paddings) ? paddings : paddings.split(",")).join(" ")
-    console.log(`metrics/svg/pdf > margins set to ${margins}`)
+    console.debug(`metrics/svg/pdf > margins set to ${margins}`)
     await page.addStyleTag({
       content:`
         main { margin: ${margins}; }
